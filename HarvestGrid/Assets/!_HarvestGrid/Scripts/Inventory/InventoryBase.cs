@@ -2,7 +2,7 @@ using LgTyLib.Core;
 using LgTyLib.Modules.GridSystem;
 using UnityEngine;
 
-public class Inventory : BaseSingleton<Inventory>
+public partial class InventoryBase : BaseSingleton<InventoryBase>
 {
     [SerializeField]
     private GridSystem gridSystem;
