@@ -8,20 +8,22 @@ namespace LgTyLib.Modules.GridSystem
         [SerializeField] private int width, height;
         [SerializeField] private GridCell cellPrefab;
         [SerializeField] private RectTransform gridContainer;
+        [SerializeField] private RectTransform systemContainer;
         [SerializeField] private CellStyleHandler styleHandler;
         [SerializeField] private Vector2 cellSize = new(64f, 64f);
         [SerializeField] private Vector2 spacing = Vector2.zero;
 
         private GridCell[,] cells;
         private Enum[,] cellValues;
+        private bool[,] cellEnabled;
         public Enum[,] CellValues => cellValues;
 
         public int Width => width;
         public int Height => height;
 
         public event Action<int, int, Enum> OnCellChanged;
-
-
+        public event Action<int, int, bool> OnCellEnableChanged;
+        public event Action<GridCell> OnCellClicked;
 
         public void Init(int width, int height)
         {
@@ -32,6 +34,7 @@ namespace LgTyLib.Modules.GridSystem
 
             cells = new GridCell[width, height];
             cellValues = new Enum[width, height];
+            cellEnabled = new bool[width, height];
 
             var parent = gridContainer != null ? gridContainer : (RectTransform)transform;
 
@@ -53,7 +56,6 @@ namespace LgTyLib.Modules.GridSystem
 
                     if (cell.transform is RectTransform rt)
                     {
-                        // Left-bottom pivot/anchor so anchoredPosition == cell's bottom-left corner.
                         rt.pivot = Vector2.zero;
                         rt.anchorMin = Vector2.zero;
                         rt.anchorMax = Vector2.zero;
@@ -64,9 +66,19 @@ namespace LgTyLib.Modules.GridSystem
                         rt.sizeDelta = cellSize;
                     }
 
+                    // Wire every cell's click event up to a single GridSystem-level event.
+                    cell.OnClicked += HandleCellClicked;
+
                     cells[x, y] = cell;
+                    cellEnabled[x, y] = true;
                 }
             }
+            systemContainer.sizeDelta = gridContainer.sizeDelta;
+        }
+
+        private void HandleCellClicked(GridCell cell)
+        {
+            OnCellClicked?.Invoke(cell);
         }
 
         /// <summary>
@@ -88,6 +100,37 @@ namespace LgTyLib.Modules.GridSystem
             }
         }
 
+        /// <summary>
+        /// Initializes the grid, seeding each cell using a generator function (e.g. ItemGenerator.Instance.CellType).
+        /// baseValue is used as a fallback whenever the generator returns null.
+        /// </summary>
+        public void Init(int width, int height, Enum baseValue, Func<Enum> valueGenerator)
+        {
+            Init(width, height);
+
+            if (valueGenerator == null)
+            {
+                if (baseValue == null)
+                    return;
+
+                for (int y = 0; y < height; y++)
+                    for (int x = 0; x < width; x++)
+                        SetCell(x, y, baseValue);
+
+                return;
+            }
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    var value = valueGenerator() ?? baseValue;
+                    if (value != null)
+                        SetCell(x, y, value);
+                }
+            }
+        }
+
         public void Clear() => ClearGrid();
 
         private void ClearGrid()
@@ -97,11 +140,15 @@ namespace LgTyLib.Modules.GridSystem
             foreach (var cell in cells)
             {
                 if (cell != null)
+                {
+                    cell.OnClicked -= HandleCellClicked;
                     Destroy(cell.gameObject);
+                }
             }
 
             cells = null;
             cellValues = null;
+            cellEnabled = null;
         }
 
         public void SetCell(int x, int y, Enum value)
@@ -126,8 +173,62 @@ namespace LgTyLib.Modules.GridSystem
             }
 
             cellValues[x, y] = value;
-            cells[x, y].UpdateCellSprite(styleHandler.GetSprite(value));
+            RefreshCellSprite(x, y);
             OnCellChanged?.Invoke(x, y, value);
+        }
+
+        /// <summary>
+        /// Enables or disables a single cell. Disabled cells display the style handler's
+        /// disabled sprite instead of the sprite for their current value, and do not fire click events.
+        /// </summary>
+        public void SetCellEnable(int x, int y, bool enable)
+        {
+            if (!IsValidCoordinate(x, y))
+            {
+                Debug.LogWarning($"[GridSystem] Coordinate ({x},{y}) is out of bounds.");
+                return;
+            }
+
+            cellEnabled[x, y] = enable;
+            cells[x, y].SetEnable(enable);
+            RefreshCellSprite(x, y);
+            OnCellEnableChanged?.Invoke(x, y, enable);
+        }
+
+        /// <summary>
+        /// Enables or disables a rectangular block of cells, starting at (x, y)
+        /// with the given width/height. (x, y) is the bottom-left corner of the block.
+        /// </summary>
+        public void SetCellsEnable(int x, int y, int width, int height, bool enable)
+        {
+            if (width <= 0 || height <= 0)
+            {
+                Debug.LogWarning($"[GridSystem] Invalid block size ({width}x{height}).");
+                return;
+            }
+
+            for (int j = y; j < y + height; j++)
+            {
+                for (int i = x; i < x + width; i++)
+                {
+                    SetCellEnable(i, j, enable);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Re-applies the correct sprite for a cell based on its current value and enabled state.
+        /// </summary>
+        private void RefreshCellSprite(int x, int y)
+        {
+            if (styleHandler == null)
+                return;
+
+            var sprite = cellEnabled[x, y]
+                ? styleHandler.GetSprite(cellValues[x, y])
+                : styleHandler.GetDisabledSprite();
+
+            cells[x, y].UpdateCellSprite(sprite);
         }
 
         /// <summary>
@@ -189,6 +290,7 @@ namespace LgTyLib.Modules.GridSystem
                 }
             }
         }
+
         public Enum GetCellValue(int x, int y)
         {
             if (!IsValidCoordinate(x, y))
@@ -196,7 +298,24 @@ namespace LgTyLib.Modules.GridSystem
                 Debug.LogWarning($"[GridSystem] Coordinate ({x},{y}) is out of bounds.");
                 return null;
             }
+
+            if (cellValues == null)
+            {
+                Debug.LogWarning($"[GridSystem] '{name}' has not been initialized (call Init first).");
+                return null;
+            }
+
             return cellValues[x, y];
+        }
+
+        public bool IsCellEnabled(int x, int y)
+        {
+            if (!IsValidCoordinate(x, y))
+            {
+                Debug.LogWarning($"[GridSystem] Coordinate ({x},{y}) is out of bounds.");
+                return false;
+            }
+            return cellEnabled[x, y];
         }
 
         public GridCell GetCell(int x, int y)
@@ -208,5 +327,75 @@ namespace LgTyLib.Modules.GridSystem
         {
             return x >= 0 && x < width && y >= 0 && y < height;
         }
+
+        public RectTransform GridContainer => gridContainer;
+        public Vector2 CellSize => cellSize;
+        public Vector2 Spacing => spacing;
+
+        /// <summary>
+        /// Populates this GridSystem from GridCell components that already exist as
+        /// children (e.g. hand-placed in the editor for a custom footprint shape),
+        /// instead of instantiating new ones from cellPrefab. Existing child cells are
+        /// kept as-is; width/height and each cell's (x, y) are inferred from their
+        /// anchored position using cellSize/spacing. Cell values default to null —
+        /// seed them afterward with SetCell/SetCells if needed.
+        /// </summary>
+        public void GetCellsFromChildren()
+        {
+            var parent = gridContainer != null ? gridContainer : (RectTransform)transform;
+            var found = parent.GetComponentsInChildren<GridCell>(true);
+
+            if (found == null || found.Length == 0)
+            {
+                Debug.LogWarning($"[GridSystem] '{name}' has no GridCell children to initialize from.");
+                return;
+            }
+
+            var step = cellSize + spacing;
+            int maxX = 0, maxY = 0;
+
+            // Hand-placed cells won't have SetCoordinates called on them yet,
+            // so infer (x, y) from anchored position.
+            foreach (var cell in found)
+            {
+                if (cell.transform is not RectTransform rt)
+                    continue;
+
+                int x = Mathf.RoundToInt(rt.anchoredPosition.x / step.x);
+                int y = Mathf.RoundToInt(rt.anchoredPosition.y / step.y);
+                cell.SetCoordinates(x, y);
+
+                maxX = Mathf.Max(maxX, x);
+                maxY = Mathf.Max(maxY, y);
+            }
+
+            width = maxX + 1;
+            height = maxY + 1;
+
+            cells = new GridCell[width, height];
+            cellValues = new Enum[width, height];
+            cellEnabled = new bool[width, height];
+
+            foreach (var cell in found)
+            {
+                int x = cell.X;
+                int y = cell.Y;
+
+                if (!IsValidCoordinate(x, y))
+                {
+                    Debug.LogWarning($"[GridSystem] Child cell '{cell.name}' resolved to out-of-range coordinate ({x},{y}).");
+                    continue;
+                }
+
+                cell.OnClicked += HandleCellClicked;
+                cells[x, y] = cell;
+                cellEnabled[x, y] = true;
+            }
+
+            if (systemContainer != null && gridContainer != null)
+                systemContainer.sizeDelta = gridContainer.sizeDelta;
+        }
     }
+
+
 }

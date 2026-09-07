@@ -12,6 +12,11 @@ namespace LgTyLib.Modules.GridSystem
         public abstract Sprite GetSprite(Enum value);
 
         /// <summary>
+        /// Returns the sprite used for disabled cells, regardless of their value.
+        /// </summary>
+        public abstract Sprite GetDisabledSprite();
+
+        /// <summary>
         /// Checks whether this handler supports the given enum type.
         /// </summary>
         public abstract bool Supports(Type enumType);
@@ -29,6 +34,9 @@ namespace LgTyLib.Modules.GridSystem
 
         [SerializeField]
         private List<StylePair> styles = new();
+
+        [SerializeField]
+        private Sprite disabledSprite;
 
         private Dictionary<TEnum, Sprite> spriteLookup;
 
@@ -80,6 +88,8 @@ namespace LgTyLib.Modules.GridSystem
                 ? sprite
                 : null;
         }
+
+        public override Sprite GetDisabledSprite() => disabledSprite;
 
         public override bool Supports(Type enumType)
         {
