@@ -8,7 +8,7 @@ namespace LgTyLib.Modules.GridSystem
     public class GridCell : MonoBehaviour, IPointerClickHandler
     {
         private Image image;
-
+        public bool IsEnable { get; private set; } = true;
         public int X { get; private set; }
         public int Y { get; private set; }
 
@@ -23,6 +23,11 @@ namespace LgTyLib.Modules.GridSystem
         {
             X = x;
             Y = y;
+        }
+
+        internal void SetEnable(bool enable)
+        {
+            IsEnable = enable;
         }
 
         public void UpdateCellSprite(Sprite sprite)
