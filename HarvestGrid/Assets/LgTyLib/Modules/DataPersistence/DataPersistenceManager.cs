@@ -18,7 +18,6 @@ namespace LgTyLib.Modules.DataPersistence
         private float sessionStartTime;
 
         // ── Events ───────────────────────────────────────────────────
-        public static event Action OnNewGame;
         public static event Action<SaveSlotId> OnGameLoaded;
         public static event Action<SaveSlotId> OnGameSaved;
         public static event Action<SaveSlotId> OnSaveDeleted;
@@ -36,18 +35,6 @@ namespace LgTyLib.Modules.DataPersistence
             fileDataHandler = new FileDataHandler(rootPath);
             dataPersistenceList = FindAllDataPersistences();
             sessionStartTime = Time.realtimeSinceStartup;
-            //NewGame();
-        }
-
-        // ── In-memory state ──────────────────────────────────────────
-
-        /// <summary>Resets in-memory state. Does not touch disk.</summary>
-        public void NewGame()
-        {
-            gameData = new GameData();
-            activeSlot = null;
-            Debug.Log("New game initialized.");
-            OnNewGame?.Invoke();
         }
 
         // ── Load ─────────────────────────────────────────────────────
@@ -61,8 +48,7 @@ namespace LgTyLib.Modules.DataPersistence
 
             if (gameData == null)
             {
-                Debug.Log($"No save found for {slot}. Starting fresh.");
-                NewGame();
+                Debug.LogWarning($"No save found for {slot}.");
                 return;
             }
 
@@ -77,26 +63,14 @@ namespace LgTyLib.Modules.DataPersistence
 
         // ── Save ─────────────────────────────────────────────────────
 
-        /// <summary>Saves to the currently active slot.</summary>
-        public void SaveGame()
-        {
-            if (activeSlot == null)
-            {
-                Debug.LogWarning("No active slot set. Use SaveGame(SaveSlotId) to specify one.");
-                return;
-            }
-
-            SaveGame(activeSlot.Value);
-        }
-
-        /// <summary>Saves to a specific slot and makes it the active slot.</summary>
+        /// <summary>
+        /// Saves to the given slot and makes it the active slot.
+        /// If no game data exists yet in memory (e.g. starting a fresh playthrough),
+        /// a new GameData is created automatically.
+        /// </summary>
         public void SaveGame(SaveSlotId slot)
         {
-            if (gameData == null)
-            {
-                Debug.LogWarning("gameData is null. Aborting save.");
-                return;
-            }
+            gameData ??= new GameData();
 
             Debug.Log($"Saving to {slot}...");
 

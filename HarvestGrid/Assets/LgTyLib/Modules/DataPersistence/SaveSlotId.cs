@@ -1,5 +1,8 @@
-﻿namespace LgTyLib.Modules.DataPersistence
+﻿using System;
+
+namespace LgTyLib.Modules.DataPersistence
 {
+    [Serializable]
     public struct SaveSlotId
     {
         public string playthroughId;  // folder name

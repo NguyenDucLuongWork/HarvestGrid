@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5051eec31aac44491984b233e0003b, type: 3}
+  m_Name: Rice
+  m_EditorClassIdentifier: Assembly-CSharp::PlantPrototype
+  plant:
+    plantID: Rice
+    plantName: Rice
+    currentState:
+      sprite: {fileID: 0}
+      requiredResources: []
+    stages:
+    - sprite: {fileID: 577193420557142555, guid: 127abdab9a91a5541b1ad98c74830b63, type: 3}
+      requiredResources:
+      - key: 0
+        value: 10
+    - sprite: {fileID: -2724643688741700350, guid: 127abdab9a91a5541b1ad98c74830b63, type: 3}
+      requiredResources:
+      - key: 3
+        value: 10
+      - key: 1
+        value: 10
+    - sprite: {fileID: 9041960363566755337, guid: 127abdab9a91a5541b1ad98c74830b63, type: 3}
+      requiredResources:
+      - key: 3
+        value: 10
+      - key: 1
+        value: 10
+    - sprite: {fileID: 5726553436660081264, guid: 127abdab9a91a5541b1ad98c74830b63, type: 3}
+      requiredResources:
+      - key: 3
+        value: 10
+      - key: 1
+        value: 10
+    - sprite: {fileID: -583764213049615424, guid: 127abdab9a91a5541b1ad98c74830b63, type: 3}
+      requiredResources:
+      - key: 3
+        value: 10
+      - key: 1
+        value: 10
+    - sprite: {fileID: -6503518967364862033, guid: 127abdab9a91a5541b1ad98c74830b63, type: 3}
+      requiredResources:
+      - key: 3
+        value: 10
+      - key: 1
+        value: 10
+    gameObject: {fileID: 0}
