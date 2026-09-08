@@ -1,4 +1,7 @@
 ﻿// GameData.Game.cs  ← YOUR file, edit freely
+using NUnit.Framework;
+using System.Collections.Generic;
+
 namespace LgTyLib.Modules.DataPersistence
 {
     // ╔══════════════════════════════════════════════════════╗
@@ -12,5 +15,6 @@ namespace LgTyLib.Modules.DataPersistence
         // public int level;
         // public bool bossDefeated;
         public float score;
+        public List<Item> items;
     }
 }
