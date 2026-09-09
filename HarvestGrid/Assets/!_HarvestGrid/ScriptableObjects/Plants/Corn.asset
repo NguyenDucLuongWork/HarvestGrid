@@ -15,9 +15,11 @@ MonoBehaviour:
   plant:
     plantID: Corn
     plantName: Corn
+    averageCropCount: 0
     currentState:
       sprite: {fileID: 0}
       requiredResources: []
+    nextStageRequirement: []
     stages:
     - sprite: {fileID: 3976637874326502959, guid: 15ce013e2b7de2d449516f35792077f1, type: 3}
       requiredResources:
@@ -53,4 +55,9 @@ MonoBehaviour:
         value: 10
       - key: 1
         value: 10
+    crop:
+      cropID: Corn
+      name: 
+      icon: {fileID: 0}
+      stars: 0
     gameObject: {fileID: 0}
