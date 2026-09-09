@@ -5,6 +5,7 @@ using System.Collections.Generic;
 [Serializable]
 public class Item : ICloneable<Item>
 {
+    // Attibute
     [SerializeField]
     private string id;
     [SerializeField]
@@ -12,24 +13,32 @@ public class Item : ICloneable<Item>
     [SerializeField]
     private Sprite icon;
     [SerializeField]
-    private ProgressTimer progressTimer;
-    [SerializeField]
-    private Dictionary<ItemUsesType, int> usesDict;
-
-    public GameObject gameObject;
+    private ItemRarity rarity;
+    [SerializeReference] 
+    private List<ItemUse> uses;
 
     public string Id => id;
     public string Name => name;
     public Sprite Icon => icon;
-    public ProgressTimer ProgressTimer => progressTimer;
-    public Dictionary<ItemUsesType, int> UsesDict => usesDict;
+    public ItemRarity Rarity => rarity;
+    public IReadOnlyList<ItemUse> Uses => uses;
 
+    //References
+    [SerializeField]
+    private ProgressTimer progressTimer;
+    public ProgressTimer ProgressTimer => progressTimer;
+
+    //Visual
+    public GameObject gameObject;
     public Item(Item original)
     {
         this.id = original.Id;
         this.name = original.Name;
         this.icon = original.Icon;
-        this.usesDict = new Dictionary<ItemUsesType, int>(original.usesDict);
+        this.rarity = original.Rarity;
+        this.uses = new List<ItemUse>();
+        foreach (var use in original.uses)
+            this.uses.Add(use.Clone());
         this.progressTimer = original.ProgressTimer.Clone();
     }
 
@@ -53,6 +62,18 @@ public class Item : ICloneable<Item>
 
     private void Use()
     {
+
         ItemManager.Instance.Use(this);
+    }
+
+    public void Use(ItemUseContext ctx)
+    {
+        foreach (var use in uses)
+            use.Apply(ctx);
+    }
+
+    public void SetItemUse(List<ItemUse> uses)
+    {
+        this.uses = uses;
     }
 }

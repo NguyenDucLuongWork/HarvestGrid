@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925e510fbf32b0f46b00a11ffbe507d3, type: 3}
   m_Name: NewItemData
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  useConfig: 010000000000000000000000i
   item:
     id: 
     name: Scythe
     icon: {fileID: 0}
+    rarity: 0
+    uses:
+    - rid: 8788999187782697040
+    - rid: 8788999187782697041
+    - rid: 8788999187782697042
     progressTimer:
       duration: 5
       finishedHoldDuration: 0
@@ -24,15 +30,29 @@ MonoBehaviour:
       progress: 0
       isPlaying: 0
       isFinishedHolding: 0
-    uses:
-      type: 0
-      value: 0
-      Type: 0
-    usesDict:
-    - key: 0
-      value: 5
-    - key: 1
-      value: 5
-    - key: 2
-      value: 4
     gameObject: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8788999187782697040
+      type: {class: WaterUse, ns: , asm: Assembly-CSharp}
+      data:
+        currentCharge: 0
+    - rid: 8788999187782697041
+      type: {class: HarvestUse, ns: , asm: Assembly-CSharp}
+      data:
+        qualityToStarChance:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+    - rid: 8788999187782697042
+      type: {class: HarvestUse, ns: , asm: Assembly-CSharp}
+      data:
+        qualityToStarChance:
+          serializedVersion: 2
+          m_Curve: []
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4

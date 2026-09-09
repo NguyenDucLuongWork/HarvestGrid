@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: LevelSO 2
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   levelID: lv2
-  farmMono: {fileID: 6236772545089514285, guid: c4c81e499f94f0648b6f20e5e25b68a4, type: 3}
+  farmMono: {fileID: 4890344425699180269, guid: 680915da9da9890459fc1c8cc40d6f3c, type: 3}

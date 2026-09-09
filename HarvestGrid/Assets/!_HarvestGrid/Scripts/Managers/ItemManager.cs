@@ -53,10 +53,7 @@ public class ItemManager : BaseSingleton<ItemManager>, IDataPersistence
     // TODO: update, change to strategy pattern
     public void Use(Item item)
     {
-        var itemUses = item.UsesDict;
-        foreach (var usesType in itemUses.Keys) {
-            Use(item, usesType, item.UsesDict[usesType]);
-        }
+
     }
 
     private void Use(Item item, ItemUsesType type, int value)
