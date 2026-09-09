@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5051eec31aac44491984b233e0003b, type: 3}
+  m_Name: Tomato
+  m_EditorClassIdentifier: Assembly-CSharp::PlantPrototype
+  plant:
+    plantID: Tomato
+    plantName: Tomato
+    averageCropCount: 4
+    currentState:
+      sprite: {fileID: 0}
+      requiredResources: []
+    nextStageRequirement: []
+    stages:
+    - sprite: {fileID: 3336444044123149764, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+      requiredResources:
+      - key: 0
+        value: 5
+    - sprite: {fileID: -6966369517673316951, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+      requiredResources:
+      - key: 1
+        value: 5
+      - key: 0
+        value: 5
+    - sprite: {fileID: -4667150655987312241, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+      requiredResources:
+      - key: 0
+        value: 10
+      - key: 2
+        value: 10
+    - sprite: {fileID: -6770858775108089496, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+      requiredResources:
+      - key: 0
+        value: 10
+      - key: 3
+        value: 10
+    - sprite: {fileID: -7506016618634473757, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+      requiredResources:
+      - key: 0
+        value: 10
+      - key: 1
+        value: 10
+    - sprite: {fileID: -1759049860909440148, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+      requiredResources:
+      - key: 0
+        value: 10
+      - key: 1
+        value: 10
+    crop:
+      cropID: Tomato
+      name: Tomato
+      icon: {fileID: -1257518098505440576, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+      stars: 0
+    gameObject: {fileID: 0}
