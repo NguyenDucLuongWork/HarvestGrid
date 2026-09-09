@@ -17,8 +17,20 @@ public class FarmSlot : ICloneable<FarmSlot>
     public SoilMoisture SoilMoisture => soilMoisture;
 
     //Not cloneable
+    [SerializeField]
     private Plant plant;
-    public Plant Plant => plant;
+    public Plant Plant
+    {
+        get
+        {
+            if (plant != null && string.IsNullOrEmpty(plant.PlantID))
+            {
+                Debug.LogWarning($"[FarmSlot] Plant on slot '{slotID}' has an empty PlantId. Clearing plant reference.");
+                plant = null;
+            }
+            return plant;
+        }
+    }
 
     public GameObject slotGameObject;
     public GameObject plantGameObject;

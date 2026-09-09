@@ -4,5 +4,5 @@ using System.Collections.Generic;
 using UnityEngine;
 public class GameManager : BaseSingleton<GameManager>
 {
-
+    public PlantPrototype plantSO;
 }
