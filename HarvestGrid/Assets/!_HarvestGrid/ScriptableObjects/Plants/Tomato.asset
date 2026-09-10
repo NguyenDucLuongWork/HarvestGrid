@@ -15,7 +15,7 @@ MonoBehaviour:
   plant:
     plantID: Tomato
     plantName: Tomato
-    averageCropCount: 4
+    averageCropCount: 5
     currentState:
       sprite: {fileID: 0}
       requiredResources: []

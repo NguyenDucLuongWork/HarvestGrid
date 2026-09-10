@@ -31,5 +31,8 @@ namespace LgTyLib.Modules.DataPersistence
         // Cosmetic Data
         public List<string> unlockedCosmetics = new List<string>();
         public List<EquippedCosmeticData> equippedCosmetics = new List<EquippedCosmeticData>();
+        public string level;
+        public Farm farm;
+        public Inventory inventory;
     }
 }

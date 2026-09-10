@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +5,8 @@ using UnityEngine;
 public class ItemPrototype : ScriptableObject
 {
     [Header("Init Config")]
-    public List<ItemUseType> useConfig;
+    public List<ItemUseConfigEntry> useConfig;
+
     [Header("Item")]
     public Item item;
 
@@ -14,12 +14,21 @@ public class ItemPrototype : ScriptableObject
     public void InitItem()
     {
         var newUses = new List<ItemUse>();
-        foreach (var type in useConfig)
+
+        foreach (var entry in useConfig)
         {
-            var use = ItemUseFactory.Create(type);
-            if (use != null)
-                newUses.Add(use);
+            var use = ItemUseFactory.Create(entry.type);
+            if (use == null)
+                continue;
+
+            if (use is AddPlantUse addPlantUse && entry.plantPrototype != null)
+            {
+                addPlantUse.SetPlant(entry.plantPrototype.plant);
+            }
+
+            newUses.Add(use);
         }
+
         item.SetItemUse(newUses);
     }
 }
