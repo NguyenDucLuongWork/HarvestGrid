@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925e510fbf32b0f46b00a11ffbe507d3, type: 3}
+  m_Name: Seed_Wheat
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  useConfig:
+  - type: 2
+    plantPrototype: {fileID: 11400000, guid: 232677cb2beacf640b315351dd1c1113, type: 2}
+  item:
+    id: Seed_Tomtato
+    name: Tomato Seed
+    icon: {fileID: -8113185096396602001, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+    rarity: 0
+    uses:
+    - rid: 8788999201735311567
+    progressTimer:
+      duration: 3
+      finishedHoldDuration: 0
+      playOnStart: 1
+      loop: 1
+      progress: 0
+      isPlaying: 0
+      isFinishedHolding: 0
+    gameObject: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8788999201735311567
+      type: {class: AddPlantUse, ns: , asm: Assembly-CSharp}
+      data:
+        plantToAdd:
+          plantID: Wheat
+          plantName: Wheat
+          averageCropCount: 10
+          currentState:
+            sprite: {fileID: 0}
+            requiredResources: []
+          nextStageRequirement: []
+          stages:
+          - sprite: {fileID: -9184126180431211621, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+            requiredResources:
+            - key: 0
+              value: 5
+          - sprite: {fileID: 6217807707762364211, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+            requiredResources:
+            - key: 1
+              value: 5
+            - key: 0
+              value: 5
+          - sprite: {fileID: 39959716782875359, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+            requiredResources:
+            - key: 0
+              value: 10
+            - key: 2
+              value: 10
+          - sprite: {fileID: 1052354869805052286, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+            requiredResources:
+            - key: 0
+              value: 10
+            - key: 3
+              value: 10
+          - sprite: {fileID: -3268818965878550181, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+            requiredResources:
+            - key: 0
+              value: 5
+            - key: 1
+              value: 5
+            - key: 3
+              value: 10
+          - sprite: {fileID: -2780286958352041688, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+            requiredResources:
+            - key: 0
+              value: 5
+            - key: 1
+              value: 10
+            - key: 2
+              value: 5
+          - sprite: {fileID: -2152290069661278788, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+            requiredResources:
+            - key: 0
+              value: 10
+            - key: 1
+              value: 10
+            - key: 2
+              value: 5
+          crop:
+            cropID: Wheat
+            name: Wheat
+            icon: {fileID: 4603014837311241366, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+            stars: 0
+          gameObject: {fileID: 0}
