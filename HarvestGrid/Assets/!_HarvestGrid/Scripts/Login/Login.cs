@@ -20,6 +20,7 @@ namespace HarvestGrid.UI
         [SerializeField] private TMP_InputField passwordInput;
         [SerializeField] private Button loginButton;
         [SerializeField] private TextMeshProUGUI messageText;
+        [SerializeField] private GameObject loadingIndicator;
 
         private bool isSubmitting;
         private bool hasRuntimeLoginListener;
@@ -130,9 +131,11 @@ namespace HarvestGrid.UI
         private void SetSubmitting(bool value)
         {
             isSubmitting = value;
-            loginButton.interactable = !value;
-            emailInput.interactable = !value;
-            passwordInput.interactable = !value;
+            if (loginButton != null) loginButton.interactable = !value;
+            if (emailInput != null) emailInput.interactable = !value;
+            if (passwordInput != null) passwordInput.interactable = !value;
+            
+            if (loadingIndicator != null) loadingIndicator.SetActive(value);
         }
 
         private void ShowMessage(string message, Color color)
