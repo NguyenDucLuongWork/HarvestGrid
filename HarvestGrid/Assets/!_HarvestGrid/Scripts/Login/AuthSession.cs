@@ -3,25 +3,25 @@ namespace HarvestGrid.UI
     public static class AuthSession
     {
         public static string UserId { get; private set; }
-        public static string Email { get; private set; }
-        public static string IdToken { get; private set; }
+        public static string Username { get; private set; }
+        public static string SessionToken { get; private set; }
 
         public static bool IsAuthenticated =>
             !string.IsNullOrEmpty(UserId) &&
-            !string.IsNullOrEmpty(IdToken);
+            !string.IsNullOrEmpty(SessionToken);
 
-        public static void Set(string userId, string email, string idToken)
+        public static void Set(string userId, string username, string sessionToken)
         {
             UserId = userId;
-            Email = email;
-            IdToken = idToken;
+            Username = username;
+            SessionToken = sessionToken;
         }
 
         public static void Clear()
         {
             UserId = null;
-            Email = null;
-            IdToken = null;
+            Username = null;
+            SessionToken = null;
         }
     }
 }
