@@ -4,9 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using HarvestGrid.Managers;
-
-using PlayFab;
-using PlayFab.ClientModels;
+using HarvestGrid.Managers.Auth; // Dùng IAuthService và AuthResult mới
 
 namespace HarvestGrid.UI
 {
@@ -60,72 +58,52 @@ namespace HarvestGrid.UI
         {
             if (isSubmitting) return;
 
-            string email = emailInput.text.Trim();
+            string username = emailInput.text.Trim();
             string password = passwordInput.text;
 
-            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+            if (string.IsNullOrWhiteSpace(username))
             {
-                ShowMessage("Vui lòng nhập email hợp lệ.", Color.red);
+                ShowMessage("Vui lòng nhập Username hợp lệ.", new Color(0.9f, 0.3f, 0.3f));
                 return;
             }
 
             if (string.IsNullOrEmpty(password))
             {
-                ShowMessage("Vui lòng nhập mật khẩu.", Color.red);
+                ShowMessage("Vui lòng nhập Mật khẩu.", new Color(0.9f, 0.3f, 0.3f));
                 return;
             }
 
             SetSubmitting(true);
-            ShowMessage("Đang kết nối tới PlayFab...", new Color(1f, 0.75f, 0.2f));
+            ShowMessage(string.Empty, Color.white);
 
-            if (AuthManager.Instance == null)
+            if (AuthManager.Instance == null || AuthManager.Instance.AuthService == null)
             {
-                ShowMessage("Lỗi hệ thống: Không tìm thấy AuthManager.", Color.red);
+                ShowMessage("Lỗi hệ thống: Không tìm thấy AuthManager.", new Color(0.9f, 0.3f, 0.3f));
                 SetSubmitting(false);
                 return;
             }
 
-            // Gọi logic Đăng nhập/Đăng ký tự động qua AuthManager
-            AuthManager.Instance.LoginPlayFab(email, password, OnLoginSuccess, OnLoginError);
+            // Gọi logic Đăng nhập thông qua lớp Interface trung gian
+            AuthManager.Instance.AuthService.Login(username, password, OnLoginSuccess, OnLoginError);
         }
 
-        private void OnLoginSuccess(LoginResult result)
+        private void OnLoginSuccess(AuthResult result)
         {
             if (isDestroyed) return;
 
-            ShowMessage("Đăng nhập thành công!", new Color(0.2f, 0.8f, 0.3f));
+            ShowMessage($"Đăng nhập thành công! Chào {result.Username}...", new Color(0.3f, 0.7f, 0.3f));
 
             if (!string.IsNullOrWhiteSpace(nextSceneName))
                 SceneManager.LoadScene(nextSceneName);
         }
 
-        private void OnLoginError(PlayFabError error)
+        private void OnLoginError(string errorMessage)
         {
             if (isDestroyed) return;
 
-            Debug.LogError($"[PlayFab] Error: {error.GenerateErrorReport()}");
-            ShowMessage(GetErrorMessage(error), Color.red);
+            Debug.LogError($"[Auth] Error: {errorMessage}");
+            ShowMessage(errorMessage, new Color(0.9f, 0.3f, 0.3f));
             SetSubmitting(false);
-        }
-
-        private static string GetErrorMessage(PlayFabError error)
-        {
-            switch (error.Error)
-            {
-                case PlayFabErrorCode.InvalidEmailAddress:
-                    return "Email không hợp lệ.";
-                case PlayFabErrorCode.InvalidEmailOrPassword:
-                case PlayFabErrorCode.AccountNotFound:
-                    return "Email hoặc mật khẩu không đúng.";
-                case PlayFabErrorCode.AccountBanned:
-                    return "Tài khoản này đã bị vô hiệu hóa.";
-                case PlayFabErrorCode.ConnectionError:
-                    return "Không thể kết nối Server. Hãy kiểm tra mạng.";
-                case PlayFabErrorCode.ServiceUnavailable:
-                    return "Server đang bảo trì. Vui lòng thử lại sau.";
-                default:
-                    return $"Lỗi Đăng nhập: {error.ErrorMessage}";
-            }
         }
 
         private void SetSubmitting(bool value)
