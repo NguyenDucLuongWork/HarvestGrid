@@ -25,9 +25,9 @@ namespace HarvestGrid.UI.UserProfile
         {
             if (usernameText != null)
             {
-                // Fallback to "Guest" if no email is set in AuthSession
-                string email = AuthSession.Email;
-                usernameText.text = string.IsNullOrEmpty(email) ? "Guest" : email;
+                usernameText.text = string.IsNullOrEmpty(AuthSession.Username)
+                    ? "Guest"
+                    : AuthSession.Username;
             }
         }
 

@@ -12,9 +12,9 @@ namespace HarvestGrid.UI.UserProfile
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI usernameText;
         [SerializeField] private TextMeshProUGUI userIdText;
-        [SerializeField] private TextMeshProUGUI scoreText; 
+        [SerializeField] private TextMeshProUGUI scoreText;
         [SerializeField] private TextMeshProUGUI totalPlayTimeText;
-        
+
         [Header("Buttons")]
         [SerializeField] private Button logoutButton;
         [SerializeField] private Button closeButton;
@@ -28,10 +28,10 @@ namespace HarvestGrid.UI.UserProfile
         {
             if (logoutButton != null)
                 logoutButton.onClick.AddListener(OnLogoutClicked);
-                
+
             if (closeButton != null)
                 closeButton.onClick.AddListener(ClosePopup);
-                
+
             if (backgroundClickArea != null)
                 backgroundClickArea.onClick.AddListener(ClosePopup);
         }
@@ -40,8 +40,10 @@ namespace HarvestGrid.UI.UserProfile
         {
             // Populate dynamic text fields every time the popup opens
             if (usernameText != null)
-                usernameText.text = string.IsNullOrEmpty(AuthSession.Email) ? "Guest" : AuthSession.Email;
-                
+                usernameText.text = string.IsNullOrEmpty(AuthSession.Username)
+                    ? "Guest Farmer"
+                    : AuthSession.Username;
+
             if (userIdText != null)
                 userIdText.text = string.IsNullOrEmpty(AuthSession.UserId) ? "ID: N/A" : $"ID: {AuthSession.UserId}";
 
@@ -67,7 +69,7 @@ namespace HarvestGrid.UI.UserProfile
         {
             if (scoreText != null)
                 scoreText.text = $"Score: {currentScore}";
-                
+
             if (totalPlayTimeText != null)
             {
                 TimeSpan time = TimeSpan.FromSeconds(currentPlayTime);

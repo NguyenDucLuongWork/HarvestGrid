@@ -3,86 +3,40 @@ using HarvestGrid.UI; // For AuthSession
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
-
-using PlayFab;
-using PlayFab.ClientModels;
+using LgTyLib.Modules.DataPersistence;
+using HarvestGrid.Managers.Auth;
 
 namespace HarvestGrid.Managers
 {
-    public class AuthManager : BaseSingleton<AuthManager>
+    public class AuthManager : BaseSingleton<AuthManager>, IDataPersistence
     {
         [Header("Config")]
         [SerializeField] private string loginSceneName = "LoginScene";
 
         public event Action OnLoggedOut;
 
-        public void LoginPlayFab(string email, string password, Action<LoginResult> onSuccess, Action<PlayFabError> onError)
-        {
-            var request = new LoginWithEmailAddressRequest
-            {
-                Email = email,
-                Password = password,
-                InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
-                {
-                    GetPlayerProfile = true
-                }
-            };
+        public IAuthService AuthService { get; private set; }
 
-            PlayFabClientAPI.LoginWithEmailAddress(request, 
-                result => 
-                {
-                    // Cache session details
-                    AuthSession.Set(result.PlayFabId, email, result.SessionTicket);
-                    onSuccess?.Invoke(result);
-                }, 
-                error => 
-                {
-                    // Special behavior: If account doesn't exist, we auto-register for ease of testing
-                    // in development. In production, you might want a separate Register screen.
-                    if (error.Error == PlayFabErrorCode.AccountNotFound)
-                    {
-                        Debug.Log("[AuthManager] Account not found. Attempting to auto-register...");
-                        RegisterPlayFab(email, password, onSuccess, onError);
-                    }
-                    else
-                    {
-                        onError?.Invoke(error);
-                    }
-                }
-            );
+        private string pendingUsername;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            // Initialize with Local Auth. Later this can be swapped to PlayFabAuthService.
+            AuthService = new LocalAuthService();
         }
 
-        private void RegisterPlayFab(string email, string password, Action<LoginResult> onSuccess, Action<PlayFabError> onError)
+        public void SetPendingLogin(string username)
         {
-            var request = new RegisterPlayFabUserRequest
-            {
-                Email = email,
-                Password = password,
-                RequireBothUsernameAndEmail = false
-            };
-
-            PlayFabClientAPI.RegisterPlayFabUser(request,
-                result =>
-                {
-                    Debug.Log("[AuthManager] Auto-register success! Logging in...");
-                    // Try to log in immediately after register
-                    LoginPlayFab(email, password, onSuccess, onError);
-                },
-                error =>
-                {
-                    onError?.Invoke(error);
-                }
-            );
+            pendingUsername = username;
         }
 
         public void Logout()
         {
             // Clear static session data
             AuthSession.Clear();
+            AuthService?.Logout();
             
-            // Clear PlayFab auth tokens locally
-            PlayFabClientAPI.ForgetAllCredentials();
-
             // Notify systems to clean up
             OnLoggedOut?.Invoke();
             
@@ -94,6 +48,42 @@ namespace HarvestGrid.Managers
             else
             {
                 Debug.LogWarning("[AuthManager] LoginSceneName is not configured!");
+            }
+        }
+
+        // --- IDataPersistence Implementation ---
+
+        public void LoadGame(GameData data)
+        {
+            // Called when DataPersistenceManager.LoadGame is executed
+            AuthSession.Set(data.playerId, data.username, "local_token_" + data.playerId);
+            Debug.Log($"[AuthManager] Loaded Session for {data.username}");
+        }
+
+        public void SaveGame(ref GameData data)
+        {
+            // Called when DataPersistenceManager.SaveGame is executed
+            if (string.IsNullOrEmpty(data.playerId))
+            {
+                // This is a new player!
+                data.playerId = Guid.NewGuid().ToString();
+                data.username = pendingUsername;
+                Debug.Log($"[AuthManager] Generated new ID {data.playerId} for new player {data.username}");
+            }
+            else
+            {
+                // Existing player saving data, we can update username if we support renaming, 
+                // but usually we just keep it.
+                if (!string.IsNullOrEmpty(AuthSession.Username))
+                {
+                    data.username = AuthSession.Username;
+                }
+            }
+
+            // Sync session if saving a new player
+            if (string.IsNullOrEmpty(AuthSession.UserId))
+            {
+                AuthSession.Set(data.playerId, data.username, "local_token_" + data.playerId);
             }
         }
     }
