@@ -1,8 +1,9 @@
-﻿using LgTyLib.SceneManagement;
+﻿using LgTyLib.Core;
+using LgTyLib.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelTreeUI : MonoBehaviour
+public class LevelTreeUI : BaseSingleton<LevelTreeUI>
 {
     [SerializeField]
     private List<LevelSO> levelList;
