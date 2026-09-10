@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5051eec31aac44491984b233e0003b, type: 3}
+  m_Name: Bean
+  m_EditorClassIdentifier: Assembly-CSharp::PlantPrototype
+  plant:
+    plantID: Bean
+    plantName: Bean
+    averageCropCount: 2
+    currentState:
+      sprite: {fileID: 0}
+      requiredResources: []
+    nextStageRequirement: []
+    stages:
+    - sprite: {fileID: 1512619164392636912, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+      requiredResources:
+      - key: 0
+        value: 3
+    - sprite: {fileID: 5769019858189665522, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+      requiredResources:
+      - key: 0
+        value: 3
+      - key: 1
+        value: 3
+    - sprite: {fileID: 5359052760475604436, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+      requiredResources:
+      - key: 0
+        value: 3
+      - key: 1
+        value: 3
+    - sprite: {fileID: -4072382671969911228, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+      requiredResources:
+      - key: 0
+        value: 3
+      - key: 1
+        value: 3
+      - key: 2
+        value: 3
+    - sprite: {fileID: -8186144845388961140, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+      requiredResources:
+      - key: 0
+        value: 3
+      - key: 1
+        value: 3
+      - key: 2
+        value: 3
+    - sprite: {fileID: -818972192877959004, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+      requiredResources:
+      - key: 0
+        value: 3
+      - key: 1
+        value: 3
+      - key: 2
+        value: 3
+    - sprite: {fileID: 1255155265385891842, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+      requiredResources:
+      - key: 0
+        value: 3
+      - key: 1
+        value: 3
+      - key: 2
+        value: 3
+    crop:
+      cropID: Bean
+      name: Bean
+      icon: {fileID: 2044220142298646161, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+      stars: 0
+    gameObject: {fileID: 0}

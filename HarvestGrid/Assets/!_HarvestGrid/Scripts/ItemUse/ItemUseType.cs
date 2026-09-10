@@ -5,5 +5,6 @@ using System.Text;
 public enum ItemUseType
 {
     Harvest,
-    Water
+    ProviceResource,
+    AddPlant,
 }

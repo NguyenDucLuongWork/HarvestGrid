@@ -106,61 +106,241 @@ MonoBehaviour:
     - slotID: slot_0
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 4187256129183592703}
       plantGameObject: {fileID: 7735838509769749790}
     - slotID: slot_1
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 3229530638503235893}
       plantGameObject: {fileID: 9049629827723007188}
     - slotID: slot_2
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 305818076449265339}
       plantGameObject: {fileID: 6159055718711989082}
     - slotID: slot_3
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 3714523129919109458}
       plantGameObject: {fileID: 7118929303726767283}
     - slotID: slot_4
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 4594065248663928140}
       plantGameObject: {fileID: 7964124871768160429}
     - slotID: slot_5
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 7856002374488344833}
       plantGameObject: {fileID: 4341760216208805088}
     - slotID: slot_6
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 9037185757137085539}
       plantGameObject: {fileID: 3183393959001743746}
     - slotID: slot_7
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 4419262394954195550}
       plantGameObject: {fileID: 7787701063610591167}
     - slotID: slot_8
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 55976478364612722}
       plantGameObject: {fileID: 5873249372040297875}
     - slotID: slot_9
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 5193790554865729492}
       plantGameObject: {fileID: 1824850228289780277}
     - slotID: slot_10
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 2421873391607805940}
       plantGameObject: {fileID: 8132126968080282133}
     - slotID: slot_11
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 4956724481411601151}
       plantGameObject: {fileID: 1553449159506859806}
     gameObject: {fileID: 7704991894502291387}

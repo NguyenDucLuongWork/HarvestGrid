@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3055823042097825928
 RectTransform:
   m_ObjectHideFlags: 0
@@ -181,5 +181,21 @@ MonoBehaviour:
     slotID: slot_0
     soilQuality: 0
     soilMoisture: 0
+    plant:
+      plantID: 
+      plantName: 
+      averageCropCount: 0
+      currentState:
+        sprite: {fileID: 0}
+        requiredResources: []
+      nextStageRequirement: []
+      stages: []
+      crop:
+        cropID: 
+        name: 
+        icon: {fileID: 0}
+        stars: 0
+      gameObject: {fileID: 0}
     slotGameObject: {fileID: 4973671515248259192}
     plantGameObject: {fileID: 0}
+  harvestActive: 0
