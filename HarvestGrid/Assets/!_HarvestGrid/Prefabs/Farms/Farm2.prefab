@@ -93,8 +93,24 @@ MonoBehaviour:
     slotID: slot_5
     soilQuality: 0
     soilMoisture: 0
+    plant:
+      plantID: 
+      plantName: 
+      averageCropCount: 0
+      currentState:
+        sprite: {fileID: 0}
+        requiredResources: []
+      nextStageRequirement: []
+      stages: []
+      crop:
+        cropID: 
+        name: 
+        icon: {fileID: 0}
+        stars: 0
+      gameObject: {fileID: 0}
     slotGameObject: {fileID: 988297104736822272}
     plantGameObject: {fileID: 5327619277373703989}
+  harvestActive: 0
 --- !u!1 &1571390939032894037
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,8 +204,24 @@ MonoBehaviour:
     slotID: slot_3
     soilQuality: 0
     soilMoisture: 0
+    plant:
+      plantID: 
+      plantName: 
+      averageCropCount: 0
+      currentState:
+        sprite: {fileID: 0}
+        requiredResources: []
+      nextStageRequirement: []
+      stages: []
+      crop:
+        cropID: 
+        name: 
+        icon: {fileID: 0}
+        stars: 0
+      gameObject: {fileID: 0}
     slotGameObject: {fileID: 1571390939032894037}
     plantGameObject: {fileID: 3482728178310829661}
+  harvestActive: 0
 --- !u!1 &1842209017507707264
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,7 +240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6664668996921996369
 RectTransform:
   m_ObjectHideFlags: 0
@@ -371,8 +403,24 @@ MonoBehaviour:
     slotID: slot_2
     soilQuality: 0
     soilMoisture: 0
+    plant:
+      plantID: 
+      plantName: 
+      averageCropCount: 0
+      currentState:
+        sprite: {fileID: 0}
+        requiredResources: []
+      nextStageRequirement: []
+      stages: []
+      crop:
+        cropID: 
+        name: 
+        icon: {fileID: 0}
+        stars: 0
+      gameObject: {fileID: 0}
     slotGameObject: {fileID: 3366831952555334237}
     plantGameObject: {fileID: 4252248393109697423}
+  harvestActive: 0
 --- !u!1 &3482728178310829661
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,7 +439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7047284865409443486
 RectTransform:
   m_ObjectHideFlags: 0
@@ -554,8 +602,24 @@ MonoBehaviour:
     slotID: slot_0
     soilQuality: 0
     soilMoisture: 0
+    plant:
+      plantID: 
+      plantName: 
+      averageCropCount: 0
+      currentState:
+        sprite: {fileID: 0}
+        requiredResources: []
+      nextStageRequirement: []
+      stages: []
+      crop:
+        cropID: 
+        name: 
+        icon: {fileID: 0}
+        stars: 0
+      gameObject: {fileID: 0}
     slotGameObject: {fileID: 4176028457812326972}
     plantGameObject: {fileID: 4441347290982241834}
+  harvestActive: 0
 --- !u!1 &4184668799178459923
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,8 +713,24 @@ MonoBehaviour:
     slotID: slot_1
     soilQuality: 0
     soilMoisture: 0
+    plant:
+      plantID: 
+      plantName: 
+      averageCropCount: 0
+      currentState:
+        sprite: {fileID: 0}
+        requiredResources: []
+      nextStageRequirement: []
+      stages: []
+      crop:
+        cropID: 
+        name: 
+        icon: {fileID: 0}
+        stars: 0
+      gameObject: {fileID: 0}
     slotGameObject: {fileID: 4184668799178459923}
     plantGameObject: {fileID: 8782639369409667081}
+  harvestActive: 0
 --- !u!1 &4252248393109697423
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,7 +749,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &382719864840975854
 RectTransform:
   m_ObjectHideFlags: 0
@@ -757,7 +837,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1176981353200346358
 RectTransform:
   m_ObjectHideFlags: 0
@@ -927,31 +1007,121 @@ MonoBehaviour:
     - slotID: slot_0
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 4176028457812326972}
       plantGameObject: {fileID: 4441347290982241834}
     - slotID: slot_1
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 4184668799178459923}
       plantGameObject: {fileID: 8782639369409667081}
     - slotID: slot_2
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 3366831952555334237}
       plantGameObject: {fileID: 4252248393109697423}
     - slotID: slot_3
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 1571390939032894037}
       plantGameObject: {fileID: 3482728178310829661}
     - slotID: slot_4
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 8393161241011317113}
       plantGameObject: {fileID: 1842209017507707264}
     - slotID: slot_5
       soilQuality: 0
       soilMoisture: 0
+      plant:
+        plantID: 
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+        gameObject: {fileID: 0}
       slotGameObject: {fileID: 988297104736822272}
       plantGameObject: {fileID: 5327619277373703989}
     gameObject: {fileID: 4674192045395355563}
@@ -973,7 +1143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1456359012599477369
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1136,8 +1306,24 @@ MonoBehaviour:
     slotID: slot_4
     soilQuality: 0
     soilMoisture: 0
+    plant:
+      plantID: 
+      plantName: 
+      averageCropCount: 0
+      currentState:
+        sprite: {fileID: 0}
+        requiredResources: []
+      nextStageRequirement: []
+      stages: []
+      crop:
+        cropID: 
+        name: 
+        icon: {fileID: 0}
+        stars: 0
+      gameObject: {fileID: 0}
     slotGameObject: {fileID: 8393161241011317113}
     plantGameObject: {fileID: 1842209017507707264}
+  harvestActive: 0
 --- !u!1 &8782639369409667081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,7 +1342,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7601588156659653040
 RectTransform:
   m_ObjectHideFlags: 0
