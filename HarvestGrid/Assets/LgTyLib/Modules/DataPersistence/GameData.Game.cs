@@ -15,6 +15,8 @@ namespace LgTyLib.Modules.DataPersistence
         // public int level;
         // public bool bossDefeated;
         public float score;
-        public List<Item> items;
+        public string level;
+        public Farm farm;
+        public Inventory inventory;
     }
 }

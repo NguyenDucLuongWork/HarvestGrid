@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   levelID: lv4
   farmMono: {fileID: 1963142914855571894, guid: 057056eae9c89d64bab7054613900013, type: 3}
+  itemAndChancePool: []
+  storingSpaceSO: {fileID: 11400000, guid: b159f133d93df4349b08718c7835b0b2, type: 2}

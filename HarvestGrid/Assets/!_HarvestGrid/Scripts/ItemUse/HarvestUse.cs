@@ -5,14 +5,26 @@ using UnityEngine;
 [ItemUseType(ItemUseType.Harvest)]
 public class HarvestUse : ItemUse
 {
-    [SerializeField] private AnimationCurve qualityToStarChance;
+    [SerializeField]
+    private float effective;
 
-    public override void Apply(ItemUseContext ctx) { /* ... */ }
+    public float Effective => effective;
+
+    public HarvestUse()
+    {
+    }
+
+    public HarvestUse(HarvestUse original)
+    {
+        this.effective = original.Effective;
+    }
+
+    public override void Apply(ItemUseContext ctx) {
+        FarmMono.Instance.HarvestRandom(effective);
+    }
 
     public override ItemUse Clone()
     {
-        var c = new HarvestUse();
-        c.qualityToStarChance = new AnimationCurve(qualityToStarChance.keys);
-        return c;
+        return new HarvestUse(this);
     }
 }

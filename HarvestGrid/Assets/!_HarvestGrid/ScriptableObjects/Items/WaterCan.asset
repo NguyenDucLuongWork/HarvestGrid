@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925e510fbf32b0f46b00a11ffbe507d3, type: 3}
+  m_Name: WaterCan
+  m_EditorClassIdentifier: Assembly-CSharp::ItemPrototype
+  useConfig:
+  - type: 1
+    plantPrototype: {fileID: 0}
+  item:
+    id: WaterCan
+    name: WaterCan
+    icon: {fileID: -3953685959813732677, guid: 76c615fac676ca9459da6582b376651e, type: 3}
+    rarity: 0
+    uses:
+    - rid: 8788999201735311528
+    progressTimer:
+      duration: 2
+      finishedHoldDuration: 0
+      playOnStart: 1
+      loop: 1
+      progress: 0
+      isPlaying: 0
+      isFinishedHolding: 0
+    gameObject: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8788999201735311528
+      type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        amount: 4
