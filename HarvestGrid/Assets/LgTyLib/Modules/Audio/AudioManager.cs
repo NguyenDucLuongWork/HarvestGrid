@@ -1,4 +1,4 @@
-﻿using LgTyLib.Core;
+using LgTyLib.Core;
 using LgTyLib.Modules.ObjectPooling;
 using LgTyLib.Modules.Settings;
 using UnityEngine;
@@ -78,6 +78,9 @@ namespace LgTyLib.Modules.Audio
             audioMixer.SetFloat(sfxVolumeField, AudioScaleRange01ToVolume(sfxAudioScale));
             audioSettingsDataSO.audioSettingsData.sfxAudioScale = sfxAudioScale;
         }
+
+        public float GetMusicVolume() => audioSettingsDataSO != null ? audioSettingsDataSO.audioSettingsData.musicAudioScale : 0.5f;
+        public float GetSFXVolume() => audioSettingsDataSO != null ? audioSettingsDataSO.audioSettingsData.sfxAudioScale : 0.5f;
 
         public float AudioScaleRange01ToVolume(float slider)
         {
