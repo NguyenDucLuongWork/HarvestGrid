@@ -63,13 +63,15 @@ public class Item : ICloneable<Item>
     private void Use()
     {
 
-        ItemManager.Instance.Use(this);
+        Use(new ItemUseContext());
     }
 
     public void Use(ItemUseContext ctx)
     {
         foreach (var use in uses)
+        {
             use.Apply(ctx);
+        }
     }
 
     public void SetItemUse(List<ItemUse> uses)

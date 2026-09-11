@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -88,14 +89,18 @@ public class Plant : ICloneable<Plant>
     {
         return new Plant(this);
     }
-    public bool BeginGrow()
+    public bool BeginGrow(GameObject gameObject)
     {
+        this.gameObject = gameObject;
+        gameObject.SetActive(true);
         bool grew = GrowToNextStage();
 
         if (grew)
         {
             OnStageChanged?.Invoke(currentState);
         }
+
+        
 
         return grew;
     }
@@ -113,6 +118,8 @@ public class Plant : ICloneable<Plant>
         nextStageRequirement = stages.Count > 0
             ? new Dictionary<Resource, int>(stages[0].RequiredResources)
             : null;
+
+        gameObject.GetComponent<PlantMono>().UpdateSprite(currentState.Sprite);
 
         return true;
     }
@@ -173,6 +180,94 @@ public class Plant : ICloneable<Plant>
             result[secondaryCrop] = secondaryAmount;
         }
 
+        gameObject.GetComponent<PlantMono>().Harvest(this);
+        gameObject.SetActive(false);
+
         return result;
+    }
+
+    public bool CheckIfNeed(Resource resource)
+    {
+        if (nextStageRequirement == null)
+            return false;
+
+        return nextStageRequirement.TryGetValue(resource, out int requiredAmount)
+               && requiredAmount > 0;
+    }
+
+    public int Absorb(Resource resource, int amount)
+    {
+        if (amount <= 0 || nextStageRequirement == null)
+            return 0;
+
+        if (!nextStageRequirement.TryGetValue(resource, out int requiredAmount))
+            return 0;
+
+        int absorbedAmount = Mathf.Min(amount, requiredAmount);
+        requiredAmount -= absorbedAmount;
+
+        if (requiredAmount > 0)
+        {
+            nextStageRequirement[resource] = requiredAmount;
+        }
+        else
+        {
+            nextStageRequirement.Remove(resource);
+        }
+
+        // All resources for the upcoming stage have been satisfied — grow into it.
+        if (nextStageRequirement.Count == 0)
+        {
+            bool grew = GrowToNextStage();
+            if (grew)
+            {
+                OnStageChanged?.Invoke(currentState);
+            }
+        }
+
+        return absorbedAmount;
+    }
+
+    /// <summary>
+    /// Copies all data fields from another Plant, preserving this instance's
+    /// GameObject reference (and re-syncing the visible sprite to match).
+    /// </summary>
+    public void CopyData(Plant original)
+    {
+        if (original == null) return;
+
+        plantID = original.plantID;
+        plantName = original.plantName;
+        averageCropCount = original.averageCropCount;
+        currentState = original.currentState?.Clone();
+        crop = original.crop?.Clone();
+
+        stages = new List<PlantStage>();
+        if (original.stages != null)
+        {
+            foreach (var stage in original.stages)
+            {
+                stages.Add(stage.Clone());
+            }
+        }
+
+        nextStageRequirement = original.nextStageRequirement != null
+            ? new Dictionary<Resource, int>(original.nextStageRequirement)
+            : null;
+
+        // gameObject deliberately untouched — keep this instance's scene reference.
+        if (gameObject != null)
+        {
+            gameObject.SetActive(currentState != null);
+
+            if (currentState != null)
+            {
+                var mono = gameObject.GetComponent<PlantMono>();
+                if (mono != null)
+                {
+                    mono.UpdateSprite(currentState.Sprite);
+                }
+            }
+        }
     }
 }

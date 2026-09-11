@@ -1,13 +1,16 @@
 using LgTyLib.Core;
+using LgTyLib.Modules.DataPersistence;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FarmMono : BaseSingleton<FarmMono>
+public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
 {
     [SerializeField]
     private Farm farm;
 
     private List<FarmSlotMono> slotMonoList = new();
+
+    
     private void Start()
     {
         if (farm == null)
@@ -21,6 +24,8 @@ public class FarmMono : BaseSingleton<FarmMono>
         {
             Debug.Log($"Farm '{name}' validated. Cleared {clearedCount} blank-ID plant(s).", this);
         }
+
+        farm.SetFarmSlotForFarmSlotMono();
     }
     [ContextMenu("Track Data And Sort")]
     public void TrackDataAndSort()
@@ -93,28 +98,24 @@ public class FarmMono : BaseSingleton<FarmMono>
         );
     }
 
-    [ContextMenu("PlantRandom")]
-    public void PlantRandom()
+    public bool PlantToRandomSlot(Plant plant)
     {
-        List<FarmSlotMono> emptySlots = slotMonoList.FindAll(s => s.FarmSlot.Plant == null);
+        FarmSlot farmSlot = farm.GetEmptySlot();
 
-        if (emptySlots.Count == 0)
+        if (farmSlot == null)
         {
             Debug.LogWarning("No empty farm slots available.");
-            return;
+            return false;
         }
 
-        FarmSlotMono target = emptySlots[Random.Range(0, emptySlots.Count)];
-        Plant plant = GameManager.Instance.plantSO.plant.Clone();
-
-        target.AddPlant(plant);
+        farmSlot.AddPlant(plant);
+        return true;
     }
 
     [ContextMenu("ProvidingToRandom")]
     public void ProvidingToRandom()
     {
-        List<FarmSlotMono> growable = slotMonoList.FindAll(
-            s => s.FarmSlot.Plant != null && !s.FarmSlot.Plant.IsFullyGrown);
+        List<Plant> growable = farm.GetGrowablePlants();
 
         if (growable.Count == 0)
         {
@@ -122,43 +123,121 @@ public class FarmMono : BaseSingleton<FarmMono>
             return;
         }
 
-        FarmSlotMono target = growable[Random.Range(0, growable.Count)];
-
-        // Placeholder: feeds the exact requirement so growth always succeeds.
-        // Swap this for real player-provided resources once that system exists.
-        var available = new Dictionary<Resource, int>(target.FarmSlot.Plant.NextStageRequirement);
-
-        bool grew = target.TryGrow(available);
-        Debug.Log(grew
-            ? $"Slot '{target.FarmSlot.SlotID}' grew."
-            : $"Slot '{target.FarmSlot.SlotID}' could not grow.");
-    }
-
-    [ContextMenu("HarvestAll")]
-    public void HarvestAll()
-    {
-        int harvestedCount = 0;
-
-        foreach (FarmSlotMono slotMono in slotMonoList)
+        for (int i = 0; i < 4; i++)
         {
-            if (slotMono.FarmSlot.Plant == null || !slotMono.FarmSlot.Plant.IsFullyGrown)
-                continue;
+            // Get random plant
+            Plant plantToGrow = growable[UnityEngine.Random.Range(0, growable.Count)];
 
-            Dictionary<Crop, int> yieldResult = slotMono.Harvest();
-            if (yieldResult == null) continue;
-
-            foreach (var kvp in yieldResult)
+            // Plant may have finished growing (or hit its last stage) during a
+            // previous iteration of this loop — skip it instead of crashing.
+            if (plantToGrow.IsFullyGrown || plantToGrow.NextStageRequirement == null)
             {
-                // TODO: push kvp.Key (Crop, star-tiered) x kvp.Value into inventory
-                Debug.Log($"Harvested {kvp.Value}x crop from slot '{slotMono.FarmSlot.SlotID}'");
+                continue;
             }
 
-            harvestedCount++;
-        }
+            // Get resources this plant needs
+            List<Resource> neededResources = new List<Resource>();
 
-        Debug.Log($"Harvested {harvestedCount} plant(s).");
+            foreach (var requirement in plantToGrow.NextStageRequirement)
+            {
+                if (requirement.Value > 0)
+                {
+                    neededResources.Add(requirement.Key);
+                }
+            }
+
+            if (neededResources.Count == 0)
+                continue;
+
+            // Get random required resource
+            Resource resource = neededResources[
+                UnityEngine.Random.Range(0, neededResources.Count)
+            ];
+
+            // Provide 6
+            int absorbed = plantToGrow.Absorb(resource, 6);
+
+            Debug.Log(
+                $"Provided {absorbed} {resource} to {plantToGrow.PlantName}"
+            );
+        }
     }
 
-    // TODO : remove
-    public void ProvideResource(Item item, ItemUsesType usesType, int value) { }
+    public void ProvidingResourceToRandom(Resource resource, int amount)
+    {
+        List<Plant> growable = farm.GetGrowablePlants();
+
+        if (growable.Count == 0)
+        {
+            //Debug.LogWarning("No growable plants available.");
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            // Get random plant
+            Plant plantToGrow = growable[UnityEngine.Random.Range(0, growable.Count)];
+
+            // Plant may have finished growing (or hit its last stage) during a
+            // previous iteration of this loop — skip it instead of crashing.
+            if (plantToGrow.IsFullyGrown || plantToGrow.NextStageRequirement == null)
+            {
+                continue;
+            }
+
+
+            // Provide 6
+            int absorbed = plantToGrow.Absorb(resource, amount);
+
+            Debug.Log(
+                $"Provided {absorbed} {resource} to {plantToGrow.PlantName}"
+            );
+        }
+    }
+
+    [ContextMenu("HarvestRandom")]
+    public void HarvestRandom(float effective = 1f)
+    {
+        List<Plant> harvestablePlants = farm.GetHarvestablePlants();
+
+        if (harvestablePlants == null || harvestablePlants.Count == 0)
+        {
+            Debug.LogWarning("No harvestable plants available.");
+            return;
+        }
+
+        int randomIndex = UnityEngine.Random.Range(0, harvestablePlants.Count);
+        Plant plant = harvestablePlants[randomIndex];
+
+        Dictionary<Crop, int> result = plant.Harvest(effective);
+        foreach (var harvest in result) {
+            InventoryMono.Instance.Inventory.AddCrop(harvest.Key, harvest.Value);
+        }
+    }
+
+    public void LoadGame(GameData gameData)
+    {
+        farm.CopyData(gameData.farm);
+    }
+
+    public void SaveGame(ref GameData gameData)
+    {
+        gameData.farm = farm.Clone();
+    }
+
+    public void UpdateFarmFullyFromData()
+    {
+        farm.ValidateData();
+        farm.SetFarmSlotForFarmSlotMono();
+        var plants = farm.GetPlants();
+        foreach (var plant in plants) {
+            if (plant == null || plant.PlantID == "")
+            {
+                plant.gameObject.SetActive(false);
+                continue;
+            } 
+            plant.gameObject.GetComponent<PlantMono>().UpdateSprite(plant.CurrentState.Sprite);
+            plant.gameObject.SetActive(true);
+        }
+    }
 }

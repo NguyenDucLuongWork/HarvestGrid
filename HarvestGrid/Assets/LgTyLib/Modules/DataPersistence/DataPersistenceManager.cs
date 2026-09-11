@@ -133,5 +133,12 @@ namespace LgTyLib.Modules.DataPersistence
                 .OfType<IDataPersistence>()
                 .ToList();
         }
+
+        [Obsolete]
+        public void FindAllDataSaver()
+        {
+            dataPersistenceList = FindAllDataPersistences();
+
+        }
     }
 }

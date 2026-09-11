@@ -4,4 +4,5 @@ using UnityEngine;
 public class GameplaySceneDataSO : ScriptableObject
 {
     public LevelSO level;
+    public bool toLoad;
 }
