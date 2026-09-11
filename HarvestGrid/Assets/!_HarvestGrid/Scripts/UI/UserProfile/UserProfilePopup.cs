@@ -12,8 +12,8 @@ namespace HarvestGrid.UI.UserProfile
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI usernameText;
         [SerializeField] private TextMeshProUGUI userIdText;
-        [SerializeField] private TextMeshProUGUI scoreText;
-        [SerializeField] private TextMeshProUGUI totalPlayTimeText;
+        [SerializeField] private TextMeshProUGUI levelText;
+        [SerializeField] private TextMeshProUGUI coinsText;
 
         [Header("Buttons")]
         [SerializeField] private Button logoutButton;
@@ -21,8 +21,8 @@ namespace HarvestGrid.UI.UserProfile
         [SerializeField] private Button backgroundClickArea; // For click-outside
 
         // Cache GameData fields here because OnEnable might run after LoadGame
-        private float currentScore = 0f;
-        private float currentPlayTime = 0f;
+        private int currentLevel = 1;
+        private int currentCoins = 0;
 
         private void Start()
         {
@@ -34,6 +34,18 @@ namespace HarvestGrid.UI.UserProfile
 
             if (backgroundClickArea != null)
                 backgroundClickArea.onClick.AddListener(ClosePopup);
+        }
+
+        private void OnDestroy()
+        {
+            if (logoutButton != null)
+                logoutButton.onClick.RemoveListener(OnLogoutClicked);
+
+            if (closeButton != null)
+                closeButton.onClick.RemoveListener(ClosePopup);
+
+            if (backgroundClickArea != null)
+                backgroundClickArea.onClick.RemoveListener(ClosePopup);
         }
 
         private void OnEnable()
@@ -54,8 +66,8 @@ namespace HarvestGrid.UI.UserProfile
         public void LoadGame(GameData gameData)
         {
             // Cache values from GameData
-            currentScore = gameData.score;
-            currentPlayTime = gameData.totalPlayTime;
+            currentLevel = gameData.level;
+            currentCoins = 0; // Coins not in GameData currently
 
             UpdateStatsUI();
         }
@@ -67,13 +79,12 @@ namespace HarvestGrid.UI.UserProfile
 
         private void UpdateStatsUI()
         {
-            if (scoreText != null)
-                scoreText.text = $"Score: {currentScore}";
+            if (levelText != null)
+                levelText.text = currentLevel.ToString();
 
-            if (totalPlayTimeText != null)
+            if (coinsText != null)
             {
-                TimeSpan time = TimeSpan.FromSeconds(currentPlayTime);
-                totalPlayTimeText.text = $"Playtime: {(int)time.TotalHours}h {time.Minutes}m";
+                coinsText.text = currentCoins.ToString();
             }
         }
 
