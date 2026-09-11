@@ -43,7 +43,7 @@ namespace HarvestGrid.Managers
             // Navigate back to Login Scene
             if (!string.IsNullOrEmpty(loginSceneName))
             {
-                SceneManager.LoadScene(loginSceneName);
+                LgTyLib.SceneManagement.SceneLoader.Instance.LoadScene(loginSceneName);
             }
             else
             {
