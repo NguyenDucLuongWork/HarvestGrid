@@ -1,8 +1,22 @@
 ﻿using LgTyLib.Core;
-using System;
-using System.Collections.Generic;
+using LgTyLib.Modules.DataPersistence;
 using UnityEngine;
+
+
 public class GameManager : BaseSingleton<GameManager>
 {
-    public PlantPrototype plantSO;
+    [SerializeField]
+    public SaveSlotId saveSlotId;
+
+    public GameplaySceneDataSO gameplaySceneDataSO;
+
+    public void Save()
+    {
+        DataPersistenceManager.Instance.SaveGame(saveSlotId);
+    }
+
+    public void Load()
+    {
+        DataPersistenceManager.Instance.LoadGame(saveSlotId);
+    }
 }

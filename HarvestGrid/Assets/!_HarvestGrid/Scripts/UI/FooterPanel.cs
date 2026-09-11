@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using LgTyLib.Modules.DataPersistence;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FooterPanel : MonoBehaviour
+public class FooterPanel : MonoBehaviour, IDataPersistence
 {
     [SerializeField]
     private Dictionary<Button, GameObject> buttonAndTabs;
@@ -25,6 +26,8 @@ public class FooterPanel : MonoBehaviour
     private float animationTime = 0.2f;
 
     private Button currentButton;
+
+    private string levelToLoad;
 
     private void Start()
     {
@@ -119,5 +122,22 @@ public class FooterPanel : MonoBehaviour
 
         button.transform.DOKill();
         button.transform.DOScale(pressedScale, animationTime);
+    }
+
+    public void LoadPreviousPlaythrough()
+    {
+        GameManager.Instance.Load();
+        GameManager.Instance.gameplaySceneDataSO.toLoad = true;
+        LevelTreeUI.Instance.LoadGamePlayScene(levelToLoad);
+    }
+
+    public void LoadGame(GameData gameData)
+    {
+        levelToLoad = gameData.level; 
+    }
+
+    public void SaveGame(ref GameData gameData)
+    {
+        
     }
 }
