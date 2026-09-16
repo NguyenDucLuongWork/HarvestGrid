@@ -126,8 +126,8 @@ public class FooterPanel : MonoBehaviour, IDataPersistence
 
     public void LoadPreviousPlaythrough()
     {
+        DataTransfer.Instance.toLoad = true;
         GameManager.Instance.Load();
-        GameManager.Instance.gameplaySceneDataSO.toLoad = true;
         LevelTreeUI.Instance.LoadGamePlayScene(levelToLoad);
     }
 

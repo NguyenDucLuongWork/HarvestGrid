@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925e510fbf32b0f46b00a11ffbe507d3, type: 3}
+  m_Name: LongScythe
+  m_EditorClassIdentifier: Assembly-CSharp::ItemPrototype
+  useConfig:
+  - type: 0
+    plantPrototype: {fileID: 0}
+  footprintSO: {fileID: 11400000, guid: ee05cc313806a84429c15f8c905a16ec, type: 2}
+  item:
+    id: LongScythe
+    name: LongScythe
+    icon: {fileID: 200452296081600439, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
+    rarity: 0
+    uses:
+    - rid: 8788999201735311544
+    price: 0
+    footprint:
+      width: 2
+      height: 3
+      requiringFlat: 010101000100y
+      gameObject: {fileID: 0}
+    progressTimer:
+      duration: 4
+      finishedHoldDuration: 0
+      playOnStart: 1
+      loop: 1
+      progress: 0
+      isPlaying: 0
+      isFinishedHolding: 0
+    gameObject: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8788999201735311544
+      type: {class: HarvestUse, ns: , asm: Assembly-CSharp}
+      data:
+        effective: 1.5

@@ -63,7 +63,6 @@ public class ItemMono : MonoBehaviour
 
     private void UpdateProgress(float progress)
     {
-        Debug.LogWarning("Setting progress");
         if (ui == null)
             return;
 

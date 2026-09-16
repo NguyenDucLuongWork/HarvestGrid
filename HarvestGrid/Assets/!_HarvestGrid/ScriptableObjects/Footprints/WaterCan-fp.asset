@@ -16,4 +16,7 @@ MonoBehaviour:
   height: 2
   grid: 010101010101y
   footprint:
+    width: 3
+    height: 2
+    requiringFlat: 010101010101y
     gameObject: {fileID: 0}

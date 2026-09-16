@@ -2,6 +2,7 @@ using LgTyLib.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LgTyLib.Modules.DataPersistence
@@ -29,7 +30,7 @@ namespace LgTyLib.Modules.DataPersistence
             base.Awake();
         }
 
-        private void Start()
+        public void OnEnable()
         {
             string rootPath = System.IO.Path.Combine(Application.persistentDataPath, savesFolderName);
             fileDataHandler = new FileDataHandler(rootPath);

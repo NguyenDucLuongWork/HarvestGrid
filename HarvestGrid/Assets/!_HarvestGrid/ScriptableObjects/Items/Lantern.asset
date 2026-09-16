@@ -15,13 +15,20 @@ MonoBehaviour:
   useConfig:
   - type: 1
     plantPrototype: {fileID: 0}
+  footprintSO: {fileID: 11400000, guid: ae2f3cdf59eea154c82e63757d3ede67, type: 2}
   item:
-    id: Lantern
-    name: Lantern
-    icon: {fileID: -6297925564806867897, guid: 66159ec5553418749b4bc742d8e96f3e, type: 3}
+    id: LightBuff
+    name: LightBuff
+    icon: {fileID: 6736573513337402425, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
     - rid: 8788999201735311528
+    price: 0
+    footprint:
+      width: 1
+      height: 3
+      requiringFlat: 010101y
+      gameObject: {fileID: 0}
     progressTimer:
       duration: 1
       finishedHoldDuration: 0
