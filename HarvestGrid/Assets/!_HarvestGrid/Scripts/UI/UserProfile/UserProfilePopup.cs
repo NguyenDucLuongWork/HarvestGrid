@@ -66,7 +66,7 @@ namespace HarvestGrid.UI.UserProfile
         public void LoadGame(GameData gameData)
         {
             // Cache values from GameData
-            currentLevel = gameData.level;
+            currentLevel = gameData.levelNumber;
             currentCoins = 0; // Coins not in GameData currently
 
             UpdateStatsUI();

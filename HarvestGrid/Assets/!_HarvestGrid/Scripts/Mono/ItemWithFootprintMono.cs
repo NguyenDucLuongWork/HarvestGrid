@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -125,11 +125,20 @@ public class ItemWithFootprintMono : MonoBehaviour
 
     public void TryToSnapToStoringSpaceFromDrag()
     {
-        if (!TryToSnapToStoringSpace())
+        if (TryToSnapToStoringSpace())
+        {
+            StartCoroutine(LateFixSnapNextFrame());
+        }
+        else
         {
             // placement was rejected — snap back / handle failure here
-            // e.g. revert to last valid position, play a reject sound, etc.
         }
+    }
+
+    private IEnumerator LateFixSnapNextFrame()
+    {
+        yield return null; // wait 1 frame
+        LateFixSnap();
     }
     public bool TryToSnapToStoringSpace()
     {
@@ -140,31 +149,19 @@ public class ItemWithFootprintMono : MonoBehaviour
             return false;
 
         // 2. Is that actually a legal placement per the footprint's real shape
-        //    and the storing space's current cell occupancy? This is the check
-        //    that was previously being skipped entirely.
         if (!StoringSpaceMono.Instance.TryPlaceFootprint(item.Footprint, pivot))
             return false;
 
-        
-        // 3. Only now commit to the visual move + inventory bookkeeping.
-        gridLayoutGroupHelper.Snap(storingHelper, pivot);
         AddToInventory(pivot);
+        gridLayoutGroupHelper.Snap(storingHelper, (RectTransform)transform, pivot);
+        
         bought = true;
         return true;
     }
 
     private void AddToInventory(Vector2Int pivot)
     {
-        
-        // Pull the parent up to where Snap() placed the grid...
-        transform.position = gridLayoutGroup.transform.position;
-
-        // ...then re-zero the grid and image locally so nothing double-offsets.
-        gridLayoutGroup.transform.localPosition = Vector3.zero;
-        image.transform.localPosition = Vector3.zero;
-
         storedPivot = pivot;
-        
 
         if (!addedToInventory)
         {
@@ -172,44 +169,12 @@ public class ItemWithFootprintMono : MonoBehaviour
             storedObject = new StoredObject(item, rotated, pivot);
             InventoryMono.Instance.Inventory.AddItem(storedObject);
             addedToInventory = true;
-            this.transform.parent = ItemFactory.Instance.itemPlaceHolder;
-            transform.localPosition = InventoryMono.Instance.GetCenterPosition(
-            new Vector2Int(pivot.x, pivot.y),
-            new Vector2Int(item.Footprint.Requiring.GetLength(0),
-                            item.Footprint.Requiring.GetLength(1))
-            );
-            gridLayoutGroup.transform.localPosition = Vector3.zero;
-            image.transform.localPosition = Vector3.zero;
-
+            this.transform.SetParent(ItemFactory.Instance.itemPlaceHolder, true);
+            
         }
-
         storedObject.Pivot = storedPivot;
         storedObject.Rotated = rotated;
         StoringSpaceMono.Instance.AutoUpdateDataRefreshUI();
-    }
-
-
-
-    public void ForceAddToInventory(Vector2Int pivot, int rotation)
-    {
-        // Use this for a genuinely NEW placement (creates a StoredObject and
-        // adds it to Inventory.Items). Do NOT use this for loading an existing
-        // save entry — see the StoredObject overload below.
-        if (item == null)
-            return;
-
-        ApplyRotationAndFootprint(rotation);
-
-        if (!PlaceAndSnap(pivot))
-        {
-            Debug.LogWarning(
-                $"[{nameof(ItemWithFootprintMono)}] ForceAddToInventory: failed to place '{item.Name}' at {pivot} — cells may already be occupied."
-            );
-            return;
-        }
-
-        AddToInventory(pivot);
-        bought = true;
     }
 
     public void ForceAddToInventory(StoredObject existing)
@@ -269,17 +234,23 @@ public class ItemWithFootprintMono : MonoBehaviour
             return false;
 
         var storingHelper = StoringSpaceMono.Instance.gridLayoutGroupHelper;
-        gridLayoutGroupHelper.Snap(storingHelper, pivot);
-
-        transform.localPosition = InventoryMono.Instance.GetCenterPosition(
-            new Vector2Int(pivot.x, pivot.y),
-            new Vector2Int(item.Footprint.Requiring.GetLength(0),
-                            item.Footprint.Requiring.GetLength(1))
-            );
-        gridLayoutGroup.transform.localPosition = Vector3.zero;
-        image.transform.localPosition = Vector3.zero;
+        gridLayoutGroupHelper.Snap(storingHelper, (RectTransform)transform, pivot);
 
         storedPivot = pivot;
         return true;
+    }
+
+    [ContextMenu("TestSnap")]
+    public void LateFixSnap()
+    {
+        gridLayoutGroupHelper.Snap(StoringSpaceMono.Instance.gridLayoutGroupHelper, (RectTransform)transform,
+            storedPivot
+            );
+    }
+
+    [ContextMenu("TestSnap2")]
+    public void TestSnap2()
+    {
+        this.TryToSnapToStoringSpaceFromDrag();
     }
 }
