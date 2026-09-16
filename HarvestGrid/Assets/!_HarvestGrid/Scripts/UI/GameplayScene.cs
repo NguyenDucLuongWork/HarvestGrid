@@ -81,7 +81,7 @@ public class GameplayScene : BaseSingleton<GameplayScene>, IDataPersistence
     {
         yield return null; // wait 1 frame
 
-        if (DataTransfer.Instance != null  && DataTransfer.Instance.toLoad)
+        if (GameManager.Instance.gameplaySceneDataSO.toLoad)
         {
             Debug.Log("Loading...");
             GameManager.Instance.Load();
