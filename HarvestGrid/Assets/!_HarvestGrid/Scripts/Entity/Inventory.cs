@@ -6,11 +6,15 @@ using UnityEngine;
 public class Inventory : ICloneable<Inventory>
 {
     [SerializeField]
+    private int money;
+
+    [SerializeField]
     private Dictionary<Crop, int> crops = new();
 
     [SerializeField]
     private List<StoredObject> storedItems = new();
 
+    public int Money => money;
     public IReadOnlyDictionary<Crop, int> Crops => crops;
 
     public IReadOnlyList<StoredObject> Items => storedItems;
