@@ -15,13 +15,20 @@ MonoBehaviour:
   useConfig:
   - type: 2
     plantPrototype: {fileID: 11400000, guid: 3b36a27200dad87418529a1019eea433, type: 2}
+  footprintSO: {fileID: 11400000, guid: f201aed882059c246a14830a95536135, type: 2}
   item:
     id: CucumberSeed
     name: CucumberSeed
-    icon: {fileID: -3513379549867885781, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
+    icon: {fileID: -5264793112768662671, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
     - rid: 8788999201735311498
+    price: 0
+    footprint:
+      width: 2
+      height: 2
+      requiringFlat: 01010101y
+      gameObject: {fileID: 0}
     progressTimer:
       duration: 2
       finishedHoldDuration: 0

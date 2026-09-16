@@ -24,6 +24,7 @@ public class StoringSpaceMono : BaseSingleton<StoringSpaceMono>
     private GridLayoutGroup gridLayoutGroup;
     private RectTransform rectTransform;
     private readonly List<GameObject> spawnedCells = new();
+    public GridLayoutGroupHelper gridLayoutGroupHelper { get; private set; }
 
     // --------------------------------------------------
     // INIT
@@ -37,6 +38,7 @@ public class StoringSpaceMono : BaseSingleton<StoringSpaceMono>
         rectTransform = GetComponent<RectTransform>();
 
         storingSpace = new StoringSpace(width, height);
+        gridLayoutGroupHelper = GetComponent<GridLayoutGroupHelper>();
         RefreshVisuals();
     }
 
@@ -98,9 +100,9 @@ public class StoringSpaceMono : BaseSingleton<StoringSpaceMono>
 
     // Convenience overload if you're placing straight from a FootprintMono
     // (e.g. an item currently being dragged).
-    public bool TryPlaceFootprint(FootprintMono footprintMono, Vector2Int bottomLeftPivot)
+    public bool TryPlaceFootprint(ItemWithFootprintMono footprintMono, Vector2Int bottomLeftPivot)
     {
-        return TryPlaceFootprint(footprintMono.Footprint, bottomLeftPivot);
+        return TryPlaceFootprint(footprintMono.Item.Footprint, bottomLeftPivot);
     }
 
     public void RemoveFootprint(Footprint footprint)
@@ -132,10 +134,9 @@ public class StoringSpaceMono : BaseSingleton<StoringSpaceMono>
         gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayoutGroup.constraintCount = gridWidth;
 
-        // Sibling order must be row-major, top row first, to match
-        // Start Corner = Lower Left in the inspector (same convention
-        // FootprintMono uses).
-        for (int y = gridHeight - 1; y >= 0; y--)
+        // Sibling order must be row-major, BOTTOM row first, to match
+        // Start Corner = Lower Left / Start Axis = Horizontal in the inspector.
+        for (int y = 0; y < gridHeight; y++)
         {
             for (int x = 0; x < gridWidth; x++)
             {
@@ -148,8 +149,6 @@ public class StoringSpaceMono : BaseSingleton<StoringSpaceMono>
                 }
                 else
                 {
-                    // No prefab assigned for this state: spawn a blank
-                    // placeholder so the layout still reserves the slot.
                     cell = new GameObject($"Cell_{x}_{y}", typeof(RectTransform));
                     cell.transform.SetParent(transform, false);
                 }
@@ -188,4 +187,11 @@ public class StoringSpaceMono : BaseSingleton<StoringSpaceMono>
         this.storingSpace = storingSpace;
         RefreshVisuals();
     }
+
+    public void AutoUpdateDataRefreshUI()
+    {
+        storingSpace.UpdateOccupiedDataFully(InventoryMono.Instance.Inventory.Items);
+        RefreshVisuals();
+    }
+
 }

@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62905c6ed4b80704c8af1e72702989af, type: 3}
   m_Name: GameplaySceneDataSO
   m_EditorClassIdentifier: Assembly-CSharp::GameplaySceneDataSO
-  level: {fileID: 0}
+  level: {fileID: 11400000, guid: d4331b27b44df284198429508d2afa6f, type: 2}
+  toLoad: 0

@@ -16,12 +16,19 @@ public class Item : ICloneable<Item>
     private ItemRarity rarity;
     [SerializeReference] 
     private List<ItemUse> uses;
+    [SerializeField]
+    private int price;
+    [SerializeField]
+    private Footprint footprint;
 
+    // Getter
     public string Id => id;
     public string Name => name;
     public Sprite Icon => icon;
     public ItemRarity Rarity => rarity;
     public IReadOnlyList<ItemUse> Uses => uses;
+    public int Price => price;
+    public Footprint Footprint => footprint;
 
     //References
     [SerializeField]
@@ -30,6 +37,7 @@ public class Item : ICloneable<Item>
 
     //Visual
     public GameObject gameObject;
+
     public Item(Item original)
     {
         this.id = original.Id;
@@ -40,6 +48,8 @@ public class Item : ICloneable<Item>
         foreach (var use in original.uses)
             this.uses.Add(use.Clone());
         this.progressTimer = original.ProgressTimer.Clone();
+        this.price = original.Price;
+        this.footprint = original.Footprint.Clone();
     }
 
     public Item Clone()
@@ -77,5 +87,10 @@ public class Item : ICloneable<Item>
     public void SetItemUse(List<ItemUse> uses)
     {
         this.uses = uses;
+    }
+
+    public void SetFootprint(Footprint footprint)
+    {
+        this.footprint = footprint;
     }
 }
