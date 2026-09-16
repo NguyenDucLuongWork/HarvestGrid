@@ -15,6 +15,7 @@ MonoBehaviour:
   useConfig:
   - type: 1
     plantPrototype: {fileID: 0}
+  footprintSO: {fileID: 11400000, guid: f201aed882059c246a14830a95536135, type: 2}
   item:
     id: Fertilizer
     name: Fertilizer
@@ -22,6 +23,12 @@ MonoBehaviour:
     rarity: 0
     uses:
     - rid: 8788999201735311528
+    price: 0
+    footprint:
+      width: 2
+      height: 2
+      requiringFlat: 01010101y
+      gameObject: {fileID: 0}
     progressTimer:
       duration: 2.5
       finishedHoldDuration: 0

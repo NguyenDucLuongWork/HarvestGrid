@@ -15,13 +15,20 @@ MonoBehaviour:
   useConfig:
   - type: 0
     plantPrototype: {fileID: 0}
+  footprintSO: {fileID: 11400000, guid: 92cc5ba1cd3178e409d44e60d17aa359, type: 2}
   item:
     id: Scythe
     name: Scythe
-    icon: {fileID: -3128079778288713891, guid: 1473751dc9da47d45aa27607f8589455, type: 3}
+    icon: {fileID: -7578106737114605677, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
     - rid: 8788999201735311544
+    price: 0
+    footprint:
+      width: 2
+      height: 2
+      requiringFlat: 01010100y
+      gameObject: {fileID: 0}
     progressTimer:
       duration: 4
       finishedHoldDuration: 0
@@ -37,4 +44,4 @@ MonoBehaviour:
     - rid: 8788999201735311544
       type: {class: HarvestUse, ns: , asm: Assembly-CSharp}
       data:
-        effective: 1.5
+        effective: 1

@@ -8,6 +8,7 @@ public class ItemPrototype : ScriptableObject
     public List<ItemUseConfigEntry> useConfig;
 
     [Header("Item")]
+    public ItemFootprintSO footprintSO;
     public Item item;
 
     [ContextMenu("Init Item")]
@@ -30,5 +31,11 @@ public class ItemPrototype : ScriptableObject
         }
 
         item.SetItemUse(newUses);
+    }
+
+    [ContextMenu("SetFootprint")]
+    public void SetFootprint()
+    {
+        item.SetFootprint(footprintSO.footprint.Clone());
     }
 }

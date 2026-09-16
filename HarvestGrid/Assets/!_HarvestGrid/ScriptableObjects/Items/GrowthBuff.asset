@@ -15,13 +15,20 @@ MonoBehaviour:
   useConfig:
   - type: 1
     plantPrototype: {fileID: 0}
+  footprintSO: {fileID: 11400000, guid: bbaf524e4506f4c40b9083af780fb0be, type: 2}
   item:
     id: GrowthBuff
     name: GrowthBuff
-    icon: {fileID: 21300000, guid: b3ba75d4e9af8144d8f6df83087fedf2, type: 3}
+    icon: {fileID: 3051830828411116768, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
     - rid: 8788999201735311528
+    price: 0
+    footprint:
+      width: 1
+      height: 2
+      requiringFlat: 0101y
+      gameObject: {fileID: 0}
     progressTimer:
       duration: 1
       finishedHoldDuration: 0

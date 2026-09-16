@@ -32,6 +32,26 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
 
     public Dictionary<string, int> ItemUsesAccumilation => itemUsesAccumilation;
 
+    public Vector3 GetCenterPosition(
+        Vector2Int pivotBottomLeft,
+        Vector2Int widthAndHeight)
+    {
+        if (widthAndHeight.x <= 0 || widthAndHeight.y <= 0)
+        {
+            return new Vector3(
+                pivotBottomLeft.x,
+                pivotBottomLeft.y,
+                0f
+            );
+        }
+
+        return new Vector3(
+            pivotBottomLeft.x + widthAndHeight.x * 0.5f,
+            pivotBottomLeft.y + widthAndHeight.y * 0.5f,
+            0f
+        );
+    }
+
     // Tracks spawned crop UI entries.
     private readonly Dictionary<(string cropID, int stars), CropUIComponent> cropUIEntries = new();
 
@@ -190,12 +210,13 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         AddItemToItemBar();
     }
 
+
     public void AddItemToItemBar()
     {
         if (itemBar == null || itemUIComponent == null)
             return;
 
-        var items = inventory.Items;
+        var items = inventory.GetItemList();
 
         // Remove UI entries for items that no longer exist.
         List<Item> toRemove = null;
@@ -244,6 +265,12 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
     // ============================================================
     public void LoadGame(GameData gameData)
     {
+        // 1. Clear existing items, crops, and UI before loading new data
+        ClearAllInventory();
+
+        if (gameData == null || gameData.inventory == null)
+            return;
+
         // =========================
         // CROPS
         // =========================
@@ -261,19 +288,65 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         // =========================
         // ITEMS
         // =========================
-        IReadOnlyList<Item> itemsToAdd = gameData.inventory.Items;
-
-        for (int i = 0; i < itemsToAdd.Count; i++)
+        foreach (StoredObject savedObject in gameData.inventory.Items)
         {
-            if (itemsToAdd[i] == null)
+            if (savedObject == null || savedObject.Item == null)
                 continue;
 
-            ItemFactory.Instance.SpawnItem(itemsToAdd[i]);
+            StoredObject restoredObject = savedObject.Clone();
+
+            // The ItemMono owns the inventory-bar UI object and assigns it to
+            // Item.gameObject before the item is added to the inventory.
+            ItemFactory.Instance.SpawnItemWithoutClone(restoredObject.Item);
+            inventory.AddItem(restoredObject);
+
+            // This restores the storage-space visual only. The overload takes
+            // an existing StoredObject and must not add it a second time.
+            ItemFactory.Instance.SpawnItemWithFootprint(restoredObject);
         }
+    }
+
+    /// <summary>
+    /// Clears all items, crops, tracking dictionaries, and UI elements.
+    /// </summary>
+    private void ClearAllInventory()
+    {
+        // --- Clear Items ---
+        foreach (var kvp in itemUIEntries)
+        {
+            if (kvp.Value != null)
+                Destroy(kvp.Value.gameObject);
+
+            // If the Item GameObject is separate from the UI component, destroy it as well
+            if (kvp.Key != null && kvp.Key.gameObject != null && (kvp.Value == null || kvp.Key.gameObject != kvp.Value.gameObject))
+            {
+                Destroy(kvp.Key.gameObject);
+            }
+        }
+        itemUIEntries.Clear();
+
+        // --- Clear Crops UI ---
+        foreach (var kvp in cropUIEntries)
+        {
+            if (kvp.Value != null)
+                Destroy(kvp.Value.gameObject);
+        }
+        cropUIEntries.Clear();
+
+        // --- Clear Data ---
+        itemUsesAccumilation.Clear();
+
+        // Re-initialize inventory instance to ensure a clean state
+        inventory = new Inventory();
+
+        // Re-subscribe events for the new inventory instance
+        inventory.OnCropsChanged += HandleCropsChanged;
+        inventory.OnItemsChanged += HandleItemsChanged;
     }
 
     public void SaveGame(ref GameData gameData)
     {
         gameData.inventory = this.inventory;
     }
+
 }

@@ -18,9 +18,6 @@ namespace LgTyLib.Modules.DataPersistence
     // ╚══════════════════════════════════════════════════════╝
     public partial class GameData
     {
-                // Add your fields here, e.g:
-        public int level;
-        public bool bossDefeated;
         // --- Game-specific fields ---
         public string playerId;
         public string username;

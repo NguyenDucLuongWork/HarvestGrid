@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -118,12 +118,12 @@ TextureImporter:
       name: Gemini_Generated_Image_fsc86tfsc86tfsc8-Photoroom_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 311
         y: 0
-        width: 994
+        width: 776
         height: 768
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -140,7 +140,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 8441439d6d65e3045a27183f83343c7f
     internalID: 0
     vertices: []
     indices: 
@@ -151,6 +151,8 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Gemini_Generated_Image_fsc86tfsc86tfsc8-Photoroom_0: 8525119847550583167
+      Gemini_Generated_Image_fsc86tfsc86tfsc8-Photoroom_1: -176851241
+      Gemini_Generated_Image_fsc86tfsc86tfsc8-Photoroom_2: -1675319828
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
