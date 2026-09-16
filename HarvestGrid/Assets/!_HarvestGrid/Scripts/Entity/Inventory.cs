@@ -9,11 +9,11 @@ public class Inventory : ICloneable<Inventory>
     private Dictionary<Crop, int> crops = new();
 
     [SerializeField]
-    private List<Item> items = new();
+    private List<StoredObject> storedItems = new();
 
     public IReadOnlyDictionary<Crop, int> Crops => crops;
 
-    public IReadOnlyList<Item> Items => items;
+    public IReadOnlyList<StoredObject> Items => storedItems;
 
     // Fired whenever the crop dictionary changes.
     public event Action<IReadOnlyDictionary<Crop, int>> OnCropsChanged;
@@ -42,15 +42,15 @@ public class Inventory : ICloneable<Inventory>
             crops.Add(clonedCrop, pair.Value);
         }
 
-        // Deep copy items
-        items = new List<Item>();
+        // Deep copy stored objects
+        storedItems = new List<StoredObject>();
 
-        foreach (var item in original.items)
+        foreach (var storedObject in original.storedItems)
         {
-            if (item == null)
+            if (storedObject == null)
                 continue;
 
-            items.Add(item.Clone());
+            storedItems.Add(storedObject.Clone());
         }
     }
 
@@ -106,42 +106,52 @@ public class Inventory : ICloneable<Inventory>
     // ITEMS
     // ============================================================
 
-    public void AddItem(Item item)
+    public void AddItem(StoredObject storedObject)
     {
-        Debug.LogWarning("Adding item: " + item.Id);
-        if (item == null)
-            throw new ArgumentNullException(nameof(item));
+        if (storedObject == null)
+            throw new ArgumentNullException(nameof(storedObject));
 
-        items.Add(item);
+        Debug.LogWarning("Adding item: " + storedObject.Item?.Id);
 
-        OnItemsChanged?.Invoke(items);
+        storedItems.Add(storedObject);
+
+        OnItemsChanged?.Invoke(GetItemList());
     }
 
-    public bool RemoveItem(Item item)
+    public bool RemoveItem(StoredObject storedObject)
     {
-        if (item == null)
+        if (storedObject == null)
             return false;
 
-        bool removed = items.Remove(item);
+        bool removed = storedItems.Remove(storedObject);
 
         if (removed)
         {
-            OnItemsChanged?.Invoke(items);
+            OnItemsChanged?.Invoke(GetItemList());
         }
 
         return removed;
     }
 
-    public bool ContainsItem(Item item)
+    public bool ContainsItem(StoredObject storedObject)
     {
-        if (item == null)
+        if (storedObject == null)
             return false;
 
-        return items.Contains(item);
+        return storedItems.Contains(storedObject);
     }
 
     public Inventory Clone()
     {
         return new Inventory(this);
+    }
+
+    public IReadOnlyList<Item> GetItemList()
+    {
+        List<Item> rs = new List<Item>();
+        foreach (StoredObject storedObject in storedItems) {
+            rs.Add(storedObject.Item);
+        }
+        return rs.AsReadOnly();
     }
 }

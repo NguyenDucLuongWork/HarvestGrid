@@ -8,34 +8,20 @@ using Random = UnityEngine.Random;
 public class ItemFactory : BaseSingleton<ItemFactory>
 {
     public ItemMono itemPrefab;
+    public ItemWithFootprintMono itemWithFootprintPrefab;
+    public Transform itemPlaceHolder;
 
-    public void SpawnRandom()
+    public void SpawnItemWithoutClone(Item item)
     {
-        var itemAndChancePool = GameplayScene.Instance.LevelSO.itemAndChancePool;
-
-        if (itemAndChancePool == null || itemAndChancePool.Count == 0)
-        {
-            Debug.LogWarning("Item spawn pool is empty.");
-            return;
-        }
-
-        int index = Random.Range(0, itemAndChancePool.Count);
-
-        ItemPrototype item = itemAndChancePool.Keys.ElementAt(index);
-        SpawnItem(item);
-    }
-
-    public void SpawnItem(ItemPrototype itemPrototype)
-    {
-        SpawnItem(itemPrototype.item);
-    }
-
-    public void SpawnItem(Item item)
-    {
-        ItemMono newItem = Instantiate(itemPrefab);
-        newItem.Init(item.Clone());
-        InventoryMono.Instance.Inventory.AddItem(newItem.Item);
+        ItemMono newItemMono = Instantiate(itemPrefab);
+        newItemMono.Init(item);
         Debug.Log(InventoryMono.Instance.Inventory.Items.Count);
-        newItem.Run();
+        newItemMono.Run();
+    }
+
+    public void SpawnItemWithFootprint(StoredObject storedObject)
+    {
+        ItemWithFootprintMono newItem = Instantiate(itemWithFootprintPrefab, itemPlaceHolder);
+        newItem.ForceAddToInventory(storedObject);
     }
 }

@@ -15,13 +15,20 @@ MonoBehaviour:
   useConfig:
   - type: 2
     plantPrototype: {fileID: 11400000, guid: 37884e90fcff1184d9a94f94bdb05b0a, type: 2}
+  footprintSO: {fileID: 11400000, guid: f201aed882059c246a14830a95536135, type: 2}
   item:
     id: Seed_Tomtato
     name: Tomato Seed
-    icon: {fileID: -8113185096396602001, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+    icon: {fileID: 496276368402350945, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
     - rid: 8788999201735311566
+    price: 0
+    footprint:
+      width: 2
+      height: 2
+      requiringFlat: 01010101y
+      gameObject: {fileID: 0}
     progressTimer:
       duration: 3
       finishedHoldDuration: 0

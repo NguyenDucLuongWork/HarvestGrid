@@ -15,13 +15,20 @@ MonoBehaviour:
   useConfig:
   - type: 1
     plantPrototype: {fileID: 0}
+  footprintSO: {fileID: 11400000, guid: 15f2f677e6b11344daf71d8a93092cbf, type: 2}
   item:
     id: WaterCan
     name: WaterCan
-    icon: {fileID: -3953685959813732677, guid: 76c615fac676ca9459da6582b376651e, type: 3}
+    icon: {fileID: -3877777476988943478, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
     - rid: 8788999201735311528
+    price: 0
+    footprint:
+      width: 3
+      height: 2
+      requiringFlat: 010101010101y
+      gameObject: {fileID: 0}
     progressTimer:
       duration: 2
       finishedHoldDuration: 0

@@ -15,26 +15,33 @@ MonoBehaviour:
   useConfig:
   - type: 2
     plantPrototype: {fileID: 11400000, guid: f6e3e17ef555da24cabff7a3f07cfd46, type: 2}
+  footprintSO: {fileID: 11400000, guid: f201aed882059c246a14830a95536135, type: 2}
   item:
     id: Seed_Bean
     name: Bean Seed
-    icon: {fileID: 2679770912503586980, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+    icon: {fileID: 3575801608052008830, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
-    - rid: 8788999201735311569
+    - rid: 8788999236187062785
+    price: 0
+    footprint:
+      width: 2
+      height: 2
+      requiringFlat: 01010101y
+      gameObject: {fileID: 0}
     progressTimer:
       duration: 3
       finishedHoldDuration: 0
       playOnStart: 1
       loop: 1
-      progress: 0
-      isPlaying: 0
+      progress: 0.59323287
+      isPlaying: 1
       isFinishedHolding: 0
     gameObject: {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: 8788999201735311569
+    - rid: 8788999236187062785
       type: {class: AddPlantUse, ns: , asm: Assembly-CSharp}
       data:
         plantToAdd:

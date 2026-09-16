@@ -13,6 +13,10 @@ public class PlantMono : MonoBehaviour
 
     public void UpdateSprite(Sprite sprite)
     {
+        if(sprite == null)
+        {
+            gameObject.SetActive(false);
+        }
         this.image.sprite = sprite;
         this.image.SetNativeSize();
     }
