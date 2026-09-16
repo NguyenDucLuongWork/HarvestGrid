@@ -22,7 +22,6 @@ public class AddPlantUse : ItemUse
 
     public override void Apply(ItemUseContext ctx)
     {
-        Debug.Log("Planting");
         FarmMono.Instance.PlantToRandomSlot(plantToAdd.Clone());
     }
 

@@ -246,26 +246,6 @@ public class GridLayoutGroupHelper : MonoBehaviour
         return GetWorldAABB().Overlaps(target.GetWorldAABB());
     }
 
-    /// <summary>
-    /// Moves this item (MoveRoot) so this grid's bottom-left cell (col 0, row 0)
-    /// lands on the bottom-left cell of the OVERLAPPED region inside the target
-    /// grid (i.e. the target cell under the bottom-left corner of the overlap,
-    /// not the target grid's own bottom-left cell).
-    /// Updates SnappedTo on success.
-    /// </summary>
-    public Vector2Int Snap(GridLayoutGroupHelper target)
-    {
-        if (!TryComputeSnapCellIndex(target, out Vector2Int targetCellIndex))
-        {
-            Debug.LogWarning(
-                $"[{nameof(GridLayoutGroupHelper)}] Snap aborted: '{name}' does not overlap '{target?.name}'."
-            );
-            return new Vector2Int(-1, -1);
-        }
-
-        Snap(target, targetCellIndex);
-        return targetCellIndex;
-    }
 
     /// <summary>
     /// Computes which cell of `target` this grid would snap to, WITHOUT moving
@@ -294,7 +274,10 @@ public class GridLayoutGroupHelper : MonoBehaviour
         return true;
     }
 
-    public void Snap(GridLayoutGroupHelper target, Vector2Int targetCellIndex)
+    public void Snap(
+        GridLayoutGroupHelper target,
+        RectTransform transform,
+        Vector2Int targetCellIndex)
     {
         if (target == null || target == this)
         {
@@ -304,21 +287,22 @@ public class GridLayoutGroupHelper : MonoBehaviour
             return;
         }
 
-        // Target cell bottom-left
+        // Target cell bottom-left in world space
         Vector3 targetCellWorldBL =
             target.GetCellWorldBottomLeft(
                 targetCellIndex.x,
                 targetCellIndex.y
             );
 
-        // This grid's (0,0) cell bottom-left
+        // This item's (0,0) cell bottom-left offset from its root
         Vector3 myCellWorldBL =
             GetCellWorldBottomLeft(0, 0);
 
-        // Move this item's root so its (0,0) cell aligns with targetCellIndex
-        Vector3 delta = targetCellWorldBL - myCellWorldBL;
+        // Offset between the item's root and its (0,0) cell
+        Vector3 cellOffset = transform.position - myCellWorldBL;
 
-        MoveRoot.position += delta;
+        // Set root directly in world space
+        transform.position = targetCellWorldBL + cellOffset;
 
         SnappedTo = new SnapInfo
         {
