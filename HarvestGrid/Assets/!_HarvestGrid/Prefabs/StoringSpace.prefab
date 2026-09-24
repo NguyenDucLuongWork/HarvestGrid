@@ -60,7 +60,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 2
   m_StartAxis: 0
-  m_CellSize: {x: 110, y: 110}
+  m_CellSize: {x: 140, y: 140}
   m_Spacing: {x: 2, y: 2}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7742002933469305708}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -142,6 +142,7 @@ MonoBehaviour:
     extraPadding: {x: 0, y: 0}
     minSize: {x: 0, y: 0}
     maxSize: {x: 0, y: 0}
+  moveRoot: {fileID: 0}
   showDebugRect: 1
   showDebugCells: 1
   debugColor: {r: 0, g: 1, b: 0, a: 1}

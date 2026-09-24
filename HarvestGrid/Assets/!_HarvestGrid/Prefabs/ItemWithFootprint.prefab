@@ -1,5 +1,104 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3212087353739194805
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6217639855229562452}
+  - component: {fileID: 3559460958578707170}
+  - component: {fileID: 1608981798166280891}
+  - component: {fileID: 3760549548347168387}
+  m_Layer: 5
+  m_Name: Footprint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6217639855229562452
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212087353739194805}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2468288334497034703}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3559460958578707170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212087353739194805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 2
+  m_StartAxis: 0
+  m_CellSize: {x: 140, y: 140}
+  m_Spacing: {x: 2, y: 2}
+  m_Constraint: 0
+  m_ConstraintCount: 2
+--- !u!114 &1608981798166280891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212087353739194805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e7e4d256511a3d4e9d6d8a65849acdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridAutoSize
+  autoSizeEnabled: 1
+  autoSizeConfig:
+    extraPadding: {x: 0, y: 0}
+    minSize: {x: 0, y: 0}
+    maxSize: {x: 0, y: 0}
+  moveRoot: {fileID: 0}
+  showDebugRect: 0
+  showDebugCells: 1
+  debugColor: {r: 0, g: 1, b: 0, a: 1}
+  cellColor: {r: 0, g: 1, b: 1, a: 0.5}
+  cellOriginColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &3760549548347168387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3212087353739194805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0558a586874d484e839f8cd50a33667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootprintRequiringVisual
+  requiringCellPrefab: {fileID: 6074495275998781719, guid: 743d8e9bbc9fdaa4f86ea950d0828eb5, type: 3}
+  emptyCellPrefab: {fileID: 0}
 --- !u!1 &3392938606517696666
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,7 +156,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 2
   m_StartAxis: 0
-  m_CellSize: {x: 110, y: 110}
+  m_CellSize: {x: 140, y: 140}
   m_Spacing: {x: 2, y: 2}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -115,6 +214,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1367720879020482795}
+  - {fileID: 6217639855229562452}
   - {fileID: 2604151724687946445}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -135,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad93fef483339b40ab64a8bb705c153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemWithFootprintMono
-  requiringCellPrefab: {fileID: 6074495275998781719, guid: 743d8e9bbc9fdaa4f86ea950d0828eb5, type: 3}
+  requiringCellPrefab: {fileID: 6074495275998781719, guid: b2ddc799da878a7418e991f03851f178, type: 3}
   emptyCellPrefab: {fileID: 0}
   item:
     id: 
@@ -161,6 +261,8 @@ MonoBehaviour:
   gridLayoutGroup: {fileID: 4288091707668913310}
   image: {fileID: 4014350351287315437}
   gridLayoutGroupHelper: {fileID: 6946233808750704447}
+  predictionVisual: {fileID: 3760549548347168387}
+  rotated: 0
   storedPivot: {x: 0, y: 0}
   storedObject:
     item:
@@ -206,13 +308,40 @@ MonoBehaviour:
   pointerIsDown: 0
   OnDragStarted:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7293147750380869713}
+        m_TargetAssemblyTypeName: ItemWithFootprintMono, Assembly-CSharp
+        m_MethodName: OnDragStarted
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDragging:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7293147750380869713}
+        m_TargetAssemblyTypeName: ItemWithFootprintMono, Assembly-CSharp
+        m_MethodName: SnapFootprintToRequiringWhileDragging
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDraggingEnded:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7293147750380869713}
         m_TargetAssemblyTypeName: ItemWithFootprintMono, Assembly-CSharp
-        m_MethodName: TryToSnapToStoringSpaceFromDrag
+        m_MethodName: OnDragEnded
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

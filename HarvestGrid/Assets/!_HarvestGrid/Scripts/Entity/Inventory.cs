@@ -19,6 +19,9 @@ public class Inventory : ICloneable<Inventory>
 
     public IReadOnlyList<StoredObject> Items => storedItems;
 
+    // Fired whenever the money amount changes.
+    public event Action<int> OnMoneyChanged;
+
     // Fired whenever the crop dictionary changes.
     public event Action<IReadOnlyDictionary<Crop, int>> OnCropsChanged;
 
@@ -115,8 +118,6 @@ public class Inventory : ICloneable<Inventory>
         if (storedObject == null)
             throw new ArgumentNullException(nameof(storedObject));
 
-        Debug.LogWarning("Adding item: " + storedObject.Item?.Id);
-
         storedItems.Add(storedObject);
 
         OnItemsChanged?.Invoke(GetItemList());
@@ -157,5 +158,32 @@ public class Inventory : ICloneable<Inventory>
             rs.Add(storedObject.Item);
         }
         return rs.AsReadOnly();
+    }
+
+    public void AddMoney(int amount)
+    {
+        if (amount <= 0)
+            throw new ArgumentOutOfRangeException(
+                nameof(amount),
+                "Amount must be greater than 0.");
+
+        money += amount;
+
+        OnMoneyChanged?.Invoke(money);
+    }
+
+    public bool RemoveMoney(int amount)
+    {
+        if (amount <= 0)
+            return false;
+
+        if (amount > money)
+            return false;
+
+        money -= amount;
+
+        OnMoneyChanged?.Invoke(money);
+
+        return true;
     }
 }

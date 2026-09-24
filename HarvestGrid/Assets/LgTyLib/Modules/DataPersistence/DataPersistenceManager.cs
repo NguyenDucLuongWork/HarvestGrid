@@ -14,7 +14,9 @@ namespace LgTyLib.Modules.DataPersistence
 
         private FileDataHandler fileDataHandler;
         private GameData gameData;
+        private UserData userData;
         private List<IDataPersistence> dataPersistenceList;
+        private List<IUserDataPersistence> userDataPersistenceList;
         private SaveSlotId? activeSlot;
         private float sessionStartTime;
 
@@ -23,6 +25,8 @@ namespace LgTyLib.Modules.DataPersistence
         public static event Action<SaveSlotId> OnGameSaved;
         public static event Action<SaveSlotId> OnSaveDeleted;
         public static event Action<string> OnPlaythroughDeleted;
+        public static event Action OnUserDataLoaded;
+        public static event Action OnUserDataSaved;
 
         // ── Lifecycle ────────────────────────────────────────────────
         protected override void Awake()
@@ -35,7 +39,10 @@ namespace LgTyLib.Modules.DataPersistence
             string rootPath = System.IO.Path.Combine(Application.persistentDataPath, savesFolderName);
             fileDataHandler = new FileDataHandler(rootPath);
             dataPersistenceList = FindAllDataPersistences();
+            userDataPersistenceList = FindAllUserDataPersistences();
             sessionStartTime = Time.realtimeSinceStartup;
+
+            LoadUserData();
         }
 
         // ── Load ─────────────────────────────────────────────────────
@@ -60,6 +67,22 @@ namespace LgTyLib.Modules.DataPersistence
 
             Debug.Log($"Loaded {slot} successfully.");
             OnGameLoaded?.Invoke(slot);
+        }
+
+        /// <summary>
+        /// Loads the single global user/account data file (settings, profile, cross-save
+        /// unlocks, etc). Not tied to any playthrough or slot. If no file exists yet
+        /// (first launch), a fresh UserData is created in memory.
+        /// </summary>
+        public void LoadUserData()
+        {
+            userData = fileDataHandler.LoadUserData() ?? new UserData();
+
+            foreach (var udp in userDataPersistenceList)
+                udp.LoadUserData(userData);
+
+            Debug.Log("User data loaded.");
+            OnUserDataLoaded?.Invoke();
         }
 
         // ── Save ─────────────────────────────────────────────────────
@@ -87,6 +110,24 @@ namespace LgTyLib.Modules.DataPersistence
 
             Debug.Log($"Saved to {slot} successfully.");
             OnGameSaved?.Invoke(slot);
+        }
+
+        /// <summary>
+        /// Saves the global user/account data file. Call this independently of
+        /// SaveGame — e.g. right after a settings change or on app pause/quit —
+        /// not just when a playthrough is saved.
+        /// </summary>
+        public void SaveUserData()
+        {
+            userData ??= new UserData();
+
+            foreach (var udp in userDataPersistenceList)
+                udp.SaveUserData(ref userData);
+
+            fileDataHandler.SaveUserData(userData);
+
+            Debug.Log("User data saved.");
+            OnUserDataSaved?.Invoke();
         }
 
         // ── Delete ───────────────────────────────────────────────────
@@ -125,6 +166,7 @@ namespace LgTyLib.Modules.DataPersistence
             fileDataHandler.SaveExists(slot);
 
         public SaveSlotId? ActiveSlot => activeSlot;
+        public UserData UserData => userData;
 
         // ── Internal ─────────────────────────────────────────────────
 
@@ -135,11 +177,17 @@ namespace LgTyLib.Modules.DataPersistence
                 .ToList();
         }
 
+        private List<IUserDataPersistence> FindAllUserDataPersistences()
+        {
+            return FindObjectsByType<MonoBehaviour>()
+                .OfType<IUserDataPersistence>()
+                .ToList();
+        }
+
         [Obsolete]
         public void FindAllDataSaver()
         {
             dataPersistenceList = FindAllDataPersistences();
-
         }
     }
 }

@@ -78,7 +78,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7732609915731149927, guid: 035e23ee135fc2d4f8a140803c76daa4, type: 3}
+  m_Sprite: {fileID: 1558362095000052643, guid: e8e3c8246d4bcce40a84aea380a1f8fe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -120,6 +120,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 4187256129183592703}
       plantGameObject: {fileID: 7735838509769749790}
@@ -140,6 +141,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 3229530638503235893}
       plantGameObject: {fileID: 9049629827723007188}
@@ -160,6 +162,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 305818076449265339}
       plantGameObject: {fileID: 6159055718711989082}
@@ -180,6 +183,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 3714523129919109458}
       plantGameObject: {fileID: 7118929303726767283}
@@ -200,6 +204,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 4594065248663928140}
       plantGameObject: {fileID: 7964124871768160429}
@@ -220,6 +225,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 7856002374488344833}
       plantGameObject: {fileID: 4341760216208805088}
@@ -240,6 +246,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 9037185757137085539}
       plantGameObject: {fileID: 3183393959001743746}
@@ -260,6 +267,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 4419262394954195550}
       plantGameObject: {fileID: 7787701063610591167}
@@ -280,6 +288,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 55976478364612722}
       plantGameObject: {fileID: 5873249372040297875}
@@ -300,6 +309,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 5193790554865729492}
       plantGameObject: {fileID: 1824850228289780277}
@@ -320,6 +330,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 2421873391607805940}
       plantGameObject: {fileID: 8132126968080282133}
@@ -340,6 +351,7 @@ MonoBehaviour:
           name: 
           icon: {fileID: 0}
           stars: 0
+          baseSellPrice: 0
         gameObject: {fileID: 0}
       slotGameObject: {fileID: 4956724481411601151}
       plantGameObject: {fileID: 1553449159506859806}
@@ -352,9 +364,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -444,6 +504,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 1553449159506859806}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -472,9 +548,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -564,6 +688,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 1824850228289780277}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -592,9 +732,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -684,6 +872,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 4341760216208805088}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -712,9 +916,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -804,6 +1056,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 3183393959001743746}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -832,9 +1100,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -924,6 +1240,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 6159055718711989082}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -952,9 +1284,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -1044,6 +1424,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 5873249372040297875}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1072,9 +1468,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -1164,6 +1608,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 8132126968080282133}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1192,9 +1652,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -1284,6 +1792,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 9049629827723007188}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1312,9 +1836,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -1404,6 +1976,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 7118929303726767283}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1432,9 +2020,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -1524,6 +2160,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 7787701063610591167}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1552,9 +2204,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -1644,6 +2344,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 7964124871768160429}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1672,9 +2388,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7704177598510050320}
     m_Modifications:
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402315798982213373, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3544455601252627256, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4973671515248259192, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Name
       value: FarmSlot (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068198644359024702, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6795388036061201413, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
       propertyPath: m_Pivot.x
@@ -1760,6 +2524,22 @@ PrefabInstance:
       propertyPath: farmSlot.plantGameObject
       value: 
       objectReference: {fileID: 7735838509769749790}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8404098900990411348, guid: 09e90f031960ca146a4f15a3fe6b4b95, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

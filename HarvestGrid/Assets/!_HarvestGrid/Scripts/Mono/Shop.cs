@@ -6,6 +6,11 @@ public class Shop : MonoBehaviour
     [SerializeField]
     private List<ItemInShop> itemInShops;
 
+    private void Start()
+    {
+        RerollShop();
+    }
+
     public void RerollShop()
     {
         Dictionary<ItemPrototype, float> itemPool =
@@ -36,7 +41,7 @@ public class Shop : MonoBehaviour
 
                 if (randomValue <= candidate.Value)
                 {
-                    itemInShop.SetData(candidate.Key.item);
+                    itemInShop.SetData(candidate.Key.item.Clone());
                     found = true;
                 }
             }
