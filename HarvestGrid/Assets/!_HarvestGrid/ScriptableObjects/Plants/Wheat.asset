@@ -72,4 +72,5 @@ MonoBehaviour:
       name: Wheat
       icon: {fileID: 4603014837311241366, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
       stars: 0
+      baseSellPrice: 4
     gameObject: {fileID: 0}

@@ -127,6 +127,7 @@ public class Footprint : ICloneable<Footprint>, ISerializationCallbackReceiver
         {
             for (int y = 0; y < height; y++)
             {
+                // Rotate -90° / clockwise
                 rotated[y, width - 1 - x] = requiring[x, y];
             }
         }

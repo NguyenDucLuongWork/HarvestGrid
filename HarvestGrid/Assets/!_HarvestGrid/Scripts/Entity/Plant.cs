@@ -92,15 +92,11 @@ public class Plant : ICloneable<Plant>
     public bool BeginGrow(GameObject gameObject)
     {
         this.gameObject = gameObject;
-        gameObject.SetActive(true);
+
         bool grew = GrowToNextStage();
 
         if (grew)
-        {
             OnStageChanged?.Invoke(currentState);
-        }
-
-        
 
         return grew;
     }
@@ -219,9 +215,21 @@ public class Plant : ICloneable<Plant>
         if (nextStageRequirement.Count == 0)
         {
             bool grew = GrowToNextStage();
+
             if (grew)
             {
                 OnStageChanged?.Invoke(currentState);
+            }
+        }
+
+        // Sync UI after requirement changed.
+        if (gameObject != null)
+        {
+            PlantMono plantMono = gameObject.GetComponent<PlantMono>();
+
+            if (plantMono != null)
+            {
+                plantMono.UpdateRequiringPanel(this);
             }
         }
 

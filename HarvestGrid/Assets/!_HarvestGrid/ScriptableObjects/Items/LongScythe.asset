@@ -23,7 +23,7 @@ MonoBehaviour:
     rarity: 0
     uses:
     - rid: 8788999201735311544
-    price: 0
+    price: 3
     footprint:
       width: 2
       height: 3
