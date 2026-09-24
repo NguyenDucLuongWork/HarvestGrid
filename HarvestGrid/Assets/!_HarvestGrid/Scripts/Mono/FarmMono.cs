@@ -17,14 +17,14 @@ public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
         {
             farm = new Farm();
         }
-
+        
         int clearedCount = farm.ValidateData();
 
         if (clearedCount > 0)
         {
             Debug.Log($"Farm '{name}' validated. Cleared {clearedCount} blank-ID plant(s).", this);
         }
-
+        TrackDataAndSort();
         farm.SetFarmSlotForFarmSlotMono();
     }
     [ContextMenu("Track Data And Sort")]

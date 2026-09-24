@@ -14,14 +14,16 @@ public class ItemFactory : BaseSingleton<ItemFactory>
     public void SpawnItemWithoutClone(Item item)
     {
         ItemMono newItemMono = Instantiate(itemPrefab);
+        newItemMono.transform.localScale = Vector3.one;
         newItemMono.Init(item);
-        Debug.Log(InventoryMono.Instance.Inventory.Items.Count);
         newItemMono.Run();
     }
 
-    public void SpawnItemWithFootprint(StoredObject storedObject)
+    public ItemWithFootprintMono SpawnItemMonoWithFootprint(StoredObject storedObject)
     {
         ItemWithFootprintMono newItem = Instantiate(itemWithFootprintPrefab, itemPlaceHolder);
         newItem.ForceAddToInventory(storedObject);
+        newItem.LateSnap();
+        return newItem;
     }
 }

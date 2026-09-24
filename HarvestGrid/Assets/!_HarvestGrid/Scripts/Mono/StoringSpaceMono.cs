@@ -188,7 +188,7 @@ public class StoringSpaceMono : BaseSingleton<StoringSpaceMono>
         RefreshVisuals();
     }
 
-    public void AutoUpdateDataRefreshUI()
+    public void AutoUpdateDataAndRefreshUI()
     {
         storingSpace.UpdateOccupiedDataFully(InventoryMono.Instance.Inventory.Items);
         RefreshVisuals();

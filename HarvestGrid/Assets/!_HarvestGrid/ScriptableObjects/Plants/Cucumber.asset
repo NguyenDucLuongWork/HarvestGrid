@@ -54,4 +54,5 @@ MonoBehaviour:
       name: Cucumber
       icon: {fileID: -4912337978787708444, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
       stars: 0
+      baseSellPrice: 36
     gameObject: {fileID: 0}

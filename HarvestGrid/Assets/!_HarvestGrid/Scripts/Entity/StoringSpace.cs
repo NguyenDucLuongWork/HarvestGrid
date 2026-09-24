@@ -329,21 +329,6 @@ public class StoringSpace : ICloneable<StoringSpace>, ISerializationCallbackRece
             if (footprint == null)
                 continue;
 
-            // Clone because we must NOT rotate the Item's original
-            // footprint.
-            Footprint rotatedFootprint = footprint.Clone();
-
-            // Apply saved rotation.
-            int rotationCount = storedObject.Rotated % 4;
-
-            if (rotationCount < 0)
-                rotationCount += 4;
-
-            for (int i = 0; i < rotationCount; i++)
-            {
-                rotatedFootprint.Rotate();
-            }
-
             Vector2Int pivot = storedObject.Pivot;
 
             // --------------------------------------------------
@@ -351,7 +336,7 @@ public class StoringSpace : ICloneable<StoringSpace>, ISerializationCallbackRece
             // --------------------------------------------------
 
             List<Vector2Int> positions =
-                rotatedFootprint.ToSpace(pivot);
+                footprint.ToSpace(pivot);
 
             bool valid = true;
 
@@ -409,9 +394,8 @@ public class StoringSpace : ICloneable<StoringSpace>, ISerializationCallbackRece
                     StoringCellType.Occupied;
             }
 
-            // Store the rotated footprint and its bottom-left pivot.
             storedObjectAndBottomLeftPivot.Add(
-                rotatedFootprint,
+                footprint,
                 pivot
             );
         }

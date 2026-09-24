@@ -79,7 +79,12 @@ public class FarmSlot : ICloneable<FarmSlot>
         }
 
         this.plant = plant;
+
         plant.BeginGrow(plantGameObject);
+
+        plantGameObject
+            ?.GetComponent<PlantMono>()
+            ?.UpdatePlantVisual(plant);
 
         return true;
     }
@@ -92,14 +97,21 @@ public class FarmSlot : ICloneable<FarmSlot>
         this.plant = null;
 
         if (plantGameObject != null)
-            plantGameObject.SetActive(false);
+        {
+            PlantMono plantMono = plantGameObject.GetComponent<PlantMono>();
+
+            if (plantMono != null)
+                plantMono.UpdatePlantVisual(null);
+            else
+                plantGameObject.SetActive(false);
+        }
 
         return true;
     }
-    
+
 
 #if !UnityEditor
-public void SetID(string id)
+    public void SetID(string id)
     {
         slotID = id;
     }
@@ -111,7 +123,8 @@ public void SetID(string id)
     /// </summary>
     public void CopyData(FarmSlot original)
     {
-        if (original == null) return;
+        if (original == null)
+            return;
 
         slotID = original.slotID;
         soilQuality = original.soilQuality;
@@ -119,36 +132,37 @@ public void SetID(string id)
 
         if (original.plant == null)
         {
-            if (plant != null)
+            plant = null;
+
+            if (plantGameObject != null)
             {
-                plant = null;
-                if (plantGameObject != null)
+                PlantMono plantMono = plantGameObject.GetComponent<PlantMono>();
+
+                if (plantMono != null)
+                    plantMono.UpdatePlantVisual(null);
+                else
                     plantGameObject.SetActive(false);
             }
+
             return;
         }
 
         if (plant == null)
         {
-            // No plant currently occupying this scene slot — spin up a fresh
-            // Plant data instance and bind it to the slot's existing GameObject.
             plant = new Plant(original.plant)
             {
                 gameObject = plantGameObject
             };
-
-            if (plantGameObject != null)
-            {
-                plantGameObject.SetActive(plant.CurrentState != null);
-                if (plant.CurrentState != null)
-                {
-                    plantGameObject.GetComponent<PlantMono>()?.UpdateSprite(plant.CurrentState.Sprite);
-                }
-            }
         }
         else
         {
             plant.CopyData(original.plant);
         }
+
+        plant.gameObject = plantGameObject;
+
+        plantGameObject
+            ?.GetComponent<PlantMono>()
+            ?.UpdatePlantVisual(plant);
     }
 }

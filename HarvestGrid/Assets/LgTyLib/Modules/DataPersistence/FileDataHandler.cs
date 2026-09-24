@@ -7,13 +7,14 @@ namespace LgTyLib.Modules.DataPersistence
     public class FileDataHandler
     {
         private readonly string rootPath;
+        private const string UserDataFileName = "user.json";
 
         public FileDataHandler(string rootPath)
         {
             this.rootPath = rootPath;
         }
 
-        private string GetFullPath(SaveSlotId slot)
+        private string GetSlotPath(SaveSlotId slot)
         {
             string slotFile = slot.slotName.EndsWith(".json")
                 ? slot.slotName
@@ -22,23 +23,23 @@ namespace LgTyLib.Modules.DataPersistence
             return Path.Combine(rootPath, slot.playthroughId, slotFile);
         }
 
-        public bool SaveExists(SaveSlotId slot) => File.Exists(GetFullPath(slot));
+        private string GetUserDataPath() => Path.Combine(rootPath, UserDataFileName);
 
-        public GameData Load(SaveSlotId slot)
+        // ── Generic file I/O (shared by per-slot saves and global user data) ──
+
+        private T LoadFile<T>(string fullPath) where T : class
         {
-            string fullPath = GetFullPath(slot);
-
             if (!File.Exists(fullPath))
                 return null;
 
             try
             {
-                string dataToLoad;
+                string json;
                 using (var stream = new FileStream(fullPath, FileMode.Open))
                 using (var reader = new StreamReader(stream))
-                    dataToLoad = reader.ReadToEnd();
+                    json = reader.ReadToEnd();
 
-                return JsonUtility.FromJson<GameData>(dataToLoad);
+                return JsonUtility.FromJson<T>(json);
             }
             catch (Exception e)
             {
@@ -47,19 +48,17 @@ namespace LgTyLib.Modules.DataPersistence
             }
         }
 
-        public void Save(SaveSlotId slot, GameData gameData)
+        private void SaveFile<T>(string fullPath, T data) where T : class
         {
-            string fullPath = GetFullPath(slot);
-
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
-                string dataToStore = JsonUtility.ToJson(gameData, prettyPrint: true);
+                string json = JsonUtility.ToJson(data, prettyPrint: true);
 
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 using (var writer = new StreamWriter(stream))
-                    writer.Write(dataToStore);
+                    writer.Write(json);
             }
             catch (Exception e)
             {
@@ -67,9 +66,17 @@ namespace LgTyLib.Modules.DataPersistence
             }
         }
 
+        // ── Per-slot gameplay saves ─────────────────────────────────
+
+        public bool SaveExists(SaveSlotId slot) => File.Exists(GetSlotPath(slot));
+
+        public GameData Load(SaveSlotId slot) => LoadFile<GameData>(GetSlotPath(slot));
+
+        public void Save(SaveSlotId slot, GameData gameData) => SaveFile(GetSlotPath(slot), gameData);
+
         public void Delete(SaveSlotId slot)
         {
-            string fullPath = GetFullPath(slot);
+            string fullPath = GetSlotPath(slot);
 
             if (!File.Exists(fullPath))
             {
@@ -88,7 +95,6 @@ namespace LgTyLib.Modules.DataPersistence
             }
         }
 
-        /// <summary>Returns all slot names within a playthrough folder.</summary>
         public string[] GetAllSlots(string playthroughId)
         {
             string dir = Path.Combine(rootPath, playthroughId);
@@ -104,7 +110,6 @@ namespace LgTyLib.Modules.DataPersistence
             return files;
         }
 
-        /// <summary>Returns all playthrough folder names.</summary>
         public string[] GetAllPlaythroughs()
         {
             if (!Directory.Exists(rootPath))
@@ -118,7 +123,6 @@ namespace LgTyLib.Modules.DataPersistence
             return dirs;
         }
 
-        /// <summary>Deletes an entire playthrough folder and all its saves.</summary>
         public void DeletePlaythrough(string playthroughId)
         {
             string dir = Path.Combine(rootPath, playthroughId);
@@ -139,5 +143,13 @@ namespace LgTyLib.Modules.DataPersistence
                 Debug.LogError($"Error deleting playthrough {dir}\n{e}");
             }
         }
+
+        // ── Global user/account data (one file, independent of any playthrough) ──
+
+        public bool UserDataExists() => File.Exists(GetUserDataPath());
+
+        public UserData LoadUserData() => LoadFile<UserData>(GetUserDataPath());
+
+        public void SaveUserData(UserData userData) => SaveFile(GetUserDataPath(), userData);
     }
 }

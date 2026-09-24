@@ -23,7 +23,7 @@ MonoBehaviour:
     rarity: 0
     uses:
     - rid: 8788999236187062785
-    price: 0
+    price: 1
     footprint:
       width: 2
       height: 2
@@ -106,4 +106,5 @@ MonoBehaviour:
             name: Bean
             icon: {fileID: 2044220142298646161, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
             stars: 0
+            baseSellPrice: 20
           gameObject: {fileID: 0}

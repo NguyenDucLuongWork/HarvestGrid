@@ -3,6 +3,7 @@ using LgTyLib.Modules.DataPersistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 [Serializable]
@@ -20,6 +21,12 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
 
     [SerializeField]
     private RectTransform itemBar;
+
+    [SerializeField]
+    private TextMeshProUGUI moneyText;
+
+    [SerializeField]
+    public RectTransform itemTemporaryHolder;
 
     [Header("Data")]
     [SerializeField]
@@ -69,6 +76,9 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
     {
         inventory ??= new Inventory();
 
+        // Money changes
+        inventory.OnMoneyChanged += HandleMoneyChanged;
+
         // Crop changes
         inventory.OnCropsChanged += HandleCropsChanged;
 
@@ -76,19 +86,82 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         inventory.OnItemsChanged += HandleItemsChanged;
 
         // Build initial UI
+        UpdateMoneyText();
         AddCropToCropBar();
         AddItemToItemBar();
     }
 
     protected override void OnDestroy()
     {
+        if (inventory != null)
+        {
+            inventory.OnMoneyChanged -= HandleMoneyChanged;
+            inventory.OnCropsChanged -= HandleCropsChanged;
+            inventory.OnItemsChanged -= HandleItemsChanged;
+        }
+
+        base.OnDestroy();
+    }
+
+    // ============================================================
+    // MONEY
+    // ============================================================
+
+    private void HandleMoneyChanged(int money)
+    {
+        UpdateMoneyText(money);
+    }
+
+    private void UpdateMoneyText()
+    {
         if (inventory == null)
             return;
 
-        inventory.OnCropsChanged -= HandleCropsChanged;
-        inventory.OnItemsChanged -= HandleItemsChanged;
-        base.OnDestroy();
+        UpdateMoneyText(inventory.Money);
     }
+
+    private void UpdateMoneyText(int money)
+    {
+        if (moneyText == null)
+            return;
+
+        moneyText.text = money.ToString();
+    }
+
+    public void SellOne(Crop crop)
+    {
+        if (crop == null || inventory == null)
+            return;
+
+        if (!inventory.Crops.TryGetValue(crop, out int amount) || amount <= 0)
+            return;
+
+        if (!inventory.RemoveCrop(crop, 1))
+            return;
+
+        int sellPrice = crop.GetSellPrice();
+        inventory.AddMoney(sellPrice);
+    }
+
+    public void AddMoney(int amount)
+    {
+        if (inventory == null)
+            return;
+
+        inventory.AddMoney(amount);
+    }
+
+    public bool RemoveMoney(int amount)
+    {
+        if (inventory == null)
+            return false;
+
+        return inventory.RemoveMoney(amount);
+    }
+
+    // ============================================================
+    // ITEM USES
+    // ============================================================
 
     public void AddItemUses(string itemID, int uses)
     {
@@ -124,7 +197,8 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
     // CROP BAR
     // ============================================================
 
-    private void HandleCropsChanged(IReadOnlyDictionary<Crop, int> crops)
+    private void HandleCropsChanged(
+        IReadOnlyDictionary<Crop, int> crops)
     {
         AddCropToCropBar();
     }
@@ -137,7 +211,11 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         var crops = inventory.Crops;
 
         // Group by CropID + Stars, summing amounts for matches.
-        var grouped = new Dictionary<(string cropID, int stars), (Crop crop, int amount)>();
+        var grouped =
+            new Dictionary<
+                (string cropID, int stars),
+                (Crop crop, int amount)
+            >();
 
         foreach (var kvp in crops)
         {
@@ -151,7 +229,8 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
 
             if (grouped.TryGetValue(key, out var existing))
             {
-                grouped[key] = (existing.crop, existing.amount + amount);
+                grouped[key] =
+                    (existing.crop, existing.amount + amount);
             }
             else
             {
@@ -166,7 +245,8 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         {
             if (!grouped.ContainsKey(kvp.Key))
             {
-                (toRemove ??= new List<(string, int)>()).Add(kvp.Key);
+                (toRemove ??=
+                    new List<(string, int)>()).Add(kvp.Key);
             }
         }
 
@@ -182,7 +262,8 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         // Add/update entries.
         int index = 0;
 
-        foreach (var kvp in grouped)
+        foreach (var kvp in grouped.OrderBy(g => g.Key.cropID)
+                                    .ThenBy(g => g.Key.stars))
         {
             var key = kvp.Key;
             Crop crop = kvp.Value.crop;
@@ -208,8 +289,8 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
     private void HandleItemsChanged(IReadOnlyList<Item> items)
     {
         AddItemToItemBar();
+        StoringSpaceMono.Instance.AutoUpdateDataAndRefreshUI();
     }
-
 
     public void AddItemToItemBar()
     {
@@ -225,7 +306,8 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         {
             if (!items.Contains(kvp.Key))
             {
-                (toRemove ??= new List<Item>()).Add(kvp.Key);
+                (toRemove ??=
+                    new List<Item>()).Add(kvp.Key);
             }
         }
 
@@ -246,10 +328,16 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
             if (item == null)
                 continue;
 
-            if (!itemUIEntries.TryGetValue(item, out ItemUIComponent uiEntry))
+            if (!itemUIEntries.TryGetValue(
+                    item,
+                    out ItemUIComponent uiEntry))
             {
-                uiEntry = item.gameObject.GetComponent<ItemUIComponent>();
-                item.gameObject.transform.parent = itemBar.transform; 
+                uiEntry =
+                    item.gameObject.GetComponent<ItemUIComponent>();
+
+                item.gameObject.transform.parent =
+                    itemBar.transform;
+
                 itemUIEntries.Add(item, uiEntry);
             }
 
@@ -261,19 +349,30 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
     }
 
     // ============================================================
-    // Save Load
+    // SAVE / LOAD
     // ============================================================
+
     public void LoadGame(GameData gameData)
     {
-        // 1. Clear existing items, crops, and UI before loading new data
+        // 1. Clear existing items, crops, and UI before loading new data.
         ClearAllInventory();
 
         if (gameData == null || gameData.inventory == null)
             return;
 
         // =========================
+        // MONEY
+        // =========================
+
+        if (gameData.inventory.Money > 0)
+        {
+            inventory.AddMoney(gameData.inventory.Money);
+        }
+
+        // =========================
         // CROPS
         // =========================
+
         foreach (var pair in gameData.inventory.Crops)
         {
             Crop crop = pair.Key;
@@ -288,21 +387,28 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         // =========================
         // ITEMS
         // =========================
-        foreach (StoredObject savedObject in gameData.inventory.Items)
+
+        foreach (StoredObject savedObject
+                 in gameData.inventory.Items)
         {
             if (savedObject == null || savedObject.Item == null)
                 continue;
 
-            StoredObject restoredObject = savedObject.Clone();
+            StoredObject restoredObject =
+                savedObject.Clone();
 
-            // The ItemMono owns the inventory-bar UI object and assigns it to
-            // Item.gameObject before the item is added to the inventory.
-            ItemFactory.Instance.SpawnItemWithoutClone(restoredObject.Item);
+            // The ItemMono owns the inventory-bar UI object and
+            // assigns it to Item.gameObject before the item is
+            // added to the inventory.
+            ItemFactory.Instance.SpawnItemWithoutClone(
+                restoredObject.Item);
+
             inventory.AddItem(restoredObject);
 
-            // This restores the storage-space visual only. The overload takes
-            // an existing StoredObject and must not add it a second time.
-            ItemFactory.Instance.SpawnItemWithFootprint(restoredObject);
+            // This restores the storage-space visual only.
+            ItemWithFootprintMono itemMono =
+                ItemFactory.Instance
+                    .SpawnItemMonoWithFootprint(restoredObject);
         }
     }
 
@@ -317,12 +423,17 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
             if (kvp.Value != null)
                 Destroy(kvp.Value.gameObject);
 
-            // If the Item GameObject is separate from the UI component, destroy it as well
-            if (kvp.Key != null && kvp.Key.gameObject != null && (kvp.Value == null || kvp.Key.gameObject != kvp.Value.gameObject))
+            // If the Item GameObject is separate from the UI component,
+            // destroy it as well.
+            if (kvp.Key != null &&
+                kvp.Key.gameObject != null &&
+                (kvp.Value == null ||
+                 kvp.Key.gameObject != kvp.Value.gameObject))
             {
                 Destroy(kvp.Key.gameObject);
             }
         }
+
         itemUIEntries.Clear();
 
         // --- Clear Crops UI ---
@@ -331,22 +442,26 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
             if (kvp.Value != null)
                 Destroy(kvp.Value.gameObject);
         }
+
         cropUIEntries.Clear();
 
         // --- Clear Data ---
         itemUsesAccumilation.Clear();
 
-        // Re-initialize inventory instance to ensure a clean state
+        // Re-initialize inventory instance to ensure a clean state.
         inventory = new Inventory();
 
-        // Re-subscribe events for the new inventory instance
+        // Re-subscribe events for the new inventory instance.
+        inventory.OnMoneyChanged += HandleMoneyChanged;
         inventory.OnCropsChanged += HandleCropsChanged;
         inventory.OnItemsChanged += HandleItemsChanged;
+
+        // Refresh money UI for the new inventory.
+        UpdateMoneyText();
     }
 
     public void SaveGame(ref GameData gameData)
     {
-        gameData.inventory = this.inventory;
+        gameData.inventory = inventory;
     }
-
 }

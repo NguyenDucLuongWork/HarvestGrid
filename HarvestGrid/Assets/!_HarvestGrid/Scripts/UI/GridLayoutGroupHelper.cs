@@ -400,6 +400,7 @@ public class GridLayoutGroupHelper : MonoBehaviour
         Vector2Int dimensions = GetUsedDimensions();
         float closestDistance = float.PositiveInfinity;
         Vector2Int closestCell = Vector2Int.zero;
+        bool foundAny = false;
 
         for (int row = 0; row < dimensions.y; row++)
         {
@@ -408,13 +409,12 @@ public class GridLayoutGroupHelper : MonoBehaviour
                 if (!TryGetCellChild(col, row, out RectTransform cell))
                     continue;
 
+                foundAny = true;
+
                 Vector3[] corners = new Vector3[4];
                 cell.GetWorldCorners(corners);
                 UnityEngine.Rect cellBounds = UnityEngine.Rect.MinMaxRect(
-                    corners[0].x,
-                    corners[0].y,
-                    corners[2].x,
-                    corners[2].y
+                    corners[0].x, corners[0].y, corners[2].x, corners[2].y
                 );
 
                 if (cellBounds.Contains(worldPoint))
@@ -429,18 +429,25 @@ public class GridLayoutGroupHelper : MonoBehaviour
             }
         }
 
-        if (closestDistance < float.PositiveInfinity)
+        if (foundAny)
             return closestCell;
 
+        // No real children to measure against (e.g. empty grid) — compute the
+        // nearest cell analytically using cell CENTERS, not edges.
         GetContentLocalOrigin(out float leftX, out float bottomY);
 
         Vector3 local = RT.InverseTransformPoint(worldPoint);
 
-        float xFromLeft = local.x - leftX;
-        float yFromBottom = local.y - bottomY;
+        float cellStepX = Grid.cellSize.x + Grid.spacing.x;
+        float cellStepY = Grid.cellSize.y + Grid.spacing.y;
 
-        int fallbackCol = Mathf.FloorToInt(xFromLeft / (Grid.cellSize.x + Grid.spacing.x));
-        int fallbackRow = Mathf.FloorToInt(yFromBottom / (Grid.cellSize.y + Grid.spacing.y));
+        // Cell 0's center is at leftX + cellSize.x/2, cell 1's at leftX + cellStepX + cellSize.x/2, etc.
+        // Solve for the nearest integer col/row by centering the point on cell 0's center first.
+        float xFromFirstCenter = local.x - (leftX + Grid.cellSize.x * 0.5f);
+        float yFromFirstCenter = local.y - (bottomY + Grid.cellSize.y * 0.5f);
+
+        int fallbackCol = Mathf.RoundToInt(xFromFirstCenter / cellStepX);
+        int fallbackRow = Mathf.RoundToInt(yFromFirstCenter / cellStepY);
 
         Vector2Int dims = GetUsedDimensions();
         fallbackCol = Mathf.Clamp(fallbackCol, 0, Mathf.Max(0, dims.x - 1));
@@ -549,5 +556,21 @@ public class GridLayoutGroupHelper : MonoBehaviour
         leftX = RT.rect.xMin + offsetFromLeft;
         float topY = RT.rect.yMax - offsetFromTop;
         bottomY = topY - contentHeight;
+    }
+
+    public void HideImages()
+    {
+        foreach (Image image in GetComponentsInChildren<Image>(true))
+        {
+            image.enabled = false;
+        }
+    }
+
+    public void ShowImages()
+    {
+        foreach (Image image in GetComponentsInChildren<Image>(true))
+        {
+            image.enabled = true;
+        }
     }
 }
