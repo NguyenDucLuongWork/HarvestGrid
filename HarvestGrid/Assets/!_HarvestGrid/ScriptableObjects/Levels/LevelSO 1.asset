@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4880e8b91fab4f649a913bbc8fccde90, type: 3}
+  m_Name: LevelSO 1
+  m_EditorClassIdentifier: Assembly-CSharp::LevelSO
+  levelID: lv1
+  farmMono: {fileID: 8755352648209613600, guid: 00443bbef369a534d8d30ef195797b7b, type: 3}
+  itemAndChancePool: []
+  storingSpaceSO: {fileID: 11400000, guid: ea19f1a60427b234d8d5c3e432c63839, type: 2}

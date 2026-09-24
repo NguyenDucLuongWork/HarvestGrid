@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925e510fbf32b0f46b00a11ffbe507d3, type: 3}
+  m_Name: GrowthBuff
+  m_EditorClassIdentifier: Assembly-CSharp::ItemPrototype
+  useConfig:
+  - type: 1
+    plantPrototype: {fileID: 0}
+  footprintSO: {fileID: 11400000, guid: bbaf524e4506f4c40b9083af780fb0be, type: 2}
+  item:
+    id: GrowthBuff
+    name: GrowthBuff
+    icon: {fileID: 3051830828411116768, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
+    rarity: 0
+    uses:
+    - rid: 8788999201735311528
+    price: 2
+    footprint:
+      width: 1
+      height: 2
+      requiringFlat: 0101y
+      gameObject: {fileID: 0}
+    progressTimer:
+      duration: 1
+      finishedHoldDuration: 0
+      playOnStart: 1
+      loop: 1
+      progress: 0.41355908
+      isPlaying: 1
+      isFinishedHolding: 0
+    gameObject: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8788999201735311528
+      type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        amount: 5
