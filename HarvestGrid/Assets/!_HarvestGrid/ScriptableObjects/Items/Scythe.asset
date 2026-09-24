@@ -23,19 +23,19 @@ MonoBehaviour:
     rarity: 0
     uses:
     - rid: 8788999201735311544
-    price: 0
+    price: 4
     footprint:
       width: 2
       height: 2
-      requiringFlat: 01010100y
+      requiringFlat: 01000101y
       gameObject: {fileID: 0}
     progressTimer:
       duration: 4
       finishedHoldDuration: 0
       playOnStart: 1
       loop: 1
-      progress: 0
-      isPlaying: 0
+      progress: 0.28303838
+      isPlaying: 1
       isFinishedHolding: 0
     gameObject: {fileID: 0}
   references:

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LevelSO
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   levelID: lv0
+  money: 100
   farmMono: {fileID: 7061462486974703871, guid: 7a587773da01a2540a20f5a0c4fd8851, type: 3}
   itemAndChancePool:
   - key: {fileID: 11400000, guid: 6726fad5be7eaf747908c800c2ca130b, type: 2}

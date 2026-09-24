@@ -20,7 +20,9 @@ public class ItemWithFootprintMono : MonoBehaviour
     private Image image;
     [SerializeField]
     private GridLayoutGroupHelper gridLayoutGroupHelper;
-
+    [SerializeField]
+    private FootprintRequiringVisual predictionVisual;
+    [SerializeField]
     private int rotated;
     public int Rotated => rotated;
 
@@ -31,16 +33,27 @@ public class ItemWithFootprintMono : MonoBehaviour
     public bool bought { get; private set;  }
     [SerializeField]
     private StoredObject storedObject;
-    private bool addedToInventory;
+
+    public bool isAddedToInventory { get; private set; }
+
     public void SetData(Item item)
     {
-        addedToInventory = false;
+        isAddedToInventory = false;
+        bought = false;
+        GetComponent<DragableUGUI>().Interactable = false;
+        gridLayoutGroupHelper.ShowImages();
+
         this.item = item;
         this.image.sprite = item.Icon;
 
         OnDataFootprintChanged();
         this.image.SetNativeSize();
         rotated = 0;
+    }
+
+    public void SetStoredObject(StoredObject storedObject)
+    {
+        this.storedObject = storedObject;
     }
 
     public void Rotate()
@@ -64,8 +77,10 @@ public class ItemWithFootprintMono : MonoBehaviour
             storedObject.Rotated = rotated;
             storedObject.Pivot = storedPivot;
         }
-        StoringSpaceMono.Instance.AutoUpdateDataRefreshUI();
-
+        StoringSpaceMono.Instance.AutoUpdateDataAndRefreshUI();
+        gridLayoutGroupHelper.HideImages();
+        LateSnap();
+        
     }
 
     public void OnDataFootprintChanged()
@@ -86,7 +101,7 @@ public class ItemWithFootprintMono : MonoBehaviour
 
         // Sibling order must be row-major, top row first, to match
         // Start Corner = Lower Left / Start Axis = Vertical in the inspector.
-        for (int y = height - 1; y >= 0; y--)
+        for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
@@ -100,8 +115,6 @@ public class ItemWithFootprintMono : MonoBehaviour
                 }
                 else
                 {
-                    // No empty-cell prefab assigned: spawn a blank placeholder
-                    // so the layout still reserves this slot.
                     cell = new GameObject("EmptyCell", typeof(RectTransform));
                     cell.transform.SetParent(gridLayoutGroup.transform, false);
                 }
@@ -127,7 +140,7 @@ public class ItemWithFootprintMono : MonoBehaviour
     {
         if (TryToSnapToStoringSpace())
         {
-            StartCoroutine(LateFixSnapNextFrame());
+            LateSnap();
         }
         else
         {
@@ -135,46 +148,67 @@ public class ItemWithFootprintMono : MonoBehaviour
         }
     }
 
-    private IEnumerator LateFixSnapNextFrame()
+    private IEnumerator LateFixSnapNextFrame(Transform transformToSet, Vector2Int pivot)
     {
         yield return null; // wait 1 frame
-        LateFixSnap();
+        gridLayoutGroupHelper.Snap(StoringSpaceMono.Instance.gridLayoutGroupHelper,
+            (RectTransform)transformToSet,
+            pivot
+            );
+        predictionVisual.Hide();
     }
     public bool TryToSnapToStoringSpace()
     {
         var storingHelper = StoringSpaceMono.Instance.gridLayoutGroupHelper;
-
         // 1. Where would this land?
         if (!gridLayoutGroupHelper.TryComputeSnapCellIndex(storingHelper, out Vector2Int pivot))
+        {
+            HandleCannotSnap();
             return false;
+        }
 
         // 2. Is that actually a legal placement per the footprint's real shape
         if (!StoringSpaceMono.Instance.TryPlaceFootprint(item.Footprint, pivot))
+        {
+
+            HandleCannotSnap();
             return false;
+        }
+            
 
         AddToInventory(pivot);
-        gridLayoutGroupHelper.Snap(storingHelper, (RectTransform)transform, pivot);
         
-        bought = true;
         return true;
+    }
+
+    private void HandleCannotSnap()
+    {
+        // Cannot snap
+        if (!isAddedToInventory)
+        {
+            transform.SetParent(InventoryMono.Instance.itemTemporaryHolder);
+            transform.localPosition = Vector3.zero;
+            transform.localScale = Vector3.one * 0.6f;
+            predictionVisual.Hide();
+
+        }
     }
 
     private void AddToInventory(Vector2Int pivot)
     {
         storedPivot = pivot;
 
-        if (!addedToInventory)
+        if (!isAddedToInventory)
         {
             ItemFactory.Instance.SpawnItemWithoutClone(item);
             storedObject = new StoredObject(item, rotated, pivot);
             InventoryMono.Instance.Inventory.AddItem(storedObject);
-            addedToInventory = true;
+            isAddedToInventory = true;
             this.transform.SetParent(ItemFactory.Instance.itemPlaceHolder, true);
-            
+            transform.localScale = Vector3.one;
         }
         storedObject.Pivot = storedPivot;
         storedObject.Rotated = rotated;
-        StoringSpaceMono.Instance.AutoUpdateDataRefreshUI();
     }
 
     public void ForceAddToInventory(StoredObject existing)
@@ -186,18 +220,19 @@ public class ItemWithFootprintMono : MonoBehaviour
         if (existing == null || existing.Item == null)
             return;
 
-        addedToInventory = false;
+        bought = true;
+        isAddedToInventory = true;
         item = existing.Item;
         image.sprite = item.Icon;
         storedObject = existing;
-
-        int normalizedRotation = ((existing.Rotated % 4) + 4) % 4;
-        rotated = normalizedRotation;
+        rotated = existing.Rotated;
+        this.storedPivot = existing.Pivot;
         image.gameObject.transform.localRotation = Quaternion.Euler(0f, 0f, rotated * -90f);
 
         // The saved Item already contains its serialized footprint shape.
         // Reapplying the rotation here would rotate it a second time on load.
         OnDataFootprintChanged();
+        gridLayoutGroupHelper.HideImages();
         image.SetNativeSize();
 
         if (!PlaceAndSnap(existing.Pivot))
@@ -207,8 +242,8 @@ public class ItemWithFootprintMono : MonoBehaviour
             );
             return;
         }
-
-        addedToInventory = true;
+        
+        isAddedToInventory = true;
         storedObject.Pivot = storedPivot;
         storedObject.Rotated = rotated;
         bought = true;
@@ -240,17 +275,132 @@ public class ItemWithFootprintMono : MonoBehaviour
         return true;
     }
 
-    [ContextMenu("TestSnap")]
-    public void LateFixSnap()
+
+    [ContextMenu("LateSnap")]
+    public void LateSnap()
     {
-        gridLayoutGroupHelper.Snap(StoringSpaceMono.Instance.gridLayoutGroupHelper, (RectTransform)transform,
-            storedPivot
-            );
+
+        StartCoroutine(LateFixSnapNextFrame(transform, storedPivot));
     }
 
-    [ContextMenu("TestSnap2")]
-    public void TestSnap2()
+    public void RemoveFromInventory()
     {
-        this.TryToSnapToStoringSpaceFromDrag();
+        Debug.Log("Removing Item");
+        InventoryMono.Instance.Inventory.RemoveItem(storedObject);
+        isAddedToInventory = false;
+    }
+
+    public void SetRotateZero()
+    {
+        if (item == null)
+            return;
+
+        // Rotate footprint back to its 0-degree orientation.
+        // Current state:
+        // 0 -> no rotation
+        // 1 -> rotate 270 degrees (3 clockwise rotations)
+        // 2 -> rotate 180 degrees (2 rotations)
+        // 3 -> rotate 90 degrees (1 rotation)
+        int rotationsToReset = (4 - rotated) % 4;
+
+        for (int i = 0; i < rotationsToReset; i++)
+        {
+            item.Footprint.Rotate();
+        }
+
+        rotated = 0;
+
+        // Reset visual rotation
+        image.gameObject.transform.localRotation = Quaternion.identity;
+
+        // Rebuild footprint UI
+        OnDataFootprintChanged();
+        image.SetNativeSize();
+
+        // Keep stored data synchronized
+        if (storedObject != null)
+        {
+            storedObject.Rotated = 0;
+            storedObject.Pivot = storedPivot;
+        }
+    }
+
+    public void SnapFootprintToRequiringWhileDragging()
+    {
+        var storingHelper = StoringSpaceMono.Instance.gridLayoutGroupHelper;
+
+        // The ORIGINAL helper stays exactly where the drag put it —
+        // it's only used to read the candidate pivot, never moved by us.
+        if (!gridLayoutGroupHelper.TryComputeSnapCellIndex(storingHelper, out Vector2Int pivot))
+        {
+            predictionVisual.Hide();
+            return;
+        }
+
+        predictionVisual.Show();
+        predictionVisual.SetFootprint(item.Footprint, rotated);
+        predictionVisual.SnapTo(storingHelper, pivot);
+    }
+
+    public void Scale(float scale)
+    {
+        transform.localScale = new Vector3(scale, scale, scale);
+    }
+
+    public void OnDragStarted()
+    {
+        predictionVisual.transform.localPosition = Vector3.zero;
+        predictionVisual.Show();
+        predictionVisual.SetFootprint(item.Footprint, rotated);
+
+        if (isAddedToInventory)
+        {
+            RemoveFromInventory();
+        }
+        else
+        {
+            Scale(1f);
+        }
+    }
+
+    public void OnDragEnded()
+    {
+        if (TryToSnapToStoringSpace())
+        {
+            
+            LateSnap();
+        }
+        
+
+    }
+
+    public bool Buy()
+    {
+        if (bought)
+            return false;
+
+        if (item == null)
+            return false;
+
+        int price = item.Price;
+
+        if (price <= 0)
+        {
+            bought = true;
+            return false;
+        }
+
+        if (!InventoryMono.Instance.RemoveMoney(price))
+        {
+            // Not enough money
+            Debug.Log("Have no enough money");
+            return false;
+        }
+
+        bought = true;
+        GetComponent<DragableUGUI>().Interactable = true;
+        gridLayoutGroupHelper.HideImages();
+
+        return true;
     }
 }

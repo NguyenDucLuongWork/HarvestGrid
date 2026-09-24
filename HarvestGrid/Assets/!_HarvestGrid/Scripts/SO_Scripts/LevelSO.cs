@@ -6,6 +6,7 @@ using UnityEngine;
 public class LevelSO : ScriptableObject
 {
     public string levelID;
+    public int money;
     public FarmMono farmMono;
     [SerializeField]
     public Dictionary<ItemPrototype, float> itemAndChancePool;

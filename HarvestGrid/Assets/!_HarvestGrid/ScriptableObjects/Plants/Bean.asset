@@ -74,4 +74,5 @@ MonoBehaviour:
       name: Bean
       icon: {fileID: 2044220142298646161, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
       stars: 0
+      baseSellPrice: 20
     gameObject: {fileID: 0}

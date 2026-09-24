@@ -60,4 +60,5 @@ MonoBehaviour:
       name: Tomato
       icon: {fileID: -1257518098505440576, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
       stars: 0
+      baseSellPrice: 100
     gameObject: {fileID: 0}

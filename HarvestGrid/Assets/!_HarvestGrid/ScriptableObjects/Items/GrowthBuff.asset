@@ -23,7 +23,7 @@ MonoBehaviour:
     rarity: 0
     uses:
     - rid: 8788999201735311528
-    price: 0
+    price: 2
     footprint:
       width: 1
       height: 2
@@ -34,8 +34,8 @@ MonoBehaviour:
       finishedHoldDuration: 0
       playOnStart: 1
       loop: 1
-      progress: 0
-      isPlaying: 0
+      progress: 0.41355908
+      isPlaying: 1
       isFinishedHolding: 0
     gameObject: {fileID: 0}
   references:

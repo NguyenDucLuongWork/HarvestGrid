@@ -12,12 +12,24 @@ public class CropUIComponent : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI stars;
     [SerializeField]
-    private TextMeshProUGUI amount;
+    private TextMeshProUGUI amountText;
+    [SerializeField]
+    private TextMeshProUGUI sellPriceText;
+
+    [SerializeField]
+    private Crop crop;
 
     public void SetData(Crop crop, int amount)
     {
+        this.crop = crop;
         icon.sprite = crop.Icon;
         stars.text = crop.Stars + "";
-        this.amount.text = amount + "";
+        sellPriceText.text = crop.GetSellPrice() + "";
+        this.amountText.text = amount + "";
+    }
+
+    public void SellOne()
+    {
+        InventoryMono.Instance.SellOne(crop);
     }
 }

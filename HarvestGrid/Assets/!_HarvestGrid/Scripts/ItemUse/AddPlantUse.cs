@@ -9,7 +9,7 @@ public class AddPlantUse : ItemUse
     private Plant plantToAdd;
 
     public AddPlantUse() { }
-
+    public Plant PlantToAdd => plantToAdd;
     public AddPlantUse(AddPlantUse original)
     {
         this.plantToAdd = original.plantToAdd.Clone();
