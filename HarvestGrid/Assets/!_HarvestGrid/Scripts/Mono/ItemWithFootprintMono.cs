@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -374,6 +374,8 @@ public class ItemWithFootprintMono : MonoBehaviour
 
     }
 
+    public static event System.Action<ItemWithFootprintMono> OnItemPurchased;
+
     public bool Buy()
     {
         if (bought)
@@ -387,6 +389,7 @@ public class ItemWithFootprintMono : MonoBehaviour
         if (price <= 0)
         {
             bought = true;
+            OnItemPurchased?.Invoke(this);
             return false;
         }
 
@@ -400,6 +403,8 @@ public class ItemWithFootprintMono : MonoBehaviour
         bought = true;
         GetComponent<DragableUGUI>().Interactable = true;
         gridLayoutGroupHelper.HideImages();
+        
+        OnItemPurchased?.Invoke(this);
 
         return true;
     }
