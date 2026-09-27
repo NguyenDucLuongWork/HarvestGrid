@@ -146,10 +146,55 @@ namespace LgTyLib.Modules.DataPersistence
 
         // ── Global user/account data (one file, independent of any playthrough) ──
 
-        public bool UserDataExists() => File.Exists(GetUserDataPath());
+        private string GetUserDataPath(string username) => Path.Combine(rootPath, "Users", username + ".json");
 
-        public UserData LoadUserData() => LoadFile<UserData>(GetUserDataPath());
+        public bool UserDataExists(string username) => File.Exists(GetUserDataPath(username));
 
-        public void SaveUserData(UserData userData) => SaveFile(GetUserDataPath(), userData);
+        public UserData LoadUserData(string username)
+        {
+            string path = GetUserDataPath(username);
+            if (File.Exists(path))
+            {
+                return LoadFile<UserData>(path);
+            }
+
+            // Migration: Check if there's an old GameData save for this username
+            string oldGameDataPath = GetSlotPath(new SaveSlotId("Players", username));
+            if (File.Exists(oldGameDataPath))
+            {
+                try
+                {
+                    string json = File.ReadAllText(oldGameDataPath);
+                    // Extract playerId and username using simple string parsing or JSON node (if available)
+                    // Unity's JsonUtility doesn't have a DOM, we can use a temporary struct
+                    var oldData = JsonUtility.FromJson<OldGameDataProxy>(json);
+                    if (!string.IsNullOrEmpty(oldData.playerId))
+                    {
+                        Debug.Log($"[Migration] Migrating UserData for {username} from old GameData.");
+                        var newUserData = new UserData();
+                        newUserData.userId = oldData.playerId;
+                        newUserData.username = oldData.username;
+                        // Save the migrated UserData immediately
+                        SaveUserData(username, newUserData);
+                        return newUserData;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error migrating UserData for {username}\n{e}");
+                }
+            }
+
+            return null;
+        }
+
+        public void SaveUserData(string username, UserData userData) => SaveFile(GetUserDataPath(username), userData);
+
+        [Serializable]
+        private class OldGameDataProxy
+        {
+            public string playerId;
+            public string username;
+        }
     }
 }
