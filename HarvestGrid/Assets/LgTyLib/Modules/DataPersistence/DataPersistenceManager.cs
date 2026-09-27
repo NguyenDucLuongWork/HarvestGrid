@@ -41,8 +41,6 @@ namespace LgTyLib.Modules.DataPersistence
             dataPersistenceList = FindAllDataPersistences();
             userDataPersistenceList = FindAllUserDataPersistences();
             sessionStartTime = Time.realtimeSinceStartup;
-
-            LoadUserData();
         }
 
         // ── Load ─────────────────────────────────────────────────────
@@ -74,14 +72,14 @@ namespace LgTyLib.Modules.DataPersistence
         /// unlocks, etc). Not tied to any playthrough or slot. If no file exists yet
         /// (first launch), a fresh UserData is created in memory.
         /// </summary>
-        public void LoadUserData()
+        public void LoadUserData(string username)
         {
-            userData = fileDataHandler.LoadUserData() ?? new UserData();
+            userData = fileDataHandler.LoadUserData(username) ?? new UserData();
 
             foreach (var udp in userDataPersistenceList)
                 udp.LoadUserData(userData);
 
-            Debug.Log("User data loaded.");
+            Debug.Log($"User data loaded for {username}.");
             OnUserDataLoaded?.Invoke();
         }
 
@@ -117,16 +115,16 @@ namespace LgTyLib.Modules.DataPersistence
         /// SaveGame — e.g. right after a settings change or on app pause/quit —
         /// not just when a playthrough is saved.
         /// </summary>
-        public void SaveUserData()
+        public void SaveUserData(string username)
         {
             userData ??= new UserData();
 
             foreach (var udp in userDataPersistenceList)
                 udp.SaveUserData(ref userData);
 
-            fileDataHandler.SaveUserData(userData);
+            fileDataHandler.SaveUserData(username, userData);
 
-            Debug.Log("User data saved.");
+            Debug.Log($"User data saved for {username}.");
             OnUserDataSaved?.Invoke();
         }
 
