@@ -1,4 +1,4 @@
-﻿// UserData.Game.cs  ← YOUR file, edit freely
+// UserData.Game.cs  ← YOUR file, edit freely
 using System.Collections.Generic;
 
 namespace LgTyLib.Modules.DataPersistence
@@ -9,6 +9,7 @@ namespace LgTyLib.Modules.DataPersistence
     // ╚══════════════════════════════════════════════════════╝
     public partial class UserData
     {
+        public string username;
         public string displayName;
 
         // Settings that should apply across every playthrough
