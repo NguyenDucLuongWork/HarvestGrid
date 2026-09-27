@@ -18,9 +18,6 @@ namespace LgTyLib.Modules.DataPersistence
     public partial class GameData
     {
         // --- Game-specific fields ---
-        public string playerId;
-        public string username;
-
         public float score;
         public List<Item> items;
         
