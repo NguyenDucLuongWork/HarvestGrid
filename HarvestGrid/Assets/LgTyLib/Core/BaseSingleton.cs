@@ -8,6 +8,18 @@ namespace LgTyLib.Core
         private static readonly object _lock = new object();
         private static bool _isQuitting = false;
 
+        public static bool HasInstance
+        {
+            get
+            {
+                if (_instance != null) return true;
+                if (_isQuitting) return false;
+                
+                _instance = FindAnyObjectByType<T>();
+                return _instance != null;
+            }
+        }
+
         public static T Instance
         {
             get
