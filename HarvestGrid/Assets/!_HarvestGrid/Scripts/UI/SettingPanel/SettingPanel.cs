@@ -33,6 +33,9 @@ namespace HarvestGrid.UI.Settings
 
         private void OnEnable()
         {
+            if (AudioManager.HasInstance)
+                AudioManager.Instance.PlayUIOpen();
+
             // Sync UI state to runtime values securely when panel opens
             if (HarvestGrid.Settings.GraphicsSettingsManager.Instance != null)
             {
@@ -43,7 +46,7 @@ namespace HarvestGrid.UI.Settings
                     qualityDropdown.value = HarvestGrid.Settings.GraphicsSettingsManager.Instance.QualityLevel;
             }
 
-            if (AudioManager.Instance != null)
+            if (AudioManager.HasInstance)
             {
                 if (musicSlider != null)
                 {
@@ -115,7 +118,7 @@ namespace HarvestGrid.UI.Settings
 
         private void OnMusicVolumeChanged(float value)
         {
-            if (AudioManager.Instance != null)
+            if (AudioManager.HasInstance)
             {
                 AudioManager.Instance.UpdateMusicVolume(value);
                 UpdatePercentageText(musicPercentageText, value);
@@ -125,7 +128,7 @@ namespace HarvestGrid.UI.Settings
 
         private void OnSFXVolumeChanged(float value)
         {
-            if (AudioManager.Instance != null)
+            if (AudioManager.HasInstance)
             {
                 AudioManager.Instance.UpdateSFXVolume(value);
                 UpdatePercentageText(sfxPercentageText, value);
@@ -158,6 +161,8 @@ namespace HarvestGrid.UI.Settings
 
         public void ClosePanel()
         {
+            if (AudioManager.HasInstance)
+                AudioManager.Instance.PlayUIClose();
             gameObject.SetActive(false);
         }
     }

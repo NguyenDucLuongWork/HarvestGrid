@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -26,6 +26,18 @@ public class ProviceResourceUse : ItemUse
     public override void Apply(ItemUseContext ctx) {
         
         FarmMono.Instance.ProvidingResourceToRandom(resource, amount);
+
+        if (LgTyLib.Modules.Audio.AudioManager.HasInstance)
+        {
+            if (resource == Resource.Water)
+            {
+                LgTyLib.Modules.Audio.AudioManager.Instance.PlayWateringSound();
+            }
+            else if (resource == Resource.Nutrients)
+            {
+                LgTyLib.Modules.Audio.AudioManager.Instance.PlayFertilizerSound();
+            }
+        }
     }
 
     public override ItemUse Clone()

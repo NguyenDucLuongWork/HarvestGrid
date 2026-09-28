@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 [Serializable]
@@ -21,6 +21,10 @@ public class HarvestUse : ItemUse
 
     public override void Apply(ItemUseContext ctx) {
         FarmMono.Instance.HarvestRandom(effective);
+        if (LgTyLib.Modules.Audio.AudioManager.HasInstance)
+        {
+            LgTyLib.Modules.Audio.AudioManager.Instance.PlaySickleSound();
+        }
     }
 
     public override ItemUse Clone()
