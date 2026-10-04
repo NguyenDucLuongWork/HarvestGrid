@@ -19,36 +19,54 @@ MonoBehaviour:
     currentState:
       sprite: {fileID: 0}
       requiredResources: []
-    nextStageRequirement: []
+    nextStageRequirement:
+    - key: 1
+      value: 14
+    - key: 0
+      value: 13
+    - key: 3
+      value: 8
     stages:
     - sprite: {fileID: 4845093130004184339, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
       requiredResources:
+      - key: 1
+        value: 14
       - key: 0
-        value: 5
+        value: 13
+      - key: 3
+        value: 8
     - sprite: {fileID: -6079087725641582597, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
       requiredResources:
+      - key: 2
+        value: 10
       - key: 1
-        value: 5
+        value: 6
       - key: 0
-        value: 5
+        value: 7
     - sprite: {fileID: 669492167673851439, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
       requiredResources:
-      - key: 0
-        value: 10
+      - key: 1
+        value: 6
       - key: 2
-        value: 10
+        value: 12
+      - key: 0
+        value: 5
     - sprite: {fileID: -5607939481280983574, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
       requiredResources:
-      - key: 0
-        value: 10
       - key: 3
-        value: 10
+        value: 9
+      - key: 1
+        value: 8
+      - key: 2
+        value: 14
     - sprite: {fileID: 5005312502218828524, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
       requiredResources:
+      - key: 1
+        value: 7
       - key: 2
-        value: 10
-      - key: 0
-        value: 10
+        value: 5
+      - key: 3
+        value: 12
     crop:
       cropID: Cucumber
       name: Cucumber
