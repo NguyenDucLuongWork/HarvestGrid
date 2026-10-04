@@ -1,12 +1,13 @@
 using LgTyLib.Core;
 using LgTyLib.Modules.ObjectPooling;
 using LgTyLib.Modules.Settings;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Rendering;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 namespace LgTyLib.Modules.Audio
 {
@@ -67,10 +68,16 @@ namespace LgTyLib.Modules.Audio
 
         private void Start()
         {
-            if (bgm01 != null)
+            if (bgm02 != null)
             {
-                PlayBGM(bgm01);
+                PlayBGM(bgm02);
             }
+        }
+
+        [ContextMenu("PlayBGM")]
+        public void PlayBGM()
+        {
+            PlayBGM(bgm02);
         }
 
         private void Update()
@@ -81,35 +88,47 @@ namespace LgTyLib.Modules.Audio
         private void DetectGlobalButtonClick()
         {
             if (EventSystem.current == null) return;
-            
-            // Check for mouse click or touch
-            bool isClick = Input.GetMouseButtonDown(0);
-            if (!isClick && Input.touchCount > 0)
+
+            Vector2 pointerPosition;
+            bool isClick = false;
+
+            // Touch (mobile)
+            var touchscreen = Touchscreen.current;
+            if (touchscreen != null && touchscreen.primaryTouch.press.wasPressedThisFrame)
             {
-                isClick = Input.GetTouch(0).phase == TouchPhase.Began;
+                isClick = true;
+                pointerPosition = touchscreen.primaryTouch.position.ReadValue();
+            }
+            // Mouse (desktop)
+            else if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                isClick = true;
+                pointerPosition = Mouse.current.position.ReadValue();
+            }
+            else
+            {
+                return;
             }
 
-            if (isClick)
+            if (!isClick) return;
+
+            PointerEventData pointerData = new PointerEventData(EventSystem.current)
             {
-                PointerEventData pointerData = new PointerEventData(EventSystem.current)
-                {
-                    position = Input.mousePosition
-                };
+                position = pointerPosition
+            };
 
-                List<RaycastResult> results = new List<RaycastResult>();
-                EventSystem.current.RaycastAll(pointerData, results);
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
 
-                foreach (var result in results)
+            foreach (var result in results)
+            {
+                var button = result.gameObject.GetComponentInParent<Button>();
+                var toggle = result.gameObject.GetComponentInParent<Toggle>();
+
+                if ((button != null && button.interactable) || (toggle != null && toggle.interactable))
                 {
-                    // Check if we hit a Button or something with IPointerClickHandler (like Toggle)
-                    var button = result.gameObject.GetComponentInParent<Button>();
-                    var toggle = result.gameObject.GetComponentInParent<Toggle>();
-                    
-                    if ((button != null && button.interactable) || (toggle != null && toggle.interactable))
-                    {
-                        PlayUIClick();
-                        break; 
-                    }
+                    PlayUIClick();
+                    break;
                 }
             }
         }
@@ -130,22 +149,19 @@ namespace LgTyLib.Modules.Audio
         public void PlaySoundFXClipWithPool(AudioClip audioClip, Transform spawnTransform, float volume)
         {
             AudioSource audioSource = ObjectPoolManager.Instance.SpawnObject<AudioSource>(
-                    soundObject,
-                    transform.position,
-                    ObjectPoolManager.PoolType.SoundFX
-                );
+                soundObject,
+                spawnTransform.position,   // was transform.position (the manager's own position)
+                PoolGroup.SoundFX
+            );
+
             audioSource.clip = audioClip;
             audioSource.volume = volume;
-
             audioSource.Play();
 
-            float clipLength = audioSource.clip.length;
-
             ObjectPoolManager.Instance.ReturnObjectToPool(
-                audioSource.gameObject, 
-                audioClip.length,
-                ObjectPoolManager.PoolType.SoundFX
-                );
+                audioSource.gameObject,
+                audioClip.length
+            );
         }
 
         #region BGM Methods

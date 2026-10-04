@@ -400,14 +400,14 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
             // The ItemMono owns the inventory-bar UI object and
             // assigns it to Item.gameObject before the item is
             // added to the inventory.
-            ItemFactory.Instance.SpawnItemWithoutClone(
+            ItemManager.Instance.SpawnItemWithoutClone(
                 restoredObject.Item);
 
             inventory.AddItem(restoredObject);
 
             // This restores the storage-space visual only.
             ItemWithFootprintMono itemMono =
-                ItemFactory.Instance
+                ItemManager.Instance
                     .SpawnItemMonoWithFootprint(restoredObject);
         }
     }

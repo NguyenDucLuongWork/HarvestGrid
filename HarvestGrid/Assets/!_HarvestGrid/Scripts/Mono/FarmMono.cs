@@ -98,10 +98,8 @@ public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
         );
     }
 
-    public bool PlantToRandomSlot(Plant plant)
+    public bool AddPlant(Plant plant, FarmSlot farmSlot)
     {
-        FarmSlot farmSlot = farm.GetEmptySlot();
-
         if (farmSlot == null)
         {
             Debug.LogWarning("No empty farm slots available.");
@@ -112,102 +110,21 @@ public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
         return true;
     }
 
-    [ContextMenu("ProvidingToRandom")]
-    public void ProvidingToRandom()
+
+    public void ProvidingResource(Resource resource, int amount, FarmSlot farmSlot)
     {
-        List<Plant> growable = farm.GetGrowablePlants();
 
-        if (growable.Count == 0)
-        {
-            Debug.LogWarning("No growable plants available.");
-            return;
-        }
+        // Get random plant
+        Plant plantToGrow = farmSlot.Plant;
 
-        for (int i = 0; i < 4; i++)
-        {
-            // Get random plant
-            Plant plantToGrow = growable[UnityEngine.Random.Range(0, growable.Count)];
+        int absorbed = plantToGrow.Absorb(resource, amount);
 
-            // Plant may have finished growing (or hit its last stage) during a
-            // previous iteration of this loop — skip it instead of crashing.
-            if (plantToGrow.IsFullyGrown || plantToGrow.NextStageRequirement == null)
-            {
-                continue;
-            }
-
-            // Get resources this plant needs
-            List<Resource> neededResources = new List<Resource>();
-
-            foreach (var requirement in plantToGrow.NextStageRequirement)
-            {
-                if (requirement.Value > 0)
-                {
-                    neededResources.Add(requirement.Key);
-                }
-            }
-
-            if (neededResources.Count == 0)
-                continue;
-
-            // Get random required resource
-            Resource resource = neededResources[
-                UnityEngine.Random.Range(0, neededResources.Count)
-            ];
-
-            // Provide 6
-            int absorbed = plantToGrow.Absorb(resource, 6);
-
-            Debug.Log(
-                $"Provided {absorbed} {resource} to {plantToGrow.PlantName}"
-            );
-        }
+        Debug.LogWarning("Remain resource:" + (amount - amount));
     }
 
-    public void ProvidingResourceToRandom(Resource resource, int amount)
+    public void HarvestRandom(FarmSlot farmSlot, float effective = 1f)
     {
-        List<Plant> growable = farm.GetGrowablePlants();
-
-        if (growable.Count == 0)
-        {
-            //Debug.LogWarning("No growable plants available.");
-            return;
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            // Get random plant
-            Plant plantToGrow = growable[UnityEngine.Random.Range(0, growable.Count)];
-
-            // Plant may have finished growing (or hit its last stage) during a
-            // previous iteration of this loop — skip it instead of crashing.
-            if (plantToGrow.IsFullyGrown || plantToGrow.NextStageRequirement == null)
-            {
-                continue;
-            }
-
-
-            // Provide 6
-            int absorbed = plantToGrow.Absorb(resource, amount);
-
-            Debug.Log(
-                $"Provided {absorbed} {resource} to {plantToGrow.PlantName}"
-            );
-        }
-    }
-
-    [ContextMenu("HarvestRandom")]
-    public void HarvestRandom(float effective = 1f)
-    {
-        List<Plant> harvestablePlants = farm.GetHarvestablePlants();
-
-        if (harvestablePlants == null || harvestablePlants.Count == 0)
-        {
-            Debug.LogWarning("No harvestable plants available.");
-            return;
-        }
-
-        int randomIndex = UnityEngine.Random.Range(0, harvestablePlants.Count);
-        Plant plant = harvestablePlants[randomIndex];
+        Plant plant = farmSlot.Plant;
 
         Dictionary<Crop, int> result = plant.Harvest(effective);
         foreach (var harvest in result) {
@@ -239,5 +156,103 @@ public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
             plant.gameObject.GetComponent<PlantMono>().UpdateSprite(plant.CurrentState.Sprite);
             plant.gameObject.SetActive(true);
         }
+    }
+
+    public FarmSlot GetTarget(ItemUse use)
+    {
+        if (use == null)
+            return null;
+
+        switch (use)
+        {
+            case ProviceResourceUse resourceUse:
+                return GetRandomResourceTargetSlot(resourceUse.Resource);
+
+            default:
+                switch (use.UseType)
+                {
+                    case ItemUseType.AddPlant:
+                        return GetRandomEmptySlot();
+
+                    case ItemUseType.Harvest:
+                        return GetRandomHarvestableSlot();
+
+                    default:
+                        return null;
+                }
+        }
+    }
+
+
+    public FarmSlot GetRandomEmptySlot()
+    {
+        if (farm == null || farm.FarmSlots == null)
+            return null;
+
+        List<FarmSlot> availableSlots = farm.FarmSlots.FindAll(
+            slot => slot != null && !slot.beingEffected && slot.Plant == null
+        );
+
+        if (availableSlots.Count == 0)
+            return null;
+
+        return availableSlots[
+            UnityEngine.Random.Range(0, availableSlots.Count)
+        ];
+    }
+
+    public FarmSlot GetRandomHarvestableSlot()
+    {
+        if (farm == null || farm.FarmSlots == null)
+            return null;
+
+        List<FarmSlot> availableSlots = farm.FarmSlots.FindAll(
+            slot =>
+                slot != null &&
+                !slot.beingEffected &&
+                slot.Plant != null &&
+                slot.Plant.IsFullyGrown
+        );
+
+        if (availableSlots.Count == 0)
+            return null;
+
+        return availableSlots[
+            UnityEngine.Random.Range(0, availableSlots.Count)
+        ];
+    }
+
+    public FarmSlot GetRandomResourceTargetSlot(Resource resource)
+    {
+        if (farm == null || farm.FarmSlots == null)
+            return null;
+
+        List<FarmSlot> availableSlots = farm.FarmSlots.FindAll(
+            slot =>
+                slot != null &&
+                !slot.beingEffected &&
+                slot.Plant != null &&
+                !slot.Plant.IsFullyGrown &&
+                slot.Plant.CheckIfNeed(resource)
+        );
+
+        if (availableSlots.Count == 0)
+            return null;
+
+        return availableSlots[UnityEngine.Random.Range(0, availableSlots.Count)];
+    }
+
+    public FarmSlot GetFarmSlotByID(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+            return null;
+
+        if (farm == null || farm.FarmSlots == null)
+            return null;
+
+        return farm.FarmSlots.Find(slot =>
+            slot != null &&
+            slot.SlotID == id
+        );
     }
 }
