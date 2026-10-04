@@ -5,6 +5,7 @@ using UnityEngine;
 [ItemUseType(ItemUseType.Harvest)]
 public class HarvestUse : ItemUse
 {
+    public override ItemUseType UseType => ItemUseType.Harvest;
     [SerializeField]
     private float effective;
 
@@ -20,7 +21,7 @@ public class HarvestUse : ItemUse
     }
 
     public override void Apply(ItemUseContext ctx) {
-        FarmMono.Instance.HarvestRandom(effective);
+        FarmMono.Instance.HarvestRandom(ctx.TargetSlot, effective);
         if (LgTyLib.Modules.Audio.AudioManager.HasInstance)
         {
             LgTyLib.Modules.Audio.AudioManager.Instance.PlaySickleSound();

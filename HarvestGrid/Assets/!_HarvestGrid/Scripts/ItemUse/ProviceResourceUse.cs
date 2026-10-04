@@ -8,6 +8,7 @@ using UnityEngine;
 [ItemUseType(ItemUseType.ProviceResource)]
 public class ProviceResourceUse : ItemUse
 {
+    public override ItemUseType UseType => ItemUseType.ProviceResource;
     [field:SerializeField]
     private Resource resource;
     [field: SerializeField]
@@ -25,7 +26,7 @@ public class ProviceResourceUse : ItemUse
 
     public override void Apply(ItemUseContext ctx) {
         
-        FarmMono.Instance.ProvidingResourceToRandom(resource, amount);
+        FarmMono.Instance.ProvidingResource(resource, amount, ctx.TargetSlot);
 
         if (LgTyLib.Modules.Audio.AudioManager.HasInstance)
         {

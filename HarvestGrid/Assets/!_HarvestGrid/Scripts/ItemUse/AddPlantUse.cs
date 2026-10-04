@@ -5,6 +5,7 @@ using UnityEngine;
 [ItemUseType(ItemUseType.AddPlant)]
 public class AddPlantUse : ItemUse
 {
+    public override ItemUseType UseType => ItemUseType.AddPlant;
     [SerializeField]
     private Plant plantToAdd;
 
@@ -22,7 +23,8 @@ public class AddPlantUse : ItemUse
 
     public override void Apply(ItemUseContext ctx)
     {
-        FarmMono.Instance.PlantToRandomSlot(plantToAdd.Clone());
+        Debug.Log("Adding plant");
+        FarmMono.Instance.AddPlant(plantToAdd.Clone(), ctx.TargetSlot);
     }
 
     public override ItemUse Clone()

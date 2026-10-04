@@ -36,6 +36,9 @@ public class ItemWithFootprintMono : MonoBehaviour
 
     public bool isAddedToInventory { get; private set; }
 
+    private bool hasSpawnedRuntime;
+
+
     public void SetData(Item item)
     {
         isAddedToInventory = false;
@@ -200,11 +203,11 @@ public class ItemWithFootprintMono : MonoBehaviour
 
         if (!isAddedToInventory)
         {
-            ItemFactory.Instance.SpawnItemWithoutClone(item);
+            ItemManager.Instance.SpawnItemWithoutClone(item);
             storedObject = new StoredObject(item, rotated, pivot);
             InventoryMono.Instance.Inventory.AddItem(storedObject);
             isAddedToInventory = true;
-            this.transform.SetParent(ItemFactory.Instance.itemPlaceHolder, true);
+            this.transform.SetParent(ItemManager.Instance.itemPlaceHolder, true);
             transform.localScale = Vector3.one;
         }
         storedObject.Pivot = storedPivot;
@@ -407,5 +410,24 @@ public class ItemWithFootprintMono : MonoBehaviour
         OnItemPurchased?.Invoke(this);
 
         return true;
+    }
+
+    public bool PlaceFromSort(int targetRotation, Vector2Int pivot)
+    {
+        ApplyRotationAndFootprint(targetRotation); // rotates from 0 -> targetRotation
+
+        if (!StoringSpaceMono.Instance.TryPlaceFootprint(item.Footprint, pivot))
+            return false;
+
+        AddToInventory(pivot);
+        gridLayoutGroupHelper.HideImages();
+        LateSnap();
+        return true;
+    }
+
+    /// <summary>Sends an unplaced item back to the temporary holder.</summary>
+    public void ReturnToTemporaryHolder()
+    {
+        HandleCannotSnap();
     }
 }

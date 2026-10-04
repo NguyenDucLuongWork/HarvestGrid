@@ -9,10 +9,6 @@ public class FarmSlotMono : MonoBehaviour
 
     private PlantMono plantMono;
 
-    [SerializeField]
-    private bool harvestActive;
-    public bool HarvestActive => harvestActive;
-
 
     public void CachePlantMono()
     {
