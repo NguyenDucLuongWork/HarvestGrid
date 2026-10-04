@@ -20,6 +20,7 @@ public class FarmSlot : ICloneable<FarmSlot>
     public SoilQuality SoilQuality => soilQuality;
     public SoilMoisture SoilMoisture => soilMoisture;
 
+    public bool beingEffected;
     public Plant Plant
     {
         get
@@ -45,6 +46,7 @@ public class FarmSlot : ICloneable<FarmSlot>
         slotID = original.SlotID;
         soilQuality = original.SoilQuality;
         soilMoisture = original.SoilMoisture;
+
     }
 
     public FarmSlot Clone()
@@ -164,5 +166,10 @@ public class FarmSlot : ICloneable<FarmSlot>
         plantGameObject
             ?.GetComponent<PlantMono>()
             ?.UpdatePlantVisual(plant);
+    }
+
+    public FarmSlotMono GetFarmSlotMono()
+    {
+        return slotGameObject.GetComponent<FarmSlotMono>();
     }
 }

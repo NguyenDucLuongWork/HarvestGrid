@@ -29,5 +29,7 @@ namespace LgTyLib.Modules.DataPersistence
         public int levelNumber;
         public Farm farm;
         public Inventory inventory;
+
+        public List<ItemEffect> itemEffects;
     }
 }

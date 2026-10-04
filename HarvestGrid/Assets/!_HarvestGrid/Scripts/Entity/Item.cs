@@ -59,6 +59,7 @@ public class Item : ICloneable<Item>
 
     public void Start()
     {
+        progressTimer.OnCompleted -= Use;   // prevent stacking
         progressTimer.OnCompleted += Use;
         progressTimer.Play();
     }
@@ -70,17 +71,24 @@ public class Item : ICloneable<Item>
         progressTimer.Stop();
     }
 
-    private void Use()
-    {
-
-        Use(new ItemUseContext());
-    }
-
-    public void Use(ItemUseContext ctx)
+    // Item.Use()
+    public void Use()
     {
         foreach (var use in uses)
         {
-            use.Apply(ctx);
+            if (use == null) continue;
+
+            FarmSlot target = FarmMono.Instance.GetTarget(use);
+            if (target == null) continue;
+
+            var ctx = new ItemUseContext      // new context per use
+            {
+                Item = this,
+                Use = use,
+                TargetSlot = target,
+            };
+
+            ItemManager.Instance.ApplyItemEffect(ctx);
         }
     }
 
