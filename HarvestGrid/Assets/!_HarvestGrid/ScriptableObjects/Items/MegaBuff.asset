@@ -21,17 +21,19 @@ MonoBehaviour:
     plantPrototype: {fileID: 0}
   - type: 1
     plantPrototype: {fileID: 0}
-  footprintSO: {fileID: 11400000, guid: a0ed79dc4776dbd4f9fc9a81b5148d81, type: 2}
+  footprintWidth: 1
+  footprintHeight: 1
+  footprintGrid: 01y
   item:
     id: MegaBuff
     name: MegaBuff
     icon: {fileID: 21300000, guid: b3ba75d4e9af8144d8f6df83087fedf2, type: 3}
     rarity: 0
     uses:
-    - rid: 8788999239276167912
-    - rid: 8788999239276167913
-    - rid: 8788999239276167914
-    - rid: 8788999239276167915
+    - rid: 4663964602685456782
+    - rid: 4663964602685456783
+    - rid: 4663964602685456784
+    - rid: 4663964602685456785
     price: 3
     footprint:
       width: 1
@@ -39,7 +41,7 @@ MonoBehaviour:
       requiringFlat: 01y
       gameObject: {fileID: 0}
     progressTimer:
-      duration: 0.5
+      duration: 1
       finishedHoldDuration: 0
       playOnStart: 1
       loop: 1
@@ -50,22 +52,22 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8788999239276167912
+    - rid: 4663964602685456782
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         amount: 10
-    - rid: 8788999239276167913
+    - rid: 4663964602685456783
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         amount: 10
-    - rid: 8788999239276167914
+    - rid: 4663964602685456784
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
         resource: 2
         amount: 10
-    - rid: 8788999239276167915
+    - rid: 4663964602685456785
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
         resource: 3

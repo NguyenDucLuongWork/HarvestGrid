@@ -15,14 +15,16 @@ MonoBehaviour:
   useConfig:
   - type: 2
     plantPrototype: {fileID: 11400000, guid: f6e3e17ef555da24cabff7a3f07cfd46, type: 2}
-  footprintSO: {fileID: 11400000, guid: f201aed882059c246a14830a95536135, type: 2}
+  footprintWidth: 2
+  footprintHeight: 2
+  footprintGrid: 01010101y
   item:
     id: Seed_Bean
     name: Bean Seed
     icon: {fileID: 3575801608052008830, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
-    - rid: 8788999236187062785
+    - rid: 4663964602685456957
     price: 1
     footprint:
       width: 2
@@ -41,7 +43,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8788999236187062785
+    - rid: 4663964602685456957
       type: {class: AddPlantUse, ns: , asm: Assembly-CSharp}
       data:
         plantToAdd:
@@ -51,56 +53,70 @@ MonoBehaviour:
           currentState:
             sprite: {fileID: 0}
             requiredResources: []
-          nextStageRequirement: []
+          nextStageRequirement:
+          - key: 3
+            value: 8
+          - key: 1
+            value: 8
+          - key: 2
+            value: 12
           stages:
           - sprite: {fileID: 1512619164392636912, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
             requiredResources:
-            - key: 0
-              value: 3
+            - key: 3
+              value: 8
+            - key: 1
+              value: 8
+            - key: 2
+              value: 12
           - sprite: {fileID: 5769019858189665522, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
             requiredResources:
             - key: 0
-              value: 3
-            - key: 1
-              value: 3
+              value: 12
+            - key: 2
+              value: 11
+            - key: 3
+              value: 5
           - sprite: {fileID: 5359052760475604436, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
             requiredResources:
-            - key: 0
-              value: 3
             - key: 1
-              value: 3
+              value: 13
+            - key: 2
+              value: 7
+            - key: 3
+              value: 14
           - sprite: {fileID: -4072382671969911228, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
             requiredResources:
-            - key: 0
-              value: 3
-            - key: 1
-              value: 3
             - key: 2
-              value: 3
+              value: 9
+            - key: 0
+              value: 12
+            - key: 1
+              value: 14
           - sprite: {fileID: -8186144845388961140, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
             requiredResources:
-            - key: 0
-              value: 3
             - key: 1
-              value: 3
+              value: 7
+            - key: 0
+              value: 13
             - key: 2
-              value: 3
+              value: 7
           - sprite: {fileID: -818972192877959004, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
             requiredResources:
-            - key: 0
-              value: 3
-            - key: 1
-              value: 3
             - key: 2
-              value: 3
+              value: 6
+            - key: 0
+              value: 10
+            - key: 3
+              value: 13
           - sprite: {fileID: 1255155265385891842, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
             requiredResources:
-            - key: 0
-              value: 3
             - key: 1
-              value: 3
-            - key: 2
-              value: 3
+              value: 11
+            - key: 3
+              value: 8
+            - key: 0
+              value: 6
           crop:
             cropID: Bean
             name: Bean

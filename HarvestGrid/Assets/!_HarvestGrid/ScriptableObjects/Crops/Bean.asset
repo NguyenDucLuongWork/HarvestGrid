@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6edd53f95bef5d34192642ac43f6b1b7, type: 3}
+  m_Name: Bean
+  m_EditorClassIdentifier: Assembly-CSharp::CropSO
+  crop:
+    cropID: Bean
+    name: Bean
+    icon: {fileID: 2679770912503586980, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+    stars: 0
+    baseSellPrice: 4

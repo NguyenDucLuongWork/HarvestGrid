@@ -25,7 +25,7 @@ public class ProviceResourceUse : ItemUse
     }
 
     public override void Apply(ItemUseContext ctx) {
-        
+        Debug.Log(ctx.Use.ToString());
         FarmMono.Instance.ProvidingResource(resource, amount, ctx.TargetSlot);
 
         if (LgTyLib.Modules.Audio.AudioManager.HasInstance)

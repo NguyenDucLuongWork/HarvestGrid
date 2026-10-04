@@ -15,14 +15,16 @@ MonoBehaviour:
   useConfig:
   - type: 2
     plantPrototype: {fileID: 11400000, guid: 37884e90fcff1184d9a94f94bdb05b0a, type: 2}
-  footprintSO: {fileID: 11400000, guid: f201aed882059c246a14830a95536135, type: 2}
+  footprintWidth: 2
+  footprintHeight: 2
+  footprintGrid: 01010101y
   item:
     id: Seed_Tomtato
     name: Tomato Seed
     icon: {fileID: 496276368402350945, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
-    - rid: 8788999201735311566
+    - rid: 4663964602685456960
     price: 1
     footprint:
       width: 2
@@ -41,56 +43,76 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8788999201735311566
+    - rid: 4663964602685456960
       type: {class: AddPlantUse, ns: , asm: Assembly-CSharp}
       data:
         plantToAdd:
           plantID: Tomato
           plantName: Tomato
-          averageCropCount: 4
+          averageCropCount: 5
           currentState:
             sprite: {fileID: 0}
             requiredResources: []
-          nextStageRequirement: []
+          nextStageRequirement:
+          - key: 2
+            value: 8
+          - key: 0
+            value: 5
+          - key: 3
+            value: 15
           stages:
           - sprite: {fileID: 3336444044123149764, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
             requiredResources:
+            - key: 2
+              value: 8
             - key: 0
               value: 5
+            - key: 3
+              value: 15
           - sprite: {fileID: -6966369517673316951, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
             requiredResources:
+            - key: 2
+              value: 15
             - key: 1
               value: 5
             - key: 0
-              value: 5
+              value: 15
           - sprite: {fileID: -4667150655987312241, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
             requiredResources:
-            - key: 0
-              value: 10
             - key: 2
-              value: 10
+              value: 14
+            - key: 3
+              value: 14
+            - key: 1
+              value: 9
           - sprite: {fileID: -6770858775108089496, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
             requiredResources:
-            - key: 0
-              value: 10
+            - key: 1
+              value: 11
+            - key: 2
+              value: 13
             - key: 3
-              value: 10
+              value: 14
           - sprite: {fileID: -7506016618634473757, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
             requiredResources:
-            - key: 0
-              value: 10
+            - key: 2
+              value: 7
             - key: 1
-              value: 10
+              value: 8
+            - key: 3
+              value: 7
           - sprite: {fileID: -1759049860909440148, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
             requiredResources:
+            - key: 3
+              value: 9
+            - key: 2
+              value: 11
             - key: 0
-              value: 10
-            - key: 1
               value: 10
           crop:
             cropID: Tomato
             name: Tomato
             icon: {fileID: -1257518098505440576, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
             stars: 0
-            baseSellPrice: 16
+            baseSellPrice: 100
           gameObject: {fileID: 0}

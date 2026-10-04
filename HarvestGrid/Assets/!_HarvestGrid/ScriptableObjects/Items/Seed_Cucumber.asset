@@ -15,14 +15,16 @@ MonoBehaviour:
   useConfig:
   - type: 2
     plantPrototype: {fileID: 11400000, guid: 3b36a27200dad87418529a1019eea433, type: 2}
-  footprintSO: {fileID: 11400000, guid: f201aed882059c246a14830a95536135, type: 2}
+  footprintWidth: 2
+  footprintHeight: 2
+  footprintGrid: 01010101y
   item:
     id: CucumberSeed
     name: CucumberSeed
     icon: {fileID: -5264793112768662671, guid: 96a95b568f8900c4790a1a429d109573, type: 3}
     rarity: 0
     uses:
-    - rid: 8788999201735311498
+    - rid: 4663964602685456958
     price: 2
     footprint:
       width: 2
@@ -41,46 +43,64 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8788999201735311498
+    - rid: 4663964602685456958
       type: {class: AddPlantUse, ns: , asm: Assembly-CSharp}
       data:
         plantToAdd:
           plantID: Cucumber
           plantName: Cucumber
-          averageCropCount: 4
+          averageCropCount: 3
           currentState:
             sprite: {fileID: 0}
             requiredResources: []
-          nextStageRequirement: []
+          nextStageRequirement:
+          - key: 1
+            value: 14
+          - key: 0
+            value: 13
+          - key: 3
+            value: 8
           stages:
           - sprite: {fileID: 4845093130004184339, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
             requiredResources:
+            - key: 1
+              value: 14
             - key: 0
-              value: 5
+              value: 13
+            - key: 3
+              value: 8
           - sprite: {fileID: -6079087725641582597, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
             requiredResources:
-            - key: 1
-              value: 5
-            - key: 0
-              value: 5
-          - sprite: {fileID: 669492167673851439, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
-            requiredResources:
-            - key: 0
-              value: 10
             - key: 2
               value: 10
+            - key: 1
+              value: 6
+            - key: 0
+              value: 7
+          - sprite: {fileID: 669492167673851439, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
+            requiredResources:
+            - key: 1
+              value: 6
+            - key: 2
+              value: 12
+            - key: 0
+              value: 5
           - sprite: {fileID: -5607939481280983574, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
             requiredResources:
-            - key: 0
-              value: 10
             - key: 3
-              value: 10
+              value: 9
+            - key: 1
+              value: 8
+            - key: 2
+              value: 14
           - sprite: {fileID: 5005312502218828524, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
             requiredResources:
-            - key: 0
-              value: 10
             - key: 1
-              value: 10
+              value: 7
+            - key: 2
+              value: 5
+            - key: 3
+              value: 12
           crop:
             cropID: Cucumber
             name: Cucumber
