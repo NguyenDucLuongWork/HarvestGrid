@@ -13,7 +13,7 @@ public class PlantRequiringPanel : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.transform.parent = GameplayScene.Instance.plantRequieContainer;
+        gameObject.transform.SetParent(GameplayScene.Instance.plantRequieContainer);
     }
 
     private void Start()

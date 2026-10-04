@@ -9,96 +9,76 @@ namespace LgTyLib.Modules.ObjectPooling
     public class ObjectPoolManager : BaseSingleton<ObjectPoolManager>
     {
         private GameObject emptyHolder;
-
-        private static GameObject particleSystemsEmpty;
-        private static GameObject gameObjectsEmpty;
-        private static GameObject soundFXEmpty;
-
+        private static Transform rootHolder;
+        private static Dictionary<string, Transform> groupHolders;
+        private static Dictionary<GameObject, Transform> prefabToHolder;
         private static Dictionary<GameObject, ObjectPool<GameObject>> objectPools;
         private static Dictionary<GameObject, GameObject> cloneToPrefabMap;
-
-        public enum PoolType
-        {
-            ParticleSystems,
-            GameObjects,
-            SoundFX
-        }
-
-        public static PoolType poolingType;
+        private static Dictionary<GameObject, HashSet<GameObject>> activeObjects; // prefab -> spawned (active) clones
 
         protected override void Awake()
         {
             base.Awake();
-            objectPools = new Dictionary<GameObject, ObjectPool<GameObject>>();
-            cloneToPrefabMap = new Dictionary<GameObject, GameObject>();
-            SetupEmpties();
-        }
+            objectPools = new();
+            cloneToPrefabMap = new();
+            groupHolders = new();
+            prefabToHolder = new();
+            activeObjects = new();
 
-        private void SetupEmpties()
-        {
             emptyHolder = new GameObject("Object Pools");
             DontDestroyOnLoad(emptyHolder);
-
-            particleSystemsEmpty = new GameObject("Particle Effects");
-            particleSystemsEmpty.transform.SetParent(emptyHolder.transform);
-
-            gameObjectsEmpty = new GameObject("GameObjects");
-            gameObjectsEmpty.transform.SetParent(emptyHolder.transform);
-
-            soundFXEmpty = new GameObject("Sound FX");
-            soundFXEmpty.transform.SetParent(emptyHolder.transform);
+            rootHolder = emptyHolder.transform;
         }
 
-        private static void CreatePool(
-            GameObject prefab, Vector3 pos, Quaternion rot,
-            PoolType poolType = PoolType.GameObjects)
+        // group folder -> per-prefab subfolder
+        private static Transform GetHolder(string group, string subName)
         {
-            ObjectPool<GameObject> pool = new ObjectPool<GameObject>(
-                createFunc: () => CreateObject(prefab, pos, rot, poolType),
-                actionOnGet: OnGetObject,
-                actionOnRelease: OnReleaseObject,
-                actionOnDestroy: OnDestroyObject
-            );
+            group = string.IsNullOrEmpty(group) ? PoolGroup.GameObjects : group;
 
-            objectPools.Add(prefab, pool);
-        }
-
-        private static GameObject CreateObject(
-            GameObject prefab, Vector3 pos, Quaternion rot,
-            PoolType poolType = PoolType.GameObjects)
-        {
-            prefab.SetActive(false);
-
-            GameObject obj = Instantiate(prefab, pos, rot);
-
-            prefab.SetActive(true);
-
-            obj.transform.SetParent(SetParentObject(poolType).transform);
-
-            return obj;
-        }
-
-        private static void OnGetObject(GameObject obj) { }
-
-        private static void OnReleaseObject(GameObject obj)
-        {
-            obj.SetActive(false);
-        }
-
-        private static void OnDestroyObject(GameObject obj)
-        {
-            cloneToPrefabMap.Remove(obj);
-        }
-
-        private static GameObject SetParentObject(PoolType poolType)
-        {
-            switch (poolType)
+            if (!groupHolders.TryGetValue(group, out Transform groupT) || groupT == null)
             {
-                case PoolType.ParticleSystems: return particleSystemsEmpty;
-                case PoolType.GameObjects: return gameObjectsEmpty;
-                case PoolType.SoundFX: return soundFXEmpty;
-                default: return gameObjectsEmpty;
+                groupT = new GameObject(group).transform;
+                groupT.SetParent(rootHolder);
+                groupHolders[group] = groupT;
             }
+
+            Transform sub = groupT.Find(subName);
+            if (sub == null)
+            {
+                sub = new GameObject(subName).transform;
+                sub.SetParent(groupT);
+            }
+            return sub;
+        }
+
+        // Custom container wins; otherwise fall back to the group/prefab folder.
+        private static Transform ResolveHolder(GameObject prefab, string group, Transform container)
+        {
+            if (container != null) return container;
+
+            if (prefabToHolder.TryGetValue(prefab, out Transform existing) && existing != null)
+                return existing;
+
+            return GetHolder(group, prefab.name);
+        }
+
+        // Shared by both spawn paths
+        private static GameObject GetFromPool(GameObject prefab, Vector3 pos, Quaternion rot,
+            string group, Transform container)
+        {
+            if (!objectPools.ContainsKey(prefab))
+                CreatePool(prefab, pos, rot, group, container);
+            else if (container != null)
+                prefabToHolder[prefab] = container; // re-point holder; affects new objects and future returns
+
+            GameObject obj = objectPools[prefab].Get();
+            if (obj == null) return null;
+
+            if (!cloneToPrefabMap.ContainsKey(obj))
+                cloneToPrefabMap.Add(obj, prefab);
+
+            activeObjects[prefab].Add(obj);
+            return obj;
         }
 
         // ════════════════════════════════════════════════════════════════════════
@@ -109,18 +89,12 @@ namespace LgTyLib.Modules.ObjectPooling
             GameObject objectToSpawn,
             Vector3 spawnPos, Quaternion spawnRot,
             Transform parent = null,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects,
+            Transform container = null)
             where T : Object
         {
-            if (!objectPools.ContainsKey(objectToSpawn))
-                CreatePool(objectToSpawn, spawnPos, spawnRot, poolType);
-
-            GameObject obj = objectPools[objectToSpawn].Get();
-
+            GameObject obj = GetFromPool(objectToSpawn, spawnPos, spawnRot, group, container);
             if (obj == null) return null;
-
-            if (!cloneToPrefabMap.ContainsKey(obj))
-                cloneToPrefabMap.Add(obj, objectToSpawn);
 
             if (parent != null)
                 obj.transform.SetParent(parent, worldPositionStays: true);
@@ -141,59 +115,51 @@ namespace LgTyLib.Modules.ObjectPooling
 
         // ── GameObject overloads ─────────────────────────────────────────────────
 
-        /// <summary>Spawn a GameObject at a world-space position.</summary>
         public GameObject SpawnObject(
             GameObject objectToSpawn, Vector3 spawnPos,
-            PoolType poolType = PoolType.GameObjects)
-            => SpawnObject<GameObject>(objectToSpawn, spawnPos, Quaternion.identity, null, poolType);
+            string group = PoolGroup.GameObjects, Transform container = null)
+            => SpawnObject<GameObject>(objectToSpawn, spawnPos, Quaternion.identity, null, group, container);
 
-        /// <summary>Spawn a GameObject at a world-space position under a parent.</summary>
         public GameObject SpawnObject(
             GameObject objectToSpawn, Vector3 spawnPos, Transform parent,
-            PoolType poolType = PoolType.GameObjects)
-            => SpawnObject<GameObject>(objectToSpawn, spawnPos, Quaternion.identity, parent, poolType);
+            string group = PoolGroup.GameObjects, Transform container = null)
+            => SpawnObject<GameObject>(objectToSpawn, spawnPos, Quaternion.identity, parent, group, container);
 
-        /// <summary>Spawn a GameObject at a world-space position and rotation.</summary>
         public GameObject SpawnObject(
             GameObject objectToSpawn, Vector3 spawnPos, Quaternion spawnRot,
-            PoolType poolType = PoolType.GameObjects)
-            => SpawnObject<GameObject>(objectToSpawn, spawnPos, spawnRot, null, poolType);
+            string group = PoolGroup.GameObjects, Transform container = null)
+            => SpawnObject<GameObject>(objectToSpawn, spawnPos, spawnRot, null, group, container);
 
-        /// <summary>Spawn a GameObject at a world-space position and rotation under a parent.</summary>
         public GameObject SpawnObject(
             GameObject objectToSpawn, Vector3 spawnPos, Quaternion spawnRot, Transform parent,
-            PoolType poolType = PoolType.GameObjects)
-            => SpawnObject<GameObject>(objectToSpawn, spawnPos, spawnRot, parent, poolType);
+            string group = PoolGroup.GameObjects, Transform container = null)
+            => SpawnObject<GameObject>(objectToSpawn, spawnPos, spawnRot, parent, group, container);
 
         // ── Component overloads ──────────────────────────────────────────────────
 
-        /// <summary>Spawn a Component prefab at a world-space position.</summary>
         public T SpawnObject<T>(
             T typePrefab, Vector3 spawnPos,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects, Transform container = null)
             where T : Component
-            => SpawnObject<T>(typePrefab.gameObject, spawnPos, Quaternion.identity, null, poolType);
+            => SpawnObject<T>(typePrefab.gameObject, spawnPos, Quaternion.identity, null, group, container);
 
-        /// <summary>Spawn a Component prefab at a world-space position under a parent.</summary>
         public T SpawnObject<T>(
             T typePrefab, Vector3 spawnPos, Transform parent,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects, Transform container = null)
             where T : Component
-            => SpawnObject<T>(typePrefab.gameObject, spawnPos, Quaternion.identity, parent, poolType);
+            => SpawnObject<T>(typePrefab.gameObject, spawnPos, Quaternion.identity, parent, group, container);
 
-        /// <summary>Spawn a Component prefab at a world-space position and rotation.</summary>
         public T SpawnObject<T>(
             T typePrefab, Vector3 spawnPos, Quaternion spawnRot,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects, Transform container = null)
             where T : Component
-            => SpawnObject<T>(typePrefab.gameObject, spawnPos, spawnRot, null, poolType);
+            => SpawnObject<T>(typePrefab.gameObject, spawnPos, spawnRot, null, group, container);
 
-        /// <summary>Spawn a Component prefab at a world-space position and rotation under a parent.</summary>
         public T SpawnObject<T>(
             T typePrefab, Vector3 spawnPos, Quaternion spawnRot, Transform parent,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects, Transform container = null)
             where T : Component
-            => SpawnObject<T>(typePrefab.gameObject, spawnPos, spawnRot, parent, poolType);
+            => SpawnObject<T>(typePrefab.gameObject, spawnPos, spawnRot, parent, group, container);
 
         // ════════════════════════════════════════════════════════════════════════
         // SpawnObjectLocal — local-space, parent required
@@ -203,18 +169,12 @@ namespace LgTyLib.Modules.ObjectPooling
             GameObject objectToSpawn,
             Transform parent,
             Vector3 localPos, Quaternion localRot, Vector3 localScale,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects,
+            Transform container = null)
             where T : Object
         {
-            if (!objectPools.ContainsKey(objectToSpawn))
-                CreatePool(objectToSpawn, parent.position, localRot, poolType);
-
-            GameObject obj = objectPools[objectToSpawn].Get();
-
+            GameObject obj = GetFromPool(objectToSpawn, parent.position, localRot, group, container);
             if (obj == null) return null;
-
-            if (!cloneToPrefabMap.ContainsKey(obj))
-                cloneToPrefabMap.Add(obj, objectToSpawn);
 
             obj.transform.SetParent(parent, worldPositionStays: false);
             obj.transform.localPosition = localPos;
@@ -234,86 +194,178 @@ namespace LgTyLib.Modules.ObjectPooling
 
         // ── GameObject overloads ─────────────────────────────────────────────────
 
-        /// <summary>Spawn a GameObject in local-space under a parent at local zero.</summary>
         public GameObject SpawnObjectLocal(
             GameObject objectToSpawn, Transform parent,
-            PoolType poolType = PoolType.GameObjects)
-            => SpawnObjectLocal<GameObject>(objectToSpawn, parent, Vector3.zero, Quaternion.identity, Vector3.one, poolType);
+            string group = PoolGroup.GameObjects, Transform container = null)
+            => SpawnObjectLocal<GameObject>(objectToSpawn, parent, Vector3.zero, Quaternion.identity, Vector3.one, group, container);
 
-        /// <summary>Spawn a GameObject in local-space under a parent at a local position.</summary>
         public GameObject SpawnObjectLocal(
             GameObject objectToSpawn, Transform parent, Vector3 localPos,
-            PoolType poolType = PoolType.GameObjects)
-            => SpawnObjectLocal<GameObject>(objectToSpawn, parent, localPos, Quaternion.identity, Vector3.one, poolType);
+            string group = PoolGroup.GameObjects, Transform container = null)
+            => SpawnObjectLocal<GameObject>(objectToSpawn, parent, localPos, Quaternion.identity, Vector3.one, group, container);
 
-        /// <summary>Spawn a GameObject in local-space under a parent at a local position and rotation.</summary>
         public GameObject SpawnObjectLocal(
             GameObject objectToSpawn, Transform parent, Vector3 localPos, Quaternion localRot,
-            PoolType poolType = PoolType.GameObjects)
-            => SpawnObjectLocal<GameObject>(objectToSpawn, parent, localPos, localRot, Vector3.one, poolType);
+            string group = PoolGroup.GameObjects, Transform container = null)
+            => SpawnObjectLocal<GameObject>(objectToSpawn, parent, localPos, localRot, Vector3.one, group, container);
 
-        /// <summary>Spawn a GameObject in local-space under a parent with full local transform.</summary>
         public GameObject SpawnObjectLocal(
             GameObject objectToSpawn, Transform parent, Vector3 localPos, Quaternion localRot, Vector3 localScale,
-            PoolType poolType = PoolType.GameObjects)
-            => SpawnObjectLocal<GameObject>(objectToSpawn, parent, localPos, localRot, localScale, poolType);
+            string group = PoolGroup.GameObjects, Transform container = null)
+            => SpawnObjectLocal<GameObject>(objectToSpawn, parent, localPos, localRot, localScale, group, container);
 
         // ── Component overloads ──────────────────────────────────────────────────
 
-        /// <summary>Spawn a Component prefab in local-space under a parent at local zero.</summary>
         public T SpawnObjectLocal<T>(
             T typePrefab, Transform parent,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects, Transform container = null)
             where T : Component
-            => SpawnObjectLocal<T>(typePrefab.gameObject, parent, Vector3.zero, Quaternion.identity, Vector3.one, poolType);
+            => SpawnObjectLocal<T>(typePrefab.gameObject, parent, Vector3.zero, Quaternion.identity, Vector3.one, group, container);
 
-        /// <summary>Spawn a Component prefab in local-space under a parent at a local position.</summary>
         public T SpawnObjectLocal<T>(
             T typePrefab, Transform parent, Vector3 localPos,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects, Transform container = null)
             where T : Component
-            => SpawnObjectLocal<T>(typePrefab.gameObject, parent, localPos, Quaternion.identity, Vector3.one, poolType);
+            => SpawnObjectLocal<T>(typePrefab.gameObject, parent, localPos, Quaternion.identity, Vector3.one, group, container);
 
-        /// <summary>Spawn a Component prefab in local-space under a parent at a local position and rotation.</summary>
         public T SpawnObjectLocal<T>(
             T typePrefab, Transform parent, Vector3 localPos, Quaternion localRot,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects, Transform container = null)
             where T : Component
-            => SpawnObjectLocal<T>(typePrefab.gameObject, parent, localPos, localRot, Vector3.one, poolType);
+            => SpawnObjectLocal<T>(typePrefab.gameObject, parent, localPos, localRot, Vector3.one, group, container);
 
-        /// <summary>Spawn a Component prefab in local-space under a parent with full local transform.</summary>
         public T SpawnObjectLocal<T>(
             T typePrefab, Transform parent, Vector3 localPos, Quaternion localRot, Vector3 localScale,
-            PoolType poolType = PoolType.GameObjects)
+            string group = PoolGroup.GameObjects, Transform container = null)
             where T : Component
-            => SpawnObjectLocal<T>(typePrefab.gameObject, parent, localPos, localRot, localScale, poolType);
+            => SpawnObjectLocal<T>(typePrefab.gameObject, parent, localPos, localRot, localScale, group, container);
+
+        // ════════════════════════════════════════════════════════════════════════
+        // Pool internals
+        // ════════════════════════════════════════════════════════════════════════
+
+        private static void CreatePool(GameObject prefab, Vector3 pos, Quaternion rot,
+            string group, Transform container)
+        {
+            prefabToHolder[prefab] = ResolveHolder(prefab, group, container);
+            activeObjects[prefab] = new HashSet<GameObject>();
+
+            var pool = new ObjectPool<GameObject>(
+                createFunc: () => CreateObject(prefab, pos, rot),
+                actionOnGet: OnGetObject,
+                actionOnRelease: OnReleaseObject,
+                actionOnDestroy: OnDestroyObject
+            );
+            objectPools.Add(prefab, pool);
+        }
+
+        private static GameObject CreateObject(GameObject prefab, Vector3 pos, Quaternion rot)
+        {
+            prefab.SetActive(false);
+            GameObject obj = Instantiate(prefab, pos, rot);
+            prefab.SetActive(true);
+
+            obj.transform.SetParent(prefabToHolder[prefab], worldPositionStays: false);
+            return obj;
+        }
+
+        private static void OnGetObject(GameObject obj) { }
+
+        private static void OnReleaseObject(GameObject obj)
+        {
+            if (cloneToPrefabMap.TryGetValue(obj, out GameObject prefab) &&
+                activeObjects.TryGetValue(prefab, out var set))
+                set.Remove(obj);
+
+            obj.SetActive(false);
+        }
+
+        private static void OnDestroyObject(GameObject obj)
+        {
+            if (cloneToPrefabMap.TryGetValue(obj, out GameObject prefab) &&
+                activeObjects.TryGetValue(prefab, out var set))
+                set.Remove(obj);
+
+            cloneToPrefabMap.Remove(obj);
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        // Query spawned (active) objects of a pooled prefab
+        // ════════════════════════════════════════════════════════════════════════
+
+        private static HashSet<GameObject> GetActiveSet(GameObject prefab)
+        {
+            if (prefab == null || !activeObjects.TryGetValue(prefab, out var set)) return null;
+            set.RemoveWhere(o => o == null); // purge clones destroyed externally (e.g. scene unload)
+            return set;
+        }
+
+        /// <summary>Number of currently spawned (active) instances of this prefab.</summary>
+        public int GetSpawnedCount(GameObject prefab)
+            => GetActiveSet(prefab)?.Count ?? 0;
+
+        public int GetSpawnedCount<T>(T typePrefab) where T : Component
+            => GetSpawnedCount(typePrefab.gameObject);
+
+        /// <summary>Fills 'results' (cleared first) with spawned instances. No allocation if the list is reused.</summary>
+        public void GetSpawnedNonAlloc(GameObject prefab, List<GameObject> results)
+        {
+            results.Clear();
+            var set = GetActiveSet(prefab);
+            if (set == null) return;
+            results.AddRange(set);
+        }
+
+        /// <summary>Fills 'results' (cleared first) with the component of each spawned instance.</summary>
+        public void GetSpawnedNonAlloc<T>(T typePrefab, List<T> results) where T : Component
+        {
+            results.Clear();
+            var set = GetActiveSet(typePrefab.gameObject);
+            if (set == null) return;
+
+            foreach (var go in set)
+                if (go.TryGetComponent(out T comp))
+                    results.Add(comp);
+        }
+
+        /// <summary>Snapshot list of spawned instances. Safe to iterate while returning objects to the pool.</summary>
+        public List<GameObject> GetSpawned(GameObject prefab)
+        {
+            var list = new List<GameObject>();
+            GetSpawnedNonAlloc(prefab, list);
+            return list;
+        }
+
+        /// <summary>Snapshot list of components on spawned instances.</summary>
+        public List<T> GetSpawned<T>(T typePrefab) where T : Component
+        {
+            var list = new List<T>();
+            GetSpawnedNonAlloc(typePrefab, list);
+            return list;
+        }
 
         // ════════════════════════════════════════════════════════════════════════
         // ReturnObjectToPool — with optional delay (mirrors Object.Destroy signature)
         // ════════════════════════════════════════════════════════════════════════
 
         /// <summary>Return an object to its pool immediately.</summary>
-        public void ReturnObjectToPool(GameObject obj, PoolType poolType = PoolType.GameObjects)
-            => Instance.ReturnObjectToPoolInternal(obj, poolType);
+        public void ReturnObjectToPool(GameObject obj)
+            => ReturnObjectToPoolInternal(obj);
 
         /// <summary>Return an object to its pool after a delay (mirrors Object.Destroy(obj, t)).</summary>
-        public void ReturnObjectToPool(GameObject obj, float delay, PoolType poolType = PoolType.GameObjects)
+        public void ReturnObjectToPool(GameObject obj, float delay)
         {
-            if (delay <= 0f)
-            {
-                Instance.ReturnObjectToPoolInternal(obj, poolType);
-                return;
-            }
-            Instance.StartCoroutine(Instance.ReturnAfterDelay(obj, delay, poolType));
+            if (delay <= 0f) { ReturnObjectToPoolInternal(obj); return; }
+            StartCoroutine(ReturnAfterDelay(obj, delay));
         }
 
-        private IEnumerator ReturnAfterDelay(GameObject obj, float delay, PoolType poolType)
+        private IEnumerator ReturnAfterDelay(GameObject obj, float delay)
         {
             yield return new WaitForSeconds(delay);
-            ReturnObjectToPoolInternal(obj, poolType);
+            if (obj != null) ReturnObjectToPoolInternal(obj); // may have been destroyed meanwhile
         }
 
-        private void ReturnObjectToPoolInternal(GameObject obj, PoolType poolType)
+        private void ReturnObjectToPoolInternal(GameObject obj)
         {
             if (!cloneToPrefabMap.TryGetValue(obj, out GameObject prefab))
             {
@@ -321,11 +373,11 @@ namespace LgTyLib.Modules.ObjectPooling
                 return;
             }
 
-            GameObject parentObject = SetParentObject(poolType);
-            if (obj.transform.parent != parentObject.transform)
-                obj.transform.SetParent(parentObject.transform);
+            Transform holder = prefabToHolder[prefab];
+            if (holder != null && obj.transform.parent != holder)
+                obj.transform.SetParent(holder, worldPositionStays: false);
 
-            if (objectPools.TryGetValue(prefab, out ObjectPool<GameObject> pool))
+            if (objectPools.TryGetValue(prefab, out var pool))
                 pool.Release(obj);
         }
     }
