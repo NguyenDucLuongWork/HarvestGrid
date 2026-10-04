@@ -15,14 +15,16 @@ MonoBehaviour:
   useConfig:
   - type: 1
     plantPrototype: {fileID: 0}
-  footprintSO: {fileID: 11400000, guid: f201aed882059c246a14830a95536135, type: 2}
+  footprintWidth: 2
+  footprintHeight: 2
+  footprintGrid: 01010101y
   item:
     id: Fertilizer
     name: Fertilizer
     icon: {fileID: 8525119847550583167, guid: f7db7f616a6f62947b15d155da9768e9, type: 3}
     rarity: 0
     uses:
-    - rid: 8788999201735311528
+    - rid: 4663964602685456788
     price: 4
     footprint:
       width: 2
@@ -41,8 +43,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8788999201735311528
+    - rid: 4663964602685456788
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
-        resource: 3
-        amount: 4
+        resource: 0
+        amount: 5
