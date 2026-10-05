@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be042487d3755854db985f2fe99a9efa, type: 3}
+  m_Name: CropItemRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::CropItemRegistry
+  allItems:
+  - {fileID: 11400000, guid: 6726fad5be7eaf747908c800c2ca130b, type: 2}
+  - {fileID: 11400000, guid: b659f4933c796594c96e0ab5a4515757, type: 2}
+  - {fileID: 11400000, guid: dc19f61abfd56104cac96fc8fa41d5a0, type: 2}
+  - {fileID: 11400000, guid: 3b6831d8e06385b409a9fb85ab752cf9, type: 2}
+  - {fileID: 11400000, guid: 80661f252054e704c88423b7b57c4c6c, type: 2}
+  - {fileID: 11400000, guid: e7ae9fd4d0e1a3f44abace12cd02047e, type: 2}
+  - {fileID: 11400000, guid: 1b3ebf51e03c73a479ebc0c658d7887a, type: 2}
+  - {fileID: 11400000, guid: 5aa688cdd24302d4fb76628377f8eda1, type: 2}
+  - {fileID: 11400000, guid: 4b6dba8f06525de4b91bc9e2cb9bea9a, type: 2}
+  - {fileID: 11400000, guid: 92021d2c3297f6c46aa0600984f03d89, type: 2}
+  - {fileID: 11400000, guid: b727cb27f2cabdd47a3e72e3ac8f32ef, type: 2}
+  manualRelationships:
+  - cropSO: {fileID: 11400000, guid: 3226e867c50f3ab4581bca4b602d08c6, type: 2}
+    itemPrototype: {fileID: 11400000, guid: e7ae9fd4d0e1a3f44abace12cd02047e, type: 2}
+    role: 2
+  - cropSO: {fileID: 11400000, guid: 3226e867c50f3ab4581bca4b602d08c6, type: 2}
+    itemPrototype: {fileID: 11400000, guid: b727cb27f2cabdd47a3e72e3ac8f32ef, type: 2}
+    role: 3
+  - cropSO: {fileID: 11400000, guid: 3226e867c50f3ab4581bca4b602d08c6, type: 2}
+    itemPrototype: {fileID: 11400000, guid: b659f4933c796594c96e0ab5a4515757, type: 2}
+    role: 4
+  - cropSO: {fileID: 11400000, guid: a60379f23fc8ad241bb8028e97827049, type: 2}
+    itemPrototype: {fileID: 11400000, guid: e7ae9fd4d0e1a3f44abace12cd02047e, type: 2}
+    role: 2
+  - cropSO: {fileID: 11400000, guid: a60379f23fc8ad241bb8028e97827049, type: 2}
+    itemPrototype: {fileID: 11400000, guid: b727cb27f2cabdd47a3e72e3ac8f32ef, type: 2}
+    role: 3
+  - cropSO: {fileID: 11400000, guid: a60379f23fc8ad241bb8028e97827049, type: 2}
+    itemPrototype: {fileID: 11400000, guid: 80661f252054e704c88423b7b57c4c6c, type: 2}
+    role: 4
+  - cropSO: {fileID: 11400000, guid: ce6f7a78c5e5970499b80e1d91d9f3fd, type: 2}
+    itemPrototype: {fileID: 11400000, guid: e7ae9fd4d0e1a3f44abace12cd02047e, type: 2}
+    role: 2
+  - cropSO: {fileID: 11400000, guid: ce6f7a78c5e5970499b80e1d91d9f3fd, type: 2}
+    itemPrototype: {fileID: 11400000, guid: b727cb27f2cabdd47a3e72e3ac8f32ef, type: 2}
+    role: 3
+  - cropSO: {fileID: 11400000, guid: ce6f7a78c5e5970499b80e1d91d9f3fd, type: 2}
+    itemPrototype: {fileID: 11400000, guid: 80661f252054e704c88423b7b57c4c6c, type: 2}
+    role: 4
+  - cropSO: {fileID: 11400000, guid: 610735b8cd5167c4ea872ed5ee114698, type: 2}
+    itemPrototype: {fileID: 11400000, guid: e7ae9fd4d0e1a3f44abace12cd02047e, type: 2}
+    role: 2
+  - cropSO: {fileID: 11400000, guid: 610735b8cd5167c4ea872ed5ee114698, type: 2}
+    itemPrototype: {fileID: 11400000, guid: b727cb27f2cabdd47a3e72e3ac8f32ef, type: 2}
+    role: 3
+  - cropSO: {fileID: 11400000, guid: 610735b8cd5167c4ea872ed5ee114698, type: 2}
+    itemPrototype: {fileID: 11400000, guid: 80661f252054e704c88423b7b57c4c6c, type: 2}
+    role: 4
