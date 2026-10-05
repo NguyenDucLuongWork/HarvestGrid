@@ -4705,7 +4705,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoalItemSuggestionManager
   suggestionColor: {r: 1, g: 0.8, b: 0.2, a: 0.6}
-  registry: {fileID: 0}
+  registry: {fileID: 11400000, guid: 321d1c700f031ac4c82ce7a9e515790d, type: 2}
+  debugLogs: 0
 --- !u!1 &1529972908
 GameObject:
   m_ObjectHideFlags: 0
