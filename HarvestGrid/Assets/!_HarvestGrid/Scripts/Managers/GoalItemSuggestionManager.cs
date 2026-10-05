@@ -102,8 +102,8 @@ public class GoalItemSuggestionManager : BaseSingleton<GoalItemSuggestionManager
         ItemRole[] priorityRoles = new[] { 
             ItemRole.Seed, 
             ItemRole.Watering, 
-            ItemRole.Fertilizer, 
-            ItemRole.HarvestTool 
+            ItemRole.HarvestTool, 
+            ItemRole.Fertilizer 
         };
 
         HashSet<string> missingItemIds = new HashSet<string>();
