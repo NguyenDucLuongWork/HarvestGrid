@@ -33,7 +33,7 @@ public partial class InventorySortUIMono : BaseSingleton<InventorySortUIMono>
             InputManager.Instance.OnDragBegin += HandleDragBegin;
         }
 
-        if (InventoryMono.Instance != null && InventoryMono.Instance.Inventory != null)
+        if (InventoryMono.HasInstance && InventoryMono.Instance.Inventory != null)
         {
             InventoryMono.Instance.Inventory.OnItemsChanged += HandleItemsChanged;
         }
@@ -43,12 +43,12 @@ public partial class InventorySortUIMono : BaseSingleton<InventorySortUIMono>
 
     protected override void OnDestroy()
     {
-        if (InputManager.Instance != null)
+        if (InputManager.HasInstance)
         {
             InputManager.Instance.OnDragBegin -= HandleDragBegin;
         }
 
-        if (InventoryMono.Instance != null && InventoryMono.Instance.Inventory != null)
+        if (InventoryMono.HasInstance && InventoryMono.Instance.Inventory != null)
         {
             InventoryMono.Instance.Inventory.OnItemsChanged -= HandleItemsChanged;
         }
