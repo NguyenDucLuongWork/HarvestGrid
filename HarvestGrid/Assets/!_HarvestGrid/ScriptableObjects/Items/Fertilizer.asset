@@ -21,7 +21,7 @@ MonoBehaviour:
   item:
     id: Fertilizer
     name: Fertilizer
-    icon: {fileID: 8525119847550583167, guid: f7db7f616a6f62947b15d155da9768e9, type: 3}
+    icon: {fileID: 1920428110085110331, guid: 3fb58fbaf020dbe4ba7227c9b9e71e9d, type: 3}
     rarity: 0
     uses:
     - rid: 4663964602685456788
@@ -46,5 +46,6 @@ MonoBehaviour:
     - rid: 4663964602685456788
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
+        sfxClip: {fileID: 8300000, guid: 96a1749ed025f004ba4b2de69abd7652, type: 3}
         resource: 0
         amount: 5

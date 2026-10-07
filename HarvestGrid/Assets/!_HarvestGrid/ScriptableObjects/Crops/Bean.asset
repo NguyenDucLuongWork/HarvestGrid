@@ -15,6 +15,6 @@ MonoBehaviour:
   crop:
     cropID: Bean
     name: Bean
-    icon: {fileID: 2679770912503586980, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
+    icon: {fileID: -5973520735238753905, guid: 51df052eb846a6249a21c6f3b9fb928e, type: 3}
     stars: 0
     baseSellPrice: 4

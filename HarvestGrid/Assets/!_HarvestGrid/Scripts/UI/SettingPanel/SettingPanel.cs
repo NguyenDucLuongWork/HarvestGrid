@@ -34,7 +34,7 @@ namespace HarvestGrid.UI.Settings
         private void OnEnable()
         {
             if (AudioManager.HasInstance)
-                AudioManager.Instance.PlayUIOpen();
+                //AudioManager.Instance.PlayUIOpen();
 
             // Sync UI state to runtime values securely when panel opens
             if (HarvestGrid.Settings.GraphicsSettingsManager.Instance != null)
@@ -162,7 +162,7 @@ namespace HarvestGrid.UI.Settings
         public void ClosePanel()
         {
             if (AudioManager.HasInstance)
-                AudioManager.Instance.PlayUIClose();
+                //AudioManager.Instance.PlayUIClose();
             gameObject.SetActive(false);
         }
     }

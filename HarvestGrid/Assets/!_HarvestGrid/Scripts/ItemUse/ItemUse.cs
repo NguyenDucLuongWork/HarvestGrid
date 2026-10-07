@@ -6,9 +6,15 @@ using UnityEngine;
 [Serializable]
 public abstract class ItemUse : ICloneable<ItemUse>
 {
+    public AudioClip sfxClip;
+
     public abstract ItemUseType UseType { get; }
     public abstract void Apply(ItemUseContext ctx);
-    public abstract ItemUse Clone();
+
+    public virtual ItemUse Clone()
+    {
+        return (ItemUse)MemberwiseClone();
+    }
 }
 
 [Serializable]

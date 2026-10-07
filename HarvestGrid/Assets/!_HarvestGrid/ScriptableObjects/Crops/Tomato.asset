@@ -15,6 +15,6 @@ MonoBehaviour:
   crop:
     cropID: tomato
     name: Tomato
-    icon: {fileID: -1257518098505440576, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+    icon: {fileID: -5108665259744769790, guid: ced757f79a41f97468f85c2985ea827f, type: 3}
     stars: 0
     baseSellPrice: 10
