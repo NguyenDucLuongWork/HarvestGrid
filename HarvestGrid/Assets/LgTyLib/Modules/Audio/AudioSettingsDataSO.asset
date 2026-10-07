@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AudioSettingsDataSO
   m_EditorClassIdentifier: Assembly-CSharp::LgTyLib.Modules.Audio.AudioSettingsDataSO
   audioSettingsData:
-    masterAudioScale: 0.5
-    musicAudioScale: 0.5
-    sfxAudioScale: 0.491
+    masterAudioScale: 1.11
+    musicAudioScale: 0.87
+    sfxAudioScale: 0.87
