@@ -27,7 +27,7 @@ MonoBehaviour:
     - key: 3
       value: 8
     stages:
-    - sprite: {fileID: 4845093130004184339, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
+    - sprite: {fileID: -294454392751361933, guid: 029101bc14c9df747875b732101a67f5, type: 3}
       requiredResources:
       - key: 1
         value: 14
@@ -35,7 +35,7 @@ MonoBehaviour:
         value: 13
       - key: 3
         value: 8
-    - sprite: {fileID: -6079087725641582597, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
+    - sprite: {fileID: -2156347150066799818, guid: 029101bc14c9df747875b732101a67f5, type: 3}
       requiredResources:
       - key: 2
         value: 10
@@ -43,7 +43,7 @@ MonoBehaviour:
         value: 6
       - key: 0
         value: 7
-    - sprite: {fileID: 669492167673851439, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
+    - sprite: {fileID: -8476042142041917908, guid: 029101bc14c9df747875b732101a67f5, type: 3}
       requiredResources:
       - key: 1
         value: 6
@@ -51,7 +51,7 @@ MonoBehaviour:
         value: 12
       - key: 0
         value: 5
-    - sprite: {fileID: -5607939481280983574, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
+    - sprite: {fileID: 7912418420114489732, guid: 029101bc14c9df747875b732101a67f5, type: 3}
       requiredResources:
       - key: 3
         value: 9
@@ -59,7 +59,7 @@ MonoBehaviour:
         value: 8
       - key: 2
         value: 14
-    - sprite: {fileID: 5005312502218828524, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
+    - sprite: {fileID: 2586118746125543092, guid: 029101bc14c9df747875b732101a67f5, type: 3}
       requiredResources:
       - key: 1
         value: 7
@@ -70,7 +70,7 @@ MonoBehaviour:
     crop:
       cropID: Cucumber
       name: Cucumber
-      icon: {fileID: -4912337978787708444, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
+      icon: {fileID: 7039713306729004367, guid: 029101bc14c9df747875b732101a67f5, type: 3}
       stars: 0
-      baseSellPrice: 36
+      baseSellPrice: 5
     gameObject: {fileID: 0}

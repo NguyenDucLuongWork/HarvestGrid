@@ -51,7 +51,7 @@ namespace HarvestGrid.UI.UserProfile
         private void OnEnable()
         {
             if (LgTyLib.Modules.Audio.AudioManager.HasInstance)
-                LgTyLib.Modules.Audio.AudioManager.Instance.PlayUIOpen();
+                //LgTyLib.Modules.Audio.AudioManager.Instance.PlayUIOpen();
 
             // Populate dynamic text fields every time the popup opens
             if (usernameText != null)
@@ -106,7 +106,7 @@ namespace HarvestGrid.UI.UserProfile
         public void ClosePopup()
         {
             if (LgTyLib.Modules.Audio.AudioManager.HasInstance)
-                LgTyLib.Modules.Audio.AudioManager.Instance.PlayUIClose();
+                //LgTyLib.Modules.Audio.AudioManager.Instance.PlayUIClose();
             gameObject.SetActive(false);
         }
     }

@@ -19,13 +19,21 @@ public class CropUIComponent : MonoBehaviour
     [SerializeField]
     private Crop crop;
 
-    public void SetData(Crop crop, int amount)
+    public void SetData(Crop crop, int amount, int requiringAmount)
     {
         this.crop = crop;
         icon.sprite = crop.Icon;
         stars.text = crop.Stars + "";
         sellPriceText.text = crop.GetSellPrice() + "";
-        this.amountText.text = amount + "";
+        if(requiringAmount > 0)
+        {
+            this.amountText.text = amount + "/" + requiringAmount;
+        }
+        else
+        {
+            this.amountText.text = amount + "";
+        }
+        
     }
 
     public void SellOne()

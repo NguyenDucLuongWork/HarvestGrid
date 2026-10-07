@@ -1,4 +1,5 @@
 using DG.Tweening;
+using LgTyLib.Modules.Audio;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -46,6 +47,13 @@ public class ItemEffectMono : MonoBehaviour
     {
         if (useContext == null || useContext.Item == null)
             return;
+
+        // Playing Soung
+        AudioManager.Instance.PlaySoundFXClipWithPool(
+                useContext.Use.sfxClip,
+                this.transform.position,
+                AudioManager.Instance.audioSettingsDataSO.audioSettingsData.sfxAudioScale
+            );
 
         // Previous effect still running: finish it properly so its slot is released
         if (isPlaying)

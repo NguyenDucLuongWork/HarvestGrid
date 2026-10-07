@@ -22,8 +22,10 @@ public class ItemChanceEntry
 public class LevelSO : ScriptableObject
 {
     public string levelID;
+    public float timeBudget;
     public int money;
     public FarmMono farmMono;
+
     public StoringSpaceSO storingSpaceSO;
 
     // Crop have star inside it. Same crop id but different crop's star is still different.
