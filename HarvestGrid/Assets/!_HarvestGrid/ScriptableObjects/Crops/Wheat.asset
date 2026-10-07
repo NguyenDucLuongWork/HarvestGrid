@@ -15,6 +15,6 @@ MonoBehaviour:
   crop:
     cropID: Wheat
     name: Wheat
-    icon: {fileID: 4603014837311241366, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+    icon: {fileID: -2982861900750775558, guid: 521116c90e5dc144db011dbdc15184cf, type: 3}
     stars: 0
     baseSellPrice: 2

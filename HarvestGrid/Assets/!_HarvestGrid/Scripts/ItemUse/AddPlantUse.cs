@@ -23,13 +23,17 @@ public class AddPlantUse : ItemUse
 
     public override void Apply(ItemUseContext ctx)
     {
-        Debug.Log("Adding plant");
         FarmMono.Instance.AddPlant(plantToAdd.Clone(), ctx.TargetSlot);
     }
 
-    public override ItemUse Clone()
-    {
-        var c = new AddPlantUse(this);
-        return c;
-    }
+    //public override ItemUse Clone()
+    //{
+    //    var clone = (AddPlantUse)base.Clone();
+
+    //    // Deep clone fields that need independent data
+    //    clone.plantToAdd = plantToAdd.Clone();
+
+    //    return clone;
+    //}
+
 }

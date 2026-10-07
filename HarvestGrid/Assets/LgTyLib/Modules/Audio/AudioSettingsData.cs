@@ -5,7 +5,6 @@ namespace LgTyLib.Modules.Audio
     [Serializable]
     public class AudioSettingsData
     {
-
         public AudioSettingsData() {
             masterAudioScale = 0.5f;
             musicAudioScale = 0.5f;

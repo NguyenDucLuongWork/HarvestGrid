@@ -1,13 +1,28 @@
 using DG.Tweening;
 using LgTyLib.Core;
+using LgTyLib.Modules.Audio;
 using LgTyLib.Modules.DataPersistence;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersistence
 {
     [SerializeField]
     private GameplaySceneDataSO gameplaySceneData;
+    [Header("Time")]
+    [SerializeField]
+    private float timeBudget = 300f;
+
+    [SerializeField]
+    private float remainingTime;
+
+    public float TimeBudget => timeBudget;
+    public float RemainingTime => remainingTime;
+
+    [SerializeField]
+    private Slider timeSlider;
+
     [Header("OnShowBagUI")]
     [SerializeField]
     private GameObject farmPlaceHolder;
@@ -71,6 +86,10 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
 
         levelSO = gameplaySceneData.level;
 
+        // Initialize level time
+        timeBudget = levelSO.timeBudget;
+        remainingTime = timeBudget;
+
         var farm = Instantiate(
             gameplaySceneData.level.farmMono,
             farmPlaceHolder.transform
@@ -96,8 +115,36 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
 
         StartCoroutine(LoadNextFrame());
         InventoryMono.Instance.AddMoney(levelSO.money);
+        AudioManager.Instance.PlaySoundFXClip(
+            AudioManager.Instance.audioLibSO.bgm1,
+            Vector3.zero,
+            AudioManager.Instance.audioSettingsDataSO.audioSettingsData.musicAudioScale,
+            true
+            );
+    }
+    public void ConsumeTime(float amount)
+    {
+        if (amount <= 0f){
+            return;
+        }
+
+        remainingTime = Mathf.Max(0f, remainingTime - amount);
+        timeSlider.value = remainingTime / timeBudget;
+        if(remainingTime == 0)
+        {
+            LoseGame();
+        }
     }
 
+    public void ResetTime()
+    {
+        remainingTime = timeBudget;
+    }
+
+    public bool IsTimeUp()
+    {
+        return remainingTime <= 0f;
+    }
     private IEnumerator LoadNextFrame()
     {
         yield return null;
@@ -181,4 +228,6 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
     {
         InventoryMono.Instance.AddMoney(amount);
     }
+
+
 }

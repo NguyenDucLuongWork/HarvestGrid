@@ -15,6 +15,6 @@ MonoBehaviour:
   crop:
     cropID: Cucumber
     name: Cucumber
-    icon: {fileID: -4912337978787708444, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
+    icon: {fileID: 7039713306729004367, guid: 029101bc14c9df747875b732101a67f5, type: 3}
     stars: 0
     baseSellPrice: 5

@@ -55,20 +55,24 @@ MonoBehaviour:
     - rid: 4663964602685456782
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
+        sfxClip: {fileID: 8300000, guid: 96a1749ed025f004ba4b2de69abd7652, type: 3}
         resource: 0
         amount: 10
     - rid: 4663964602685456783
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
+        sfxClip: {fileID: 0}
         resource: 1
         amount: 10
     - rid: 4663964602685456784
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
+        sfxClip: {fileID: 0}
         resource: 2
         amount: 10
     - rid: 4663964602685456785
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
+        sfxClip: {fileID: 0}
         resource: 3
         amount: 10

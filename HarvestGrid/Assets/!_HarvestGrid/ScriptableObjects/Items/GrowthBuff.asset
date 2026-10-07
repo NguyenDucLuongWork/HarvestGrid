@@ -15,7 +15,9 @@ MonoBehaviour:
   useConfig:
   - type: 1
     plantPrototype: {fileID: 0}
-  footprintSO: {fileID: 11400000, guid: bbaf524e4506f4c40b9083af780fb0be, type: 2}
+  footprintWidth: 1
+  footprintHeight: 1
+  footprintGrid: 00y
   item:
     id: GrowthBuff
     name: GrowthBuff
@@ -44,5 +46,6 @@ MonoBehaviour:
     - rid: 8788999201735311528
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
+        sfxClip: {fileID: 8300000, guid: 96a1749ed025f004ba4b2de69abd7652, type: 3}
         resource: 0
         amount: 5
