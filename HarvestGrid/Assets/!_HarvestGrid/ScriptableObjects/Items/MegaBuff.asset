@@ -55,24 +55,24 @@ MonoBehaviour:
     - rid: 4663964602685456782
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
-        sfxClip: {fileID: 8300000, guid: 96a1749ed025f004ba4b2de69abd7652, type: 3}
+        sfxClip: {fileID: 8300000, guid: 40d60ce210d2959469d24e34213ffe62, type: 3}
         resource: 0
         amount: 10
     - rid: 4663964602685456783
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
-        sfxClip: {fileID: 0}
+        sfxClip: {fileID: 8300000, guid: 96a1749ed025f004ba4b2de69abd7652, type: 3}
         resource: 1
         amount: 10
     - rid: 4663964602685456784
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
-        sfxClip: {fileID: 0}
+        sfxClip: {fileID: 8300000, guid: 470537fea853d5746ac605b48099e571, type: 3}
         resource: 2
         amount: 10
     - rid: 4663964602685456785
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
-        sfxClip: {fileID: 0}
+        sfxClip: {fileID: 8300000, guid: 10ae504d52624fa4e88868fae87b6bc5, type: 3}
         resource: 3
         amount: 10
