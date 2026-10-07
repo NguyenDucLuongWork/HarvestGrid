@@ -201,17 +201,26 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         IReadOnlyDictionary<Crop, int> crops)
     {
         AddCropToCropBar();
+
+        if (HasMetAllCropRequirements())
+        {
+            GameplayScene.Instance.WinGame();
+        }
     }
 
     public void AddCropToCropBar()
     {
-        if (cropBar == null || cropUIComponent == null)
+        if (cropBar == null || cropUIComponent == null || inventory == null)
             return;
+
+        // ============================================================
+        // 1. Get current inventory crops
+        // ============================================================
 
         var crops = inventory.Crops;
 
-        // Group by CropID + Stars, summing amounts for matches.
-        var grouped =
+        // Group inventory by CropID + Stars.
+        var inventoryGrouped =
             new Dictionary<
                 (string cropID, int stars),
                 (Crop crop, int amount)
@@ -227,23 +236,108 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
 
             var key = (crop.CropID, crop.Stars);
 
-            if (grouped.TryGetValue(key, out var existing))
+            if (inventoryGrouped.TryGetValue(key, out var existing))
             {
-                grouped[key] =
+                inventoryGrouped[key] =
                     (existing.crop, existing.amount + amount);
             }
             else
             {
-                grouped[key] = (crop, amount);
+                inventoryGrouped[key] = (crop, amount);
             }
         }
 
-        // Remove UI entries for groups that no longer exist.
+        // ============================================================
+        // 2. Get level requirements
+        // ============================================================
+
+        var level = GameplayScene.Instance != null
+            ? GameplayScene.Instance.LevelSO
+            : null;
+
+        var requirements =
+            new Dictionary<
+                (string cropID, int stars),
+                (Crop crop, int requiredAmount)
+            >();
+
+        if (level != null)
+        {
+            level.EnsureInitialized();
+
+            foreach (var kvp in level.requiringCrops)
+            {
+                Crop crop = kvp.Key;
+                int requiredAmount = kvp.Value;
+
+                if (crop == null || requiredAmount <= 0)
+                    continue;
+
+                var key = (crop.CropID, crop.Stars);
+
+                requirements[key] =
+                    (crop, requiredAmount);
+            }
+        }
+
+        // ============================================================
+        // 3. Build combined list
+        // ============================================================
+
+        var combined =
+            new Dictionary<
+                (string cropID, int stars),
+                (Crop crop, int amount, int requiredAmount)
+            >();
+
+        // First add inventory crops.
+        foreach (var kvp in inventoryGrouped)
+        {
+            var key = kvp.Key;
+
+            combined[key] =
+                (
+                    kvp.Value.crop,
+                    kvp.Value.amount,
+                    0
+                );
+        }
+
+        // Then add required crops.
+        // If the player doesn't own one, amount = 0.
+        foreach (var kvp in requirements)
+        {
+            var key = kvp.Key;
+
+            if (combined.TryGetValue(key, out var existing))
+            {
+                combined[key] =
+                    (
+                        existing.crop,
+                        existing.amount,
+                        kvp.Value.requiredAmount
+                    );
+            }
+            else
+            {
+                combined[key] =
+                    (
+                        kvp.Value.crop,
+                        0,
+                        kvp.Value.requiredAmount
+                    );
+            }
+        }
+
+        // ============================================================
+        // 4. Remove UI entries that no longer exist
+        // ============================================================
+
         List<(string cropID, int stars)> toRemove = null;
 
         foreach (var kvp in cropUIEntries)
         {
-            if (!grouped.ContainsKey(kvp.Key))
+            if (!combined.ContainsKey(kvp.Key))
             {
                 (toRemove ??=
                     new List<(string, int)>()).Add(kvp.Key);
@@ -254,28 +348,65 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
         {
             foreach (var key in toRemove)
             {
-                Destroy(cropUIEntries[key].gameObject);
+                if (cropUIEntries[key] != null)
+                    Destroy(cropUIEntries[key].gameObject);
+
                 cropUIEntries.Remove(key);
             }
         }
 
-        // Add/update entries.
+        // ============================================================
+        // 5. Sort
+        // ============================================================
+        //
+        // Priority:
+        //   1. Required + insufficient
+        //   2. Required + fulfilled
+        //   3. Normal inventory crops
+        //
+        // This makes missing/short crops appear at the top.
+        // ============================================================
+
+        var sorted = combined
+            .OrderByDescending(x =>
+                x.Value.requiredAmount > 0 &&
+                x.Value.amount < x.Value.requiredAmount)
+            .ThenByDescending(x =>
+                x.Value.requiredAmount > 0)
+            .ThenBy(x => x.Key.cropID)
+            .ThenBy(x => x.Key.stars)
+            .ToList();
+
+        // ============================================================
+        // 6. Create / update UI
+        // ============================================================
+
         int index = 0;
 
-        foreach (var kvp in grouped.OrderBy(g => g.Key.cropID)
-                                    .ThenBy(g => g.Key.stars))
+        foreach (var kvp in sorted)
         {
             var key = kvp.Key;
+
             Crop crop = kvp.Value.crop;
             int amount = kvp.Value.amount;
+            int requiredAmount = kvp.Value.requiredAmount;
 
-            if (!cropUIEntries.TryGetValue(key, out CropUIComponent uiEntry))
+            if (!cropUIEntries.TryGetValue(
+                    key,
+                    out CropUIComponent uiEntry))
             {
-                uiEntry = Instantiate(cropUIComponent, cropBar);
+                uiEntry = Instantiate(
+                    cropUIComponent,
+                    cropBar);
+
                 cropUIEntries.Add(key, uiEntry);
             }
 
-            uiEntry.SetData(crop, amount);
+            uiEntry.SetData(
+                crop,
+                amount,
+                requiredAmount);
+
             uiEntry.transform.SetSiblingIndex(index);
 
             index++;
@@ -463,5 +594,56 @@ public class InventoryMono : BaseSingleton<InventoryMono>, IDataPersistence
     public void SaveGame(ref GameData gameData)
     {
         gameData.inventory = inventory;
+    }
+
+    private bool HasMetAllCropRequirements()
+    {
+        LevelSO level = GameplayScene.Instance != null
+            ? GameplayScene.Instance.LevelSO
+            : null;
+
+        if (level == null)
+            return false;
+
+        level.EnsureInitialized();
+
+        // No crop requirements = don't win from this check.
+        if (level.requiringCrops == null ||
+            level.requiringCrops.Count == 0)
+        {
+            return false;
+        }
+
+        foreach (var requirement in level.requiringCrops)
+        {
+            Crop requiredCrop = requirement.Key;
+            int requiredAmount = requirement.Value;
+
+            if (requiredCrop == null || requiredAmount <= 0)
+                continue;
+
+            int currentAmount = 0;
+
+            // Match BOTH CropID and Stars.
+            foreach (var inventoryCrop in inventory.Crops)
+            {
+                Crop crop = inventoryCrop.Key;
+
+                if (crop == null)
+                    continue;
+
+                if (crop.CropID == requiredCrop.CropID &&
+                    crop.Stars == requiredCrop.Stars)
+                {
+                    currentAmount += inventoryCrop.Value;
+                }
+            }
+
+            // This requirement has not been fulfilled.
+            if (currentAmount < requiredAmount)
+                return false;
+        }
+
+        return true;
     }
 }

@@ -22,14 +22,10 @@ public class HarvestUse : ItemUse
 
     public override void Apply(ItemUseContext ctx) {
         FarmMono.Instance.HarvestRandom(ctx.TargetSlot, effective);
-        if (LgTyLib.Modules.Audio.AudioManager.HasInstance)
-        {
-            LgTyLib.Modules.Audio.AudioManager.Instance.PlaySickleSound();
-        }
     }
 
-    public override ItemUse Clone()
-    {
-        return new HarvestUse(this);
-    }
+    //public override ItemUse Clone()
+    //{
+    //    return new HarvestUse(this);
+    //}
 }

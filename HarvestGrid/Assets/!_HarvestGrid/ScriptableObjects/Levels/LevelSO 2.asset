@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LevelSO 2
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   levelID: lv2
+  timeBudget: 500
   money: 100
   farmMono: {fileID: 5780982813420652117, guid: e71778c124057e94cb8e55b4b740db8b, type: 3}
   storingSpaceSO: {fileID: 11400000, guid: b159f133d93df4349b08718c7835b0b2, type: 2}
@@ -20,51 +21,51 @@ MonoBehaviour:
   - key:
       cropID: Bean
       name: Bean
-      icon: {fileID: 2679770912503586980, guid: aa217f93bcaad534286c28c502a0371b, type: 3}
-      stars: 4
+      icon: {fileID: -5973520735238753905, guid: 51df052eb846a6249a21c6f3b9fb928e, type: 3}
+      stars: 2
       baseSellPrice: 4
-    value: 10
+    value: 1
   - key:
       cropID: Cucumber
       name: Cucumber
-      icon: {fileID: -4912337978787708444, guid: 9f19b7fd13db8f745a99e46be7d00464, type: 3}
-      stars: 4
+      icon: {fileID: 7039713306729004367, guid: 029101bc14c9df747875b732101a67f5, type: 3}
+      stars: 2
       baseSellPrice: 5
-    value: 5
+    value: 1
   - key:
       cropID: tomato
       name: Tomato
-      icon: {fileID: -1257518098505440576, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
-      stars: 4
+      icon: {fileID: -5108665259744769790, guid: ced757f79a41f97468f85c2985ea827f, type: 3}
+      stars: 2
       baseSellPrice: 10
-    value: 5
+    value: 1
   - key:
       cropID: Wheat
       name: Wheat
-      icon: {fileID: 4603014837311241366, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+      icon: {fileID: -2982861900750775558, guid: 521116c90e5dc144db011dbdc15184cf, type: 3}
       stars: 2
       baseSellPrice: 2
-    value: 20
+    value: 1
   itemAndChancePool:
   - key: {fileID: 11400000, guid: 6726fad5be7eaf747908c800c2ca130b, type: 2}
-    value: 0.14285715
+    value: 0.1
   - key: {fileID: 11400000, guid: b659f4933c796594c96e0ab5a4515757, type: 2}
-    value: 0.14285715
+    value: 0.1
   - key: {fileID: 11400000, guid: 80661f252054e704c88423b7b57c4c6c, type: 2}
-    value: 0.14285715
+    value: 0.1
   - key: {fileID: 11400000, guid: e7ae9fd4d0e1a3f44abace12cd02047e, type: 2}
-    value: 0.071428575
+    value: 0.1
   - key: {fileID: 11400000, guid: 1b3ebf51e03c73a479ebc0c658d7887a, type: 2}
-    value: 0.071428575
+    value: 0.1
   - key: {fileID: 11400000, guid: 5aa688cdd24302d4fb76628377f8eda1, type: 2}
-    value: 0.071428575
+    value: 0.1
   - key: {fileID: 11400000, guid: 4b6dba8f06525de4b91bc9e2cb9bea9a, type: 2}
-    value: 0.071428575
+    value: 0.1
   - key: {fileID: 11400000, guid: 92021d2c3297f6c46aa0600984f03d89, type: 2}
-    value: 0.071428575
+    value: 0.1
   - key: {fileID: 11400000, guid: b727cb27f2cabdd47a3e72e3ac8f32ef, type: 2}
-    value: 0.14285715
+    value: 0.1
   - key: {fileID: 11400000, guid: dc19f61abfd56104cac96fc8fa41d5a0, type: 2}
-    value: 0.071428575
+    value: 0.1
   requiredCrops: []
   itemPool: []

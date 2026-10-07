@@ -15,8 +15,6 @@ public class Shop : MonoBehaviour
     {
         Dictionary<ItemPrototype, float> itemPool =
             GameplayScene.Instance.LevelSO.itemAndChancePool;
-        Debug.Log(itemPool.Count);
-        Debug.Log(GameplayScene.Instance.LevelSO.RequiredCrops.Count);
         if (itemPool == null || itemPool.Count == 0)
             return;
 

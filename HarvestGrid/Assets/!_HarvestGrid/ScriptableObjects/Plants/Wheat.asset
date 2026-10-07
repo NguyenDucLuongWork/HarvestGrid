@@ -27,7 +27,7 @@ MonoBehaviour:
     - key: 3
       value: 9
     stages:
-    - sprite: {fileID: -9184126180431211621, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+    - sprite: {fileID: -3794232566253731065, guid: 521116c90e5dc144db011dbdc15184cf, type: 3}
       requiredResources:
       - key: 1
         value: 5
@@ -35,7 +35,7 @@ MonoBehaviour:
         value: 10
       - key: 3
         value: 9
-    - sprite: {fileID: 6217807707762364211, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+    - sprite: {fileID: -7641870314460093649, guid: 521116c90e5dc144db011dbdc15184cf, type: 3}
       requiredResources:
       - key: 0
         value: 14
@@ -43,7 +43,7 @@ MonoBehaviour:
         value: 5
       - key: 2
         value: 6
-    - sprite: {fileID: 39959716782875359, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+    - sprite: {fileID: 2457017696039097189, guid: 521116c90e5dc144db011dbdc15184cf, type: 3}
       requiredResources:
       - key: 3
         value: 7
@@ -51,7 +51,7 @@ MonoBehaviour:
         value: 12
       - key: 1
         value: 15
-    - sprite: {fileID: 1052354869805052286, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+    - sprite: {fileID: -7331403919671009553, guid: 521116c90e5dc144db011dbdc15184cf, type: 3}
       requiredResources:
       - key: 0
         value: 12
@@ -59,7 +59,7 @@ MonoBehaviour:
         value: 5
       - key: 1
         value: 13
-    - sprite: {fileID: -3268818965878550181, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+    - sprite: {fileID: 2304842866052866935, guid: 521116c90e5dc144db011dbdc15184cf, type: 3}
       requiredResources:
       - key: 3
         value: 10
@@ -67,26 +67,10 @@ MonoBehaviour:
         value: 14
       - key: 0
         value: 11
-    - sprite: {fileID: -2780286958352041688, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
-      requiredResources:
-      - key: 0
-        value: 7
-      - key: 3
-        value: 7
-      - key: 1
-        value: 14
-    - sprite: {fileID: -2152290069661278788, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
-      requiredResources:
-      - key: 1
-        value: 15
-      - key: 0
-        value: 13
-      - key: 3
-        value: 10
     crop:
       cropID: Wheat
       name: Wheat
-      icon: {fileID: 4603014837311241366, guid: 211f8afc5c3cc254997a2be9f627a1f3, type: 3}
+      icon: {fileID: -2982861900750775558, guid: 521116c90e5dc144db011dbdc15184cf, type: 3}
       stars: 0
-      baseSellPrice: 4
+      baseSellPrice: 2
     gameObject: {fileID: 0}

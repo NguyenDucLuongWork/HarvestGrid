@@ -1,22 +1,19 @@
 using LgTyLib.Core;
 using LgTyLib.Modules.ObjectPooling;
 using LgTyLib.Modules.Settings;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 namespace LgTyLib.Modules.Audio
 {
     public class AudioManager : BaseSingleton<AudioManager>, ISettingGroup
     {
         [Header("Config")]
-        [SerializeField]
-        private AudioSettingsDataSO audioSettingsDataSO;
-        
+        [field: SerializeField]
+        public AudioSettingsDataSO audioSettingsDataSO { get; private set; }
+        [field: SerializeField]
+        public AudioLibSO audioLibSO { get; private set; }
+
         [SerializeField]
         private AudioMixer audioMixer;
         [SerializeField]
@@ -29,128 +26,35 @@ namespace LgTyLib.Modules.Audio
         [SerializeField]
         private AudioSource soundObject;
 
-        [Header("BGM")]
-        [SerializeField] private AudioSource musicSource;
-        [SerializeField] private AudioClip bgm01;
-        [SerializeField] private AudioClip bgm02;
-
-        [Header("UI SFX")]
-        [SerializeField] private AudioClip uiClickSound;
-        [SerializeField] private AudioClip uiOpenSound;
-        [SerializeField] private AudioClip uiCloseSound;
-        [SerializeField] private AudioClip uiConfirmSound;
-
-        [Header("Item SFX")]
-        [SerializeField] private AudioClip sickleSound;
-        [SerializeField] private AudioClip wateringSound;
-        [SerializeField] private AudioClip fertilizerSound;
-
-        private Coroutine bgmFadeCoroutine;
-
         public string GroupKey => "AudioSettings";
 
-#if UNITY_EDITOR
-        private void OnValidate()
+
+        public void PlaySoundFXClip(AudioClip audioClip, Vector3 position, float volume, bool loop = false)
         {
-            if (uiClickSound == null) uiClickSound = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/!_HarvestGrid/Audio/UI/UI_Click.wav");
-            if (uiOpenSound == null) uiOpenSound = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/!_HarvestGrid/Audio/UI/UI_Open.wav");
-            if (uiCloseSound == null) uiCloseSound = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/!_HarvestGrid/Audio/UI/UI_Close.wav");
-            // uiConfirmSound can be mapped if user adds one later
-
-            if (sickleSound == null) sickleSound = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/!_HarvestGrid/Audio/Items/SFX_Sickle.wav");
-            if (wateringSound == null) wateringSound = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/!_HarvestGrid/Audio/Items/SFX_Watering.wav");
-            if (fertilizerSound == null) fertilizerSound = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/!_HarvestGrid/Audio/Items/SFX_Fertilizer.wav");
-
-            if (bgm01 == null) bgm01 = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/!_HarvestGrid/Audio/BGM/BGM_Valley.wav");
-            if (bgm02 == null) bgm02 = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/!_HarvestGrid/Audio/BGM/BGM_Gaming.wav");
-        }
-#endif
-
-        private void Start()
-        {
-            if (bgm02 != null)
-            {
-                PlayBGM(bgm02);
-            }
-        }
-
-        [ContextMenu("PlayBGM")]
-        public void PlayBGM()
-        {
-            PlayBGM(bgm02);
-        }
-
-        private void Update()
-        {
-            DetectGlobalButtonClick();
-        }
-
-        private void DetectGlobalButtonClick()
-        {
-            if (EventSystem.current == null) return;
-
-            Vector2 pointerPosition;
-            bool isClick = false;
-
-            // Touch (mobile)
-            var touchscreen = Touchscreen.current;
-            if (touchscreen != null && touchscreen.primaryTouch.press.wasPressedThisFrame)
-            {
-                isClick = true;
-                pointerPosition = touchscreen.primaryTouch.position.ReadValue();
-            }
-            // Mouse (desktop)
-            else if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                isClick = true;
-                pointerPosition = Mouse.current.position.ReadValue();
-            }
-            else
-            {
-                return;
-            }
-
-            if (!isClick) return;
-
-            PointerEventData pointerData = new PointerEventData(EventSystem.current)
-            {
-                position = pointerPosition
-            };
-
-            List<RaycastResult> results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(pointerData, results);
-
-            foreach (var result in results)
-            {
-                var button = result.gameObject.GetComponentInParent<Button>();
-                var toggle = result.gameObject.GetComponentInParent<Toggle>();
-
-                if ((button != null && button.interactable) || (toggle != null && toggle.interactable))
-                {
-                    PlayUIClick();
-                    break;
-                }
-            }
-        }
-
-        public void PlaySoundFXClip(AudioClip audioClip, Transform spawnTransform, float volume)
-        {
-            AudioSource audioSource = Instantiate(soundObject, spawnTransform.position, Quaternion.identity);
+            AudioSource audioSource = Instantiate(soundObject, position, Quaternion.identity);
             audioSource.clip = audioClip;
             audioSource.volume = volume;
-
+            audioSource.loop = loop;
             audioSource.Play(); 
 
             float clipLength = audioSource.clip.length;
 
+            if (loop)
+            {
+                return;
+            }
             Destroy(audioSource.gameObject, clipLength);
         }
 
-        public void PlaySoundFXClipWithPool(AudioClip audioClip, Transform spawnTransform, float volume)
+        public void PlaySoundFXClipWithPool(AudioClip audioClip, Vector3 position, float volume)
         {
+            if(audioClip == null)
+            {
+                Debug.LogWarning(" Null audio clip");
+            }
             AudioSource audioSource = ObjectPoolManager.Instance.SpawnObject<AudioSource>(
                 soundObject,
-                spawnTransform.position,   // was transform.position (the manager's own position)
+                position,
                 PoolGroup.SoundFX
             );
 
@@ -161,86 +65,11 @@ namespace LgTyLib.Modules.Audio
             ObjectPoolManager.Instance.ReturnObjectToPool(
                 audioSource.gameObject,
                 audioClip.length
-            );
+                );
+
         }
 
-        #region BGM Methods
-        public void PlayBGM(AudioClip bgmClip, bool loop = true, float fadeDuration = 1f)
-        {
-            if (musicSource == null || bgmClip == null) return;
-            
-            if (bgmFadeCoroutine != null)
-                StopCoroutine(bgmFadeCoroutine);
-
-            if (musicSource.isPlaying)
-            {
-                bgmFadeCoroutine = StartCoroutine(FadeBGM(bgmClip, loop, fadeDuration));
-            }
-            else
-            {
-                musicSource.clip = bgmClip;
-                musicSource.loop = loop;
-                musicSource.volume = 1f; // Mixer handles the actual volume level
-                musicSource.Play();
-            }
-        }
-
-        public void StopBGM()
-        {
-            if (musicSource != null) musicSource.Stop();
-        }
-
-        private System.Collections.IEnumerator FadeBGM(AudioClip newClip, bool loop, float fadeDuration)
-        {
-            float startVolume = musicSource.volume;
-            float timer = 0f;
-
-            // Fade out
-            while (timer < fadeDuration / 2)
-            {
-                timer += Time.deltaTime;
-                musicSource.volume = Mathf.Lerp(startVolume, 0f, timer / (fadeDuration / 2));
-                yield return null;
-            }
-
-            musicSource.Stop();
-            musicSource.clip = newClip;
-            musicSource.loop = loop;
-            musicSource.Play();
-
-            timer = 0f;
-            // Fade in
-            while (timer < fadeDuration / 2)
-            {
-                timer += Time.deltaTime;
-                musicSource.volume = Mathf.Lerp(0f, startVolume, timer / (fadeDuration / 2));
-                yield return null;
-            }
-            musicSource.volume = startVolume;
-            bgmFadeCoroutine = null;
-        }
-        #endregion
-
-        #region UI SFX Methods
-        public void PlayUIClick() => PlaySFX(uiClickSound);
-        public void PlayUIOpen() => PlaySFX(uiOpenSound);
-        public void PlayUIClose() => PlaySFX(uiCloseSound);
-        public void PlayUIConfirm() => PlaySFX(uiConfirmSound);
-
-        private void PlaySFX(AudioClip clip)
-        {
-            if (clip != null)
-                PlaySoundFXClipWithPool(clip, transform, 1f);
-        }
-        #endregion
-
-        #region Item SFX Methods
-        public void PlaySickleSound() => PlaySFX(sickleSound);
-        public void PlayWateringSound() => PlaySFX(wateringSound);
-        public void PlayFertilizerSound() => PlaySFX(fertilizerSound);
-        #endregion
-
-        public void UpdateMasterVolume( float masterAudioScale)
+        public void UpdateMasterVolume(float masterAudioScale)
         {
             audioMixer.SetFloat(masterVolumeField, AudioScaleRange01ToVolume(masterAudioScale));
             audioSettingsDataSO.audioSettingsData.masterAudioScale = masterAudioScale;

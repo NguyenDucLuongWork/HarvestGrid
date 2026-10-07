@@ -27,7 +27,7 @@ MonoBehaviour:
     - key: 3
       value: 15
     stages:
-    - sprite: {fileID: 3336444044123149764, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+    - sprite: {fileID: 5846502729936582703, guid: ced757f79a41f97468f85c2985ea827f, type: 3}
       requiredResources:
       - key: 2
         value: 8
@@ -35,7 +35,7 @@ MonoBehaviour:
         value: 5
       - key: 3
         value: 15
-    - sprite: {fileID: -6966369517673316951, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+    - sprite: {fileID: 1893672327351300092, guid: ced757f79a41f97468f85c2985ea827f, type: 3}
       requiredResources:
       - key: 2
         value: 15
@@ -43,7 +43,7 @@ MonoBehaviour:
         value: 5
       - key: 0
         value: 15
-    - sprite: {fileID: -4667150655987312241, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+    - sprite: {fileID: 6831108480077695825, guid: ced757f79a41f97468f85c2985ea827f, type: 3}
       requiredResources:
       - key: 2
         value: 14
@@ -51,7 +51,7 @@ MonoBehaviour:
         value: 14
       - key: 1
         value: 9
-    - sprite: {fileID: -6770858775108089496, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+    - sprite: {fileID: -5437310310792238475, guid: ced757f79a41f97468f85c2985ea827f, type: 3}
       requiredResources:
       - key: 1
         value: 11
@@ -59,7 +59,7 @@ MonoBehaviour:
         value: 13
       - key: 3
         value: 14
-    - sprite: {fileID: -7506016618634473757, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+    - sprite: {fileID: -6705414892521485586, guid: ced757f79a41f97468f85c2985ea827f, type: 3}
       requiredResources:
       - key: 2
         value: 7
@@ -67,18 +67,10 @@ MonoBehaviour:
         value: 8
       - key: 3
         value: 7
-    - sprite: {fileID: -1759049860909440148, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
-      requiredResources:
-      - key: 3
-        value: 9
-      - key: 2
-        value: 11
-      - key: 0
-        value: 10
     crop:
-      cropID: Tomato
+      cropID: tomato
       name: Tomato
-      icon: {fileID: -1257518098505440576, guid: a635bf8e4943a34408b21a2abd16c580, type: 3}
+      icon: {fileID: -5108665259744769790, guid: ced757f79a41f97468f85c2985ea827f, type: 3}
       stars: 0
-      baseSellPrice: 100
+      baseSellPrice: 10
     gameObject: {fileID: 0}
