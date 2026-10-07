@@ -46,6 +46,6 @@ MonoBehaviour:
     - rid: 8788999201735311528
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
-        sfxClip: {fileID: 8300000, guid: 96a1749ed025f004ba4b2de69abd7652, type: 3}
+        sfxClip: {fileID: 8300000, guid: 40d60ce210d2959469d24e34213ffe62, type: 3}
         resource: 0
         amount: 5
