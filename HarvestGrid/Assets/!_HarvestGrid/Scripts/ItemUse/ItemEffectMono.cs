@@ -48,12 +48,15 @@ public class ItemEffectMono : MonoBehaviour
         if (useContext == null || useContext.Item == null)
             return;
 
-        // Playing Soung
-        AudioManager.Instance.PlaySoundFXClipWithPool(
+        // Playing Sound
+        if (useContext.Use != null && useContext.Use.sfxClip != null)
+        {
+            AudioManager.Instance.PlaySoundFXClipWithPool(
                 useContext.Use.sfxClip,
                 this.transform.position,
                 AudioManager.Instance.audioSettingsDataSO.audioSettingsData.sfxAudioScale
             );
+        }
 
         // Previous effect still running: finish it properly so its slot is released
         if (isPlaying)
