@@ -31,6 +31,11 @@ namespace LgTyLib.Modules.Audio
 
         public void PlaySoundFXClip(AudioClip audioClip, Vector3 position, float volume, bool loop = false)
         {
+            if (audioClip == null)
+            {
+                Debug.LogWarning("Null audio clip");
+                return;
+            }
             AudioSource audioSource = Instantiate(soundObject, position, Quaternion.identity);
             audioSource.clip = audioClip;
             audioSource.volume = volume;
@@ -50,7 +55,8 @@ namespace LgTyLib.Modules.Audio
         {
             if(audioClip == null)
             {
-                Debug.LogWarning(" Null audio clip");
+                Debug.LogWarning("Null audio clip");
+                return;
             }
             AudioSource audioSource = ObjectPoolManager.Instance.SpawnObject<AudioSource>(
                 soundObject,
