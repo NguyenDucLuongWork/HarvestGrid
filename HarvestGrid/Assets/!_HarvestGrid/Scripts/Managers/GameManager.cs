@@ -2,7 +2,6 @@
 using LgTyLib.Modules.DataPersistence;
 using UnityEngine;
 
-
 public class GameManager : BaseSingleton<GameManager>
 {
     [SerializeField]

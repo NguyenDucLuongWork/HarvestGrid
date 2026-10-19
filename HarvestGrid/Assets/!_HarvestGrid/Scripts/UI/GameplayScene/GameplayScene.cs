@@ -1,3 +1,4 @@
+
 using DG.Tweening;
 using LgTyLib.Core;
 using LgTyLib.Modules.Audio;
@@ -10,6 +11,7 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
 {
     [SerializeField]
     private GameplaySceneDataSO gameplaySceneData;
+
     [Header("Time")]
     [SerializeField]
     private float timeBudget = 300f;
@@ -23,35 +25,46 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
     [SerializeField]
     private Slider timeSlider;
 
-    [Header("OnShowBagUI")]
+    [Header("UI")]
     [SerializeField]
     private GameObject farmPlaceHolder;
 
     [SerializeField]
-    private GameObject bag;
+    private GameObject inventoryBar;
 
     [SerializeField]
-    private GameObject bag2;
-
-    [Header("Bag Animation")]
-    [SerializeField]
-    private float bagHiddenY = -1200f;
+    private GameObject storingSpace;
 
     [SerializeField]
-    private float bagShownY = 0f;
+    private GameObject shop;
+
+    [Header("Inventory Bar Animation")]
+    [SerializeField]
+    private float inventoryBarHiddenY = 0f;
 
     [SerializeField]
-    private float bag2HiddenY = 1200f;
+    private float inventoryBarShownY = 907f;
+
+    [Header("Storing Space Animation")]
+    [SerializeField]
+    private float storingSpaceHiddenY = -1600f;
 
     [SerializeField]
-    private float bag2ShownY = 0f;
+    private float storingSpaceShownY = 0f;
+
+    [Header("Shop Animation")]
+    [SerializeField]
+    private float shopHiddenY = -100f;
+
+    [SerializeField]
+    private float shopShownY = 392f;
 
     [Header("Farm Animation")]
     [SerializeField]
     private float farmStartY = 0f;
 
     [SerializeField]
-    private float farmEndY = 800f;
+    private float farmEndY = 725f;
 
     [Header("Animation")]
     [SerializeField]
@@ -62,12 +75,15 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
 
     private LevelSO levelSO;
 
-    private RectTransform bagRect;
-    private RectTransform bag2Rect;
+    private RectTransform inventoryBarRect;
+    private RectTransform storingSpaceRect;
+    private RectTransform shopRect;
     private RectTransform farmRect;
 
+    private bool isShopShown;
+
     public LevelSO LevelSO => levelSO;
-    
+
     public void LoadGame(GameData gameData)
     {
         //
@@ -75,36 +91,38 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
 
     public void SaveGame(ref GameData gameData)
     {
-        gameData.level = levelSO.levelID;
+        gameData.levelID = levelSO.levelID;
     }
 
     protected override void Awake()
     {
         base.Awake();
 
-        Debug.Log("Enterd GameplayScene");
+        Debug.Log("Entered GameplayScene");
 
         levelSO = gameplaySceneData.level;
 
-        // Initialize level time
         timeBudget = levelSO.timeBudget;
         remainingTime = timeBudget;
 
         var farm = Instantiate(
-            gameplaySceneData.level.farmMono,
+            levelSO.farmMono,
             farmPlaceHolder.transform
         );
 
-        farm.gameObject.transform.SetSiblingIndex( 0 );
+        farm.transform.SetSiblingIndex(0);
 
-        bagRect = bag.GetComponent<RectTransform>();
-        bag2Rect = bag2.GetComponent<RectTransform>();
+        inventoryBarRect = inventoryBar.GetComponent<RectTransform>();
+        storingSpaceRect = storingSpace.GetComponent<RectTransform>();
+        shopRect = shop.GetComponent<RectTransform>();
         farmRect = farmPlaceHolder.GetComponent<RectTransform>();
 
-        // Initial positions
-        SetBagY(bagHiddenY);
-        SetBag2Y(bag2HiddenY);
-        SetFarmY(farmStartY);
+        SetY(inventoryBarRect, inventoryBarHiddenY);
+        SetY(storingSpaceRect, storingSpaceHiddenY);
+        SetY(shopRect, shopHiddenY);
+        SetY(farmRect, farmStartY);
+
+        isShopShown = false;
     }
 
     private void Start()
@@ -114,26 +132,31 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
         );
 
         StartCoroutine(LoadNextFrame());
+
         InventoryMono.Instance.AddMoney(levelSO.money);
+
         AudioManager.Instance.PlaySoundFXClip(
             AudioManager.Instance.audioLibSO.bgm1,
             Vector3.zero,
-            AudioManager.Instance.audioSettingsDataSO.audioSettingsData.musicAudioScale,
+            AudioManager.Instance.audioSettingsDataSO
+                .audioSettingsData.musicAudioScale,
             true
-            );
+        );
     }
+
     public void ConsumeTime(float amount)
     {
-        if (amount <= 0f){
+        if (amount <= 0f)
             return;
-        }
 
         remainingTime = Mathf.Max(0f, remainingTime - amount);
-        timeSlider.value = remainingTime / timeBudget;
-        if(remainingTime == 0)
-        {
+
+        timeSlider.value = timeBudget > 0f
+            ? remainingTime / timeBudget
+            : 0f;
+
+        if (remainingTime <= 0f)
             LoseGame();
-        }
     }
 
     public void ResetTime()
@@ -145,6 +168,7 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
     {
         return remainingTime <= 0f;
     }
+
     private IEnumerator LoadNextFrame()
     {
         yield return null;
@@ -154,28 +178,25 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
             Debug.Log("Loading...");
 
             GameManager.Instance.Load();
-
             DataTransfer.Instance.toLoad = false;
         }
     }
 
     public void ShowBag()
     {
-        bagRect.DOKill();
-        bag2Rect.DOKill();
+        inventoryBarRect.DOKill();
+        storingSpaceRect.DOKill();
+        shopRect.DOKill();
         farmRect.DOKill();
 
-        // Bag 1: -1200 -> 0
-        bagRect
-            .DOAnchorPosY(bagShownY, slideDuration)
+        inventoryBarRect
+            .DOAnchorPosY(inventoryBarShownY, slideDuration)
             .SetEase(slideEase);
 
-        // Bag 2: +1200 -> 0
-        bag2Rect
-            .DOAnchorPosY(bag2ShownY, slideDuration)
+        storingSpaceRect
+            .DOAnchorPosY(storingSpaceShownY, slideDuration)
             .SetEase(slideEase);
 
-        // Farm: 0 -> 800
         farmRect
             .DOAnchorPosY(farmEndY, slideDuration)
             .SetEase(slideEase);
@@ -183,51 +204,92 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
 
     public void HideBag()
     {
-        bagRect.DOKill();
-        bag2Rect.DOKill();
+        // Close the shop first if it is open.
+        if (isShopShown)
+        {
+            HideShop();
+            return;
+        }
+
+        HideInventoryUI();
+    }
+
+private float inventoryBarShopOffset =>
+    Mathf.Abs(shopShownY - shopHiddenY);
+
+    public void ShowShop()
+    {
+        inventoryBarRect.DOKill();
+        shopRect.DOKill();
+
+        inventoryBarRect
+            .DOAnchorPosY(
+                inventoryBarShownY + inventoryBarShopOffset,
+                slideDuration
+            )
+            .SetEase(slideEase);
+
+        shopRect
+            .DOAnchorPosY(shopShownY, slideDuration)
+            .SetEase(slideEase);
+
+        isShopShown = true;
+        shop.gameObject.transform.SetSiblingIndex(100);
+    }
+
+    public void HideShop()
+    {
+        if (!isShopShown)
+            return;
+
+        inventoryBarRect.DOKill();
+        shopRect.DOKill();
+
+        inventoryBarRect
+            .DOAnchorPosY(inventoryBarShownY, slideDuration)
+            .SetEase(slideEase);
+
+        shopRect
+            .DOAnchorPosY(shopHiddenY, slideDuration)
+            .SetEase(slideEase)
+            .OnComplete(() =>
+            {
+                isShopShown = false;
+            });
+        shop.gameObject.transform.SetSiblingIndex(0);
+
+    }
+
+
+    private void HideInventoryUI()
+    {
+        inventoryBarRect.DOKill();
+        storingSpaceRect.DOKill();
         farmRect.DOKill();
 
-        // Bag 1: 0 -> -1200
-        bagRect
-            .DOAnchorPosY(bagHiddenY, slideDuration)
+        inventoryBarRect
+            .DOAnchorPosY(inventoryBarHiddenY, slideDuration)
             .SetEase(slideEase);
 
-        // Bag 2: 0 -> +1200
-        bag2Rect
-            .DOAnchorPosY(bag2HiddenY, slideDuration)
+        storingSpaceRect
+            .DOAnchorPosY(storingSpaceHiddenY, slideDuration)
             .SetEase(slideEase);
 
-        // Farm: 800 -> 0
         farmRect
             .DOAnchorPosY(farmStartY, slideDuration)
             .SetEase(slideEase);
     }
 
-    private void SetBagY(float y)
+    private void SetY(RectTransform rect, float y)
     {
-        Vector2 position = bagRect.anchoredPosition;
+        Vector2 position = rect.anchoredPosition;
         position.y = y;
-        bagRect.anchoredPosition = position;
-    }
-
-    private void SetBag2Y(float y)
-    {
-        Vector2 position = bag2Rect.anchoredPosition;
-        position.y = y;
-        bag2Rect.anchoredPosition = position;
-    }
-
-    private void SetFarmY(float y)
-    {
-        Vector2 position = farmRect.anchoredPosition;
-        position.y = y;
-        farmRect.anchoredPosition = position;
+        rect.anchoredPosition = position;
     }
 
     public void AddMoney(int amount)
     {
         InventoryMono.Instance.AddMoney(amount);
     }
-
 
 }

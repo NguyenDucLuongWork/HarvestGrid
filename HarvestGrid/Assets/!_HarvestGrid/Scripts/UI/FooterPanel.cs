@@ -27,7 +27,7 @@ public class FooterPanel : MonoBehaviour, IDataPersistence
 
     private Button currentButton;
 
-    private string levelToLoad;
+    private int levelToLoad;
 
     private void Start()
     {
@@ -133,7 +133,7 @@ public class FooterPanel : MonoBehaviour, IDataPersistence
 
     public void LoadGame(GameData gameData)
     {
-        levelToLoad = gameData.level; 
+        levelToLoad = gameData.levelID; 
     }
 
     public void SaveGame(ref GameData gameData)

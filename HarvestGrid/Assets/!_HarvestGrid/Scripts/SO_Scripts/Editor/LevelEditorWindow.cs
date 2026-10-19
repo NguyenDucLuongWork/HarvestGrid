@@ -203,7 +203,7 @@ public class LevelEditorWindow : EditorWindow
         if (string.IsNullOrEmpty(path)) return;
 
         var level = CreateInstance<LevelSO>();
-        level.levelID = System.IO.Path.GetFileNameWithoutExtension(path);
+        int.TryParse(System.IO.Path.GetFileNameWithoutExtension(path), out level.levelID);
         AssetDatabase.CreateAsset(level, path);
         AssetDatabase.SaveAssets();
         RefreshAssets();

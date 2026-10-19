@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4880e8b91fab4f649a913bbc8fccde90, type: 3}
   m_Name: LevelSO 2
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
-  levelID: lv2
+  levelID: 2
   timeBudget: 500
   money: 100
   farmMono: {fileID: 5780982813420652117, guid: e71778c124057e94cb8e55b4b740db8b, type: 3}
