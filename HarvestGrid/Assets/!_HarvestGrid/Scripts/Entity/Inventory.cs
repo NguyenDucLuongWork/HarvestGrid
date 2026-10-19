@@ -132,6 +132,7 @@ public class Inventory : ICloneable<Inventory>
 
         if (removed)
         {
+            
             OnItemsChanged?.Invoke(GetItemList());
         }
 

@@ -1,5 +1,4 @@
 ﻿using LgTyLib.Core;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +22,6 @@ public class TimeManager : BaseSingleton<TimeManager>
 
     private void Start()
     {
-        // Register any timers pre-assigned in the inspector
         if (timers != null)
         {
             foreach (var timer in timers)
@@ -37,11 +35,28 @@ public class TimeManager : BaseSingleton<TimeManager>
     {
         ApplyPendingChanges();
 
-        if (isPaused) return;
+        if (isPaused)
+            return;
 
         float deltaTime = Time.deltaTime * timeScale;
-        if (deltaTime <= 0f) return;
 
+        if (deltaTime <= 0f)
+            return;
+
+        // Consume GameplayScene's level time
+        if (GameplayScene.Instance != null)
+        {
+            GameplayScene.Instance.ConsumeTime(deltaTime);
+
+            // Time's up
+            if (GameplayScene.Instance.IsTimeUp())
+            {
+                isPaused = true;
+                return;
+            }
+        }
+
+        // Tick gameplay timers
         for (int i = activeTimers.Count - 1; i >= 0; i--)
         {
             activeTimers[i]?.Tick(deltaTime);
@@ -57,6 +72,7 @@ public class TimeManager : BaseSingleton<TimeManager>
                 if (t != null && !activeTimers.Contains(t))
                     activeTimers.Add(t);
             }
+
             pendingAdd.Clear();
         }
 
@@ -66,24 +82,39 @@ public class TimeManager : BaseSingleton<TimeManager>
             {
                 activeTimers.Remove(t);
             }
+
             pendingRemove.Clear();
         }
     }
 
     public void RegisterTimer(ProgressTimer timer)
     {
-        if (timer == null || activeTimers.Contains(timer) || pendingAdd.Contains(timer)) return;
+        if (timer == null ||
+            activeTimers.Contains(timer) ||
+            pendingAdd.Contains(timer))
+        {
+            return;
+        }
+
         pendingAdd.Add(timer);
     }
 
     public void UnregisterTimer(ProgressTimer timer)
     {
-        if (timer == null) return;
+        if (timer == null)
+            return;
+
         pendingRemove.Add(timer);
     }
 
     public void StartTime()
     {
+        if (GameplayScene.Instance != null &&
+            GameplayScene.Instance.IsTimeUp())
+        {
+            return;
+        }
+
         isPaused = false;
     }
 
@@ -95,5 +126,11 @@ public class TimeManager : BaseSingleton<TimeManager>
     public void SetSpeed(float speed)
     {
         timeScale = Mathf.Max(0f, speed);
+    }
+
+    public void ResetTime()
+    {
+        GameplayScene.Instance?.ResetTime();
+        isPaused = false;
     }
 }

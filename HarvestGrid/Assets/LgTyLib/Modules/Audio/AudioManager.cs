@@ -3,16 +3,17 @@ using LgTyLib.Modules.ObjectPooling;
 using LgTyLib.Modules.Settings;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Rendering;
 
 namespace LgTyLib.Modules.Audio
 {
     public class AudioManager : BaseSingleton<AudioManager>, ISettingGroup
     {
         [Header("Config")]
-        [SerializeField]
-        private AudioSettingsDataSO audioSettingsDataSO;
-        
+        [field: SerializeField]
+        public AudioSettingsDataSO audioSettingsDataSO { get; private set; }
+        [field: SerializeField]
+        public AudioLibSO audioLibSO { get; private set; }
+
         [SerializeField]
         private AudioMixer audioMixer;
         [SerializeField]
@@ -27,41 +28,54 @@ namespace LgTyLib.Modules.Audio
 
         public string GroupKey => "AudioSettings";
 
-        public void PlaySoundFXClip(AudioClip audioClip, Transform spawnTransform, float volume)
+
+        public void PlaySoundFXClip(AudioClip audioClip, Vector3 position, float volume, bool loop = false)
         {
-            AudioSource audioSource = Instantiate(soundObject, spawnTransform.position, Quaternion.identity);
+            if (audioClip == null)
+            {
+                Debug.LogWarning("Null audio clip");
+                return;
+            }
+            AudioSource audioSource = Instantiate(soundObject, position, Quaternion.identity);
             audioSource.clip = audioClip;
             audioSource.volume = volume;
-
+            audioSource.loop = loop;
             audioSource.Play(); 
 
             float clipLength = audioSource.clip.length;
 
+            if (loop)
+            {
+                return;
+            }
             Destroy(audioSource.gameObject, clipLength);
         }
 
-        public void PlaySoundFXClipWithPool(AudioClip audioClip, Transform spawnTransform, float volume)
+        public void PlaySoundFXClipWithPool(AudioClip audioClip, Vector3 position, float volume)
         {
+            if(audioClip == null)
+            {
+                Debug.LogWarning("Null audio clip");
+                return;
+            }
             AudioSource audioSource = ObjectPoolManager.Instance.SpawnObject<AudioSource>(
-                    soundObject,
-                    transform.position,
-                    ObjectPoolManager.PoolType.SoundFX
-                );
+                soundObject,
+                position,
+                PoolGroup.SoundFX
+            );
+
             audioSource.clip = audioClip;
             audioSource.volume = volume;
-
             audioSource.Play();
 
-            float clipLength = audioSource.clip.length;
-
             ObjectPoolManager.Instance.ReturnObjectToPool(
-                audioSource.gameObject, 
-                audioClip.length,
-                ObjectPoolManager.PoolType.SoundFX
+                audioSource.gameObject,
+                audioClip.length
                 );
+
         }
 
-        public void UpdateMasterVolume( float masterAudioScale)
+        public void UpdateMasterVolume(float masterAudioScale)
         {
             audioMixer.SetFloat(masterVolumeField, AudioScaleRange01ToVolume(masterAudioScale));
             audioSettingsDataSO.audioSettingsData.masterAudioScale = masterAudioScale;
@@ -84,6 +98,8 @@ namespace LgTyLib.Modules.Audio
 
         public float AudioScaleRange01ToVolume(float slider)
         {
+            if (slider <= 0.001f) return -80f; // Mute
+            
             float scale = slider * 2f; // 0.5 -> 1
             scale = Mathf.Max(scale, 0.0001f);
 

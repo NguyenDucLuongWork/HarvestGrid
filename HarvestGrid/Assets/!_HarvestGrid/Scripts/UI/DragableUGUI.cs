@@ -49,13 +49,15 @@ public class DragableUGUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     private void OnEnable()
     {
-        InputManager.Instance.OnDragBegin += HandleDragBegin;
-        InputManager.Instance.OnDrag += HandleDrag;
-        InputManager.Instance.OnDragEnd += HandleDragEnd;
-    }
+        
+            InputManager.Instance.OnDragBegin += HandleDragBegin;
+            InputManager.Instance.OnDrag += HandleDrag;
+            InputManager.Instance.OnDragEnd += HandleDragEnd;
+        }
 
     private void OnDisable()
     {
+        if (InputManager.Instance == null) return;
         InputManager.Instance.OnDragBegin -= HandleDragBegin;
         InputManager.Instance.OnDrag -= HandleDrag;
         InputManager.Instance.OnDragEnd -= HandleDragEnd;

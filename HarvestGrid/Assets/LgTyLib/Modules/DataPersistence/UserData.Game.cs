@@ -1,5 +1,6 @@
-﻿// UserData.Game.cs  ← YOUR file, edit freely
+// UserData.Game.cs  ← YOUR file, edit freely
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace LgTyLib.Modules.DataPersistence
 {
@@ -9,7 +10,12 @@ namespace LgTyLib.Modules.DataPersistence
     // ╚══════════════════════════════════════════════════════╝
     public partial class UserData
     {
+        public string username;
         public string displayName;
+
+        public List<int> slotsLevels;
+
+        public List<PlayTime> finishedLevels;
 
         // Settings that should apply across every playthrough
         public float musicVolume = 1f;
