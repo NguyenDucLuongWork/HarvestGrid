@@ -18,19 +18,18 @@ namespace LgTyLib.Modules.DataPersistence
     public partial class GameData
     {
         // --- Game-specific fields ---
-        public string playerId;
-        public string username;
-
         public float score;
         public List<Item> items;
         
         // Cosmetic Data
         public List<string> unlockedCosmetics = new List<string>();
         public List<EquippedCosmeticData> equippedCosmetics = new List<EquippedCosmeticData>();
-        public string level;
+        public int levelID;
 
         public int levelNumber;
         public Farm farm;
         public Inventory inventory;
+
+        public List<ItemEffect> itemEffects;
     }
 }

@@ -13,7 +13,9 @@ public class ItemInShop : MonoBehaviour
     private ItemWithFootprintMono itemMono;
     [SerializeField]
     private TextMeshProUGUI moneyLabel;
-   
+
+    public Item item;
+
     public void SetData(Item item)
     {
         if (itemMono.bought)
@@ -28,6 +30,7 @@ public class ItemInShop : MonoBehaviour
         itemMono.SetData(item);
         moneyLabel.text = item.Price + "";
         moneyLabel.color = Color.white;
+        this.item = item;
     }
 
     public void ShowInfo()

@@ -15,7 +15,9 @@ MonoBehaviour:
   useConfig:
   - type: 0
     plantPrototype: {fileID: 0}
-  footprintSO: {fileID: 11400000, guid: 92cc5ba1cd3178e409d44e60d17aa359, type: 2}
+  footprintWidth: 1
+  footprintHeight: 1
+  footprintGrid: 00y
   item:
     id: Scythe
     name: Scythe
@@ -44,4 +46,5 @@ MonoBehaviour:
     - rid: 8788999201735311544
       type: {class: HarvestUse, ns: , asm: Assembly-CSharp}
       data:
+        sfxClip: {fileID: 8300000, guid: 2a22db7e333818b4797a753f1309c97f, type: 3}
         effective: 1

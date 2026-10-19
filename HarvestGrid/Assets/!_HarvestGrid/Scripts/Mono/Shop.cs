@@ -1,10 +1,12 @@
+using LgTyLib.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shop : MonoBehaviour
+public class Shop : BaseSingleton<Shop>
 {
     [SerializeField]
     private List<ItemInShop> itemInShops;
+    public List<Item> currentItems = new List<Item>();
 
     private void Start()
     {
@@ -15,7 +17,6 @@ public class Shop : MonoBehaviour
     {
         Dictionary<ItemPrototype, float> itemPool =
             GameplayScene.Instance.LevelSO.itemAndChancePool;
-
         if (itemPool == null || itemPool.Count == 0)
             return;
 
@@ -23,7 +24,6 @@ public class Shop : MonoBehaviour
             new List<KeyValuePair<ItemPrototype, float>>(itemPool);
 
         int poolIndex = 0;
-
         foreach (ItemInShop itemInShop in itemInShops)
         {
 
@@ -45,6 +45,16 @@ public class Shop : MonoBehaviour
                     found = true;
                 }
             }
+        }
+        SetCurrentItems();
+    }
+
+    private void SetCurrentItems()
+    {
+        currentItems.Clear(); 
+        foreach(ItemInShop itemInShop in itemInShops)
+        {
+            currentItems.Add(itemInShop.item);
         }
     }
 }

@@ -8,7 +8,7 @@ using HarvestGrid.Managers.Auth;
 
 namespace HarvestGrid.Managers
 {
-    public class AuthManager : BaseSingleton<AuthManager>, IDataPersistence
+    public class AuthManager : BaseSingleton<AuthManager>, IUserDataPersistence
     {
         [Header("Config")]
         [SerializeField] private string loginSceneName = "LoginScene";
@@ -51,29 +51,27 @@ namespace HarvestGrid.Managers
             }
         }
 
-        // --- IDataPersistence Implementation ---
+        // --- IUserDataPersistence Implementation ---
 
-        public void LoadGame(GameData data)
+        public void LoadUserData(UserData data)
         {
-            // Called when DataPersistenceManager.LoadGame is executed
-            AuthSession.Set(data.playerId, data.username, "local_token_" + data.playerId);
+            // Called when DataPersistenceManager.LoadUserData is executed
+            AuthSession.Set(data.userId, data.username, "local_token_" + data.userId);
             Debug.Log($"[AuthManager] Loaded Session for {data.username}");
         }
 
-        public void SaveGame(ref GameData data)
+        public void SaveUserData(ref UserData data)
         {
-            // Called when DataPersistenceManager.SaveGame is executed
-            if (string.IsNullOrEmpty(data.playerId))
+            // Called when DataPersistenceManager.SaveUserData is executed
+            if (string.IsNullOrEmpty(data.userId))
             {
                 // This is a new player!
-                data.playerId = Guid.NewGuid().ToString();
+                data.userId = Guid.NewGuid().ToString();
                 data.username = pendingUsername;
-                Debug.Log($"[AuthManager] Generated new ID {data.playerId} for new player {data.username}");
+                Debug.Log($"[AuthManager] Generated new ID {data.userId} for new player {data.username}");
             }
             else
             {
-                // Existing player saving data, we can update username if we support renaming, 
-                // but usually we just keep it.
                 if (!string.IsNullOrEmpty(AuthSession.Username))
                 {
                     data.username = AuthSession.Username;
@@ -83,7 +81,7 @@ namespace HarvestGrid.Managers
             // Sync session if saving a new player
             if (string.IsNullOrEmpty(AuthSession.UserId))
             {
-                AuthSession.Set(data.playerId, data.username, "local_token_" + data.playerId);
+                AuthSession.Set(data.userId, data.username, "local_token_" + data.userId);
             }
         }
     }

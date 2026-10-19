@@ -8,7 +8,7 @@ public class LevelTreeUI : BaseSingleton<LevelTreeUI>
     [SerializeField]
     private List<LevelSO> levelList;
 
-    public void LoadGamePlayScene(string levelID)
+    public void LoadGamePlayScene(int levelID)
     {
         foreach(var level in levelList)
         {

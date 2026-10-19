@@ -15,7 +15,9 @@ MonoBehaviour:
   useConfig:
   - type: 1
     plantPrototype: {fileID: 0}
-  footprintSO: {fileID: 11400000, guid: 15f2f677e6b11344daf71d8a93092cbf, type: 2}
+  footprintWidth: 1
+  footprintHeight: 1
+  footprintGrid: 00y
   item:
     id: WaterCan
     name: WaterCan
@@ -44,5 +46,6 @@ MonoBehaviour:
     - rid: 8788999201735311528
       type: {class: ProviceResourceUse, ns: , asm: Assembly-CSharp}
       data:
+        sfxClip: {fileID: 8300000, guid: 96a1749ed025f004ba4b2de69abd7652, type: 3}
         resource: 1
         amount: 4

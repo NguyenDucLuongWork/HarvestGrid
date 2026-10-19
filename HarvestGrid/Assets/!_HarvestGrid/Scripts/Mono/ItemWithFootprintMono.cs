@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +35,9 @@ public class ItemWithFootprintMono : MonoBehaviour
     private StoredObject storedObject;
 
     public bool isAddedToInventory { get; private set; }
+
+    private bool hasSpawnedRuntime;
+
 
     public void SetData(Item item)
     {
@@ -200,11 +203,11 @@ public class ItemWithFootprintMono : MonoBehaviour
 
         if (!isAddedToInventory)
         {
-            ItemFactory.Instance.SpawnItemWithoutClone(item);
+            ItemManager.Instance.SpawnItemWithoutClone(item);
             storedObject = new StoredObject(item, rotated, pivot);
             InventoryMono.Instance.Inventory.AddItem(storedObject);
             isAddedToInventory = true;
-            this.transform.SetParent(ItemFactory.Instance.itemPlaceHolder, true);
+            this.transform.SetParent(ItemManager.Instance.itemPlaceHolder, true);
             transform.localScale = Vector3.one;
         }
         storedObject.Pivot = storedPivot;
@@ -374,6 +377,8 @@ public class ItemWithFootprintMono : MonoBehaviour
 
     }
 
+    public static event System.Action<ItemWithFootprintMono> OnItemPurchased;
+
     public bool Buy()
     {
         if (bought)
@@ -387,6 +392,7 @@ public class ItemWithFootprintMono : MonoBehaviour
         if (price <= 0)
         {
             bought = true;
+            OnItemPurchased?.Invoke(this);
             return false;
         }
 
@@ -400,7 +406,28 @@ public class ItemWithFootprintMono : MonoBehaviour
         bought = true;
         GetComponent<DragableUGUI>().Interactable = true;
         gridLayoutGroupHelper.HideImages();
+        
+        OnItemPurchased?.Invoke(this);
 
         return true;
+    }
+
+    public bool PlaceFromSort(int targetRotation, Vector2Int pivot)
+    {
+        ApplyRotationAndFootprint(targetRotation); // rotates from 0 -> targetRotation
+
+        if (!StoringSpaceMono.Instance.TryPlaceFootprint(item.Footprint, pivot))
+            return false;
+
+        AddToInventory(pivot);
+        gridLayoutGroupHelper.HideImages();
+        LateSnap();
+        return true;
+    }
+
+    /// <summary>Sends an unplaced item back to the temporary holder.</summary>
+    public void ReturnToTemporaryHolder()
+    {
+        HandleCannotSnap();
     }
 }
