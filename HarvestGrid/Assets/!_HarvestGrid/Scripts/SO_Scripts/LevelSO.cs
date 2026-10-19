@@ -21,7 +21,7 @@ public class ItemChanceEntry
 [CreateAssetMenu(fileName = "LevelSO", menuName = "Scriptable Objects/LevelSO")]
 public class LevelSO : ScriptableObject
 {
-    public string levelID;
+    public int levelID;
     public float timeBudget;
     public int money;
     public FarmMono farmMono;

@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4880e8b91fab4f649a913bbc8fccde90, type: 3}
   m_Name: LevelSO 4
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
-  levelID: lv4
+  levelID: 4
+  timeBudget: 0
+  money: 0
   farmMono: {fileID: 1963142914855571894, guid: 057056eae9c89d64bab7054613900013, type: 3}
-  itemAndChancePool: []
   storingSpaceSO: {fileID: 11400000, guid: b159f133d93df4349b08718c7835b0b2, type: 2}
+  requiringCrops: []
+  itemAndChancePool: []
+  requiredCrops: []
+  itemPool: []
