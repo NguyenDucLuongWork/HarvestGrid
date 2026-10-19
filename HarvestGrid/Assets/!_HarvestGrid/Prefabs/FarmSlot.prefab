@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 2707244800220884535}
   - component: {fileID: 8312485727623818744}
   - component: {fileID: 7396259953993535496}
+  - component: {fileID: 3078209496267870683}
   m_Layer: 5
   m_Name: FarmSlot
   m_TagString: Untagged
@@ -255,6 +256,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 678c2ea19e896264799c89aad3eac167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmSlotMono
+  spriteByLevel:
+  - {fileID: 8378842431149776928, guid: 98b7c57ce1e9c4548a48447ff28e4924, type: 3}
+  - {fileID: -920086336255211599, guid: 1c4e754b99e2c444ca38b403ffa97b0e, type: 3}
   farmSlot:
     slotID: slot_0
     soilQuality: 0
@@ -276,8 +280,65 @@ MonoBehaviour:
         baseSellPrice: 0
       gameObject: {fileID: 0}
     beingEffected: 0
+    level: 0
     slotGameObject: {fileID: 4973671515248259192}
     plantGameObject: {fileID: 1459483509492397465}
+--- !u!114 &3078209496267870683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4973671515248259192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 8312485727623818744}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7396259953993535496}
+        m_TargetAssemblyTypeName: FarmSlotMono, Assembly-CSharp
+        m_MethodName: Upgrade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5400081763356098188
 GameObject:
   m_ObjectHideFlags: 0
