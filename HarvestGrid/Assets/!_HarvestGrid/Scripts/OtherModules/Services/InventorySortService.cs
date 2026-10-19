@@ -31,7 +31,7 @@ namespace HarvestGrid.Services
     /// Service for calculating the best inventory sort suggestion without modifying the actual inventory.
     /// Only suggests placement for unplaced items into empty spots on the grid.
     /// </summary>
-    public static class InventorySortService
+    public static partial class InventorySortService
     {
         public static bool EnableDebugLogs = false;
 

@@ -7,10 +7,7 @@ using UnityEngine;
 public class Farm : ICloneable<Farm>
 {
     [SerializeField]
-    private string farmID;
-    [SerializeField]
     private List<FarmSlot> farmSlots;
-    public string FarmID => farmID;
     public List<FarmSlot> FarmSlots => farmSlots;
 
     public GameObject gameObject;
@@ -22,7 +19,6 @@ public class Farm : ICloneable<Farm>
 
     public Farm(Farm original)
     {
-        this.farmID = original.FarmID;
         this.farmSlots = new List<FarmSlot>();
         for (int i = 0; i < original.FarmSlots.Count; i++)
         {
@@ -128,8 +124,6 @@ public class Farm : ICloneable<Farm>
     {
         if (farm == null || farm.farmSlots == null) return;
 
-        farmID = farm.farmID;
-
         if (farmSlots == null)
         {
             farmSlots = new List<FarmSlot>();
@@ -156,7 +150,6 @@ public class Farm : ICloneable<Farm>
             }
             else
             {
-                Debug.LogWarning($"Farm '{farmID}': loaded slot '{loadedSlot.SlotID}' has no matching scene slot; skipping (no GameObject to bind).");
             }
         }
     }

@@ -7,6 +7,7 @@ public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
 {
     [SerializeField]
     private Farm farm;
+    public Farm Farm => farm;
 
     private List<FarmSlotMono> slotMonoList = new();
 
@@ -254,5 +255,23 @@ public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
             slot != null &&
             slot.SlotID == id
         );
+    }
+
+    public void UpgradeSlot(FarmSlot slot)
+    {
+        slot.level += 1;
+        UpdateFarmFullyFromData();
+    }
+
+    private List<int> GetSlotsLevelArray()
+    {
+        List<int> slotsLevels = new List<int>();
+        var slots = farm.FarmSlots;
+        foreach(var slot in slots)
+        {
+            slotsLevels.Add(slot.level);
+        }
+
+        return slotsLevels;
     }
 }

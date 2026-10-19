@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlantRequiringPanel : MonoBehaviour
 {
@@ -13,7 +14,15 @@ public class PlantRequiringPanel : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.transform.SetParent(GameplayScene.Instance.plantRequieContainer);
+        if (SceneManager.GetActiveScene().name == "GameplayScene")
+        {
+            gameObject.transform.SetParent(GameplayScene.Instance.plantRequieContainer);
+
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void Start()
