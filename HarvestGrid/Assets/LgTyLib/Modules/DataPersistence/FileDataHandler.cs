@@ -189,6 +189,85 @@ namespace LgTyLib.Modules.DataPersistence
         }
 
         public void SaveUserData(string username, UserData userData) => SaveFile(GetUserDataPath(username), userData);
+        
+/// <summary>
+/// Loads account data using PlayFabId.
+/// If no PlayFabId file exists, attempts to migrate legacy username data.
+/// </summary>
+public UserData LoadUserDataForPlayer(string playFabId, string username)
+{
+    if (string.IsNullOrWhiteSpace(playFabId))
+    {
+        Debug.LogError("PlayFabId is empty.");
+        return null;
+    }
+
+    // 1. Prefer data already stored under PlayFabId.
+    string playerPath = GetUserDataPath(playFabId);
+
+    if (File.Exists(playerPath))
+        return LoadFile<UserData>(playerPath);
+
+    // 2. Migrate existing data saved under username.
+    if (!string.IsNullOrWhiteSpace(username))
+    {
+        string legacyPath = GetUserDataPath(username);
+
+        if (File.Exists(legacyPath))
+        {
+            UserData legacyData = LoadFile<UserData>(legacyPath);
+
+            if (legacyData != null)
+            {
+                legacyData.userId = playFabId;
+                legacyData.username = username;
+
+                SaveUserDataForPlayer(playFabId, legacyData);
+
+                Debug.Log(
+                    $"[Migration] Migrated user data from username to PlayFabId."
+                );
+
+                return legacyData;
+            }
+        }
+
+        // 3. If no username file exists, retain the existing
+        // legacy GameData migration logic.
+        UserData oldData = LoadUserData(username);
+
+        if (oldData != null)
+        {
+            oldData.userId = playFabId;
+            oldData.username = username;
+
+            SaveUserDataForPlayer(playFabId, oldData);
+            return oldData;
+        }
+    }
+
+    // First login on this device: create fresh account data.
+    return null;
+}
+
+public void SaveUserDataForPlayer(string playFabId, UserData data)
+{
+    if (string.IsNullOrWhiteSpace(playFabId))
+    {
+        Debug.LogError("Cannot save user data: PlayFabId is empty.");
+        return;
+    }
+
+    if (data == null)
+    {
+        Debug.LogError("Cannot save user data: data is null.");
+        return;
+    }
+
+    data.userId = playFabId;
+    SaveFile(GetUserDataPath(playFabId), data);
+}
+
 
         [Serializable]
         private class OldGameDataProxy
