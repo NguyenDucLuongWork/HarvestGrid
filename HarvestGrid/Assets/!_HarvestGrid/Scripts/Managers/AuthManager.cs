@@ -23,7 +23,9 @@ namespace HarvestGrid.Managers
         {
             base.Awake();
             // Initialize with Local Auth. Later this can be swapped to PlayFabAuthService.
-            AuthService = new LocalAuthService();
+            // AuthService = new LocalAuthService();
+            // Playfab
+            AuthService = new PlayFabAuthService();
         }
 
         public void SetPendingLogin(string username)
@@ -56,8 +58,18 @@ namespace HarvestGrid.Managers
         public void LoadUserData(UserData data)
         {
             // Called when DataPersistenceManager.LoadUserData is executed
-            AuthSession.Set(data.userId, data.username, "local_token_" + data.userId);
-            Debug.Log($"[AuthManager] Loaded Session for {data.username}");
+            // AuthSession.Set(data.userId, data.username, "local_token_" + data.userId);
+            // Debug.Log($"[AuthManager] Loaded Session for {data.username}");
+            if (!AuthSession.IsAuthenticated)
+    {
+        AuthSession.Set(
+            data.userId,
+            data.username,
+            "local_token_" + data.userId);
+    }
+
+    Debug.Log(
+        $"[AuthManager] Loaded Session for {data.username}");
         }
 
         public void SaveUserData(ref UserData data)
