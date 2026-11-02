@@ -1,4 +1,4 @@
-﻿using LgTyLib.Core;
+using LgTyLib.Core;
 using LgTyLib.Modules.DataPersistence;
 using LgTyLib.SceneManagement;
 using System.Collections.Generic;
@@ -17,7 +17,6 @@ public class LevelsManager : BaseSingleton<LevelsManager>
     [SerializeField] private Button levelBtn;
     [SerializeField] private GameplaySceneDataSO gameplaySceneDataSO;
 
-
     private void Start()
     {
         DataPersistenceManager.Instance.LoadUserData(
@@ -33,13 +32,11 @@ public class LevelsManager : BaseSingleton<LevelsManager>
         levelGroup?.UpdateLevels();
     }
 
-
     protected override void OnDestroy()
     {
         if (levelBtn != null)
             levelBtn.onClick.RemoveListener(LoadNextLevel);
         base.OnDestroy();
-
     }
 
     public void LoadLevel(LevelSO levelSO)
@@ -93,11 +90,25 @@ public class LevelsManager : BaseSingleton<LevelsManager>
         userData.finishedLevels = finishedLevels;
     }
 
+    public int GetLevelIndex(int levelID)
+    {
+        if (levels != null)
+        {
+            for (int i = 0; i < levels.Length; i++)
+            {
+                if (levels[i] != null && levels[i].levelID == levelID)
+                    return i;
+            }
+        }
+        return levelID;
+    }
+
     public void FinishLevel(int level, PlayTime playTime)
     {
-        if (level < 0 || level >= levels.Length)
+        int index = GetLevelIndex(level);
+        if (index < 0 || index >= levels.Length)
         {
-            Debug.LogError($"Invalid level index: {level}");
+            Debug.LogError($"Invalid level index: {index} (level ID: {level})");
             return;
         }
 
@@ -108,31 +119,31 @@ public class LevelsManager : BaseSingleton<LevelsManager>
         }
 
         // Level already has a recorded completion time.
-        if (level < finishedLevels.Count && finishedLevels[level] != null)
+        if (index < finishedLevels.Count && finishedLevels[index] != null)
         {
-            PlayTime bestTime = finishedLevels[level];
+            PlayTime bestTime = finishedLevels[index];
 
             // Replace only if the new time is better.
             if (playTime.TotalSeconds < bestTime.TotalSeconds)
             {
-                finishedLevels[level] = playTime;
+                finishedLevels[index] = playTime;
             }
         }
         else
         {
             // Fill missing indices if necessary.
-            while (finishedLevels.Count < level)
+            while (finishedLevels.Count < index)
             {
                 finishedLevels.Add(null);
             }
 
-            if (level == finishedLevels.Count)
+            if (index == finishedLevels.Count)
             {
                 finishedLevels.Add(playTime);
             }
             else
             {
-                finishedLevels[level] = playTime;
+                finishedLevels[index] = playTime;
             }
         }
         UserManager.Instance.SetFinishedLevels(finishedLevels);
@@ -140,19 +151,21 @@ public class LevelsManager : BaseSingleton<LevelsManager>
 
     public bool IsLevelFinished(int level)
     {
-        return level >= 0
-            && level < finishedLevels.Count
-            && finishedLevels[level] != null;
+        int index = GetLevelIndex(level);
+        return index >= 0
+            && index < finishedLevels.Count
+            && finishedLevels[index] != null;
     }
 
     public bool TryGetBestTime(int level, out PlayTime playTime)
     {
         playTime = null;
+        int index = GetLevelIndex(level);
 
-        if (!IsLevelFinished(level))
+        if (index < 0 || index >= finishedLevels.Count || finishedLevels[index] == null)
             return false;
 
-        playTime = finishedLevels[level];
+        playTime = finishedLevels[index];
         return true;
     }
 
