@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="UILoadPanel.uss" />
+    <ui:VisualElement name="root" class="panel">
+        <ui:VisualElement class="ph">
+            <ui:Label text="📅 Levels" class="ph-title" />
+        </ui:VisualElement>
+        <ui:ScrollView name="levels-scroll" class="pb">
+            <!-- generated:begin -->
+            <!-- Level cards dynamically instantiated from UILevelItem.uxml -->
+            <!-- generated:end -->
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

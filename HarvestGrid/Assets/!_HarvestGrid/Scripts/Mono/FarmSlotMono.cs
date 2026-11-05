@@ -26,13 +26,13 @@ public class FarmSlotMono : MonoBehaviour
         this.farmSlot = farmSlot;
         GetComponent<Image>().sprite = spriteByLevel[farmSlot.level];
     }
-    
-    public void Upgrade()
+
+
+    public void SetLevel(int level)
     {
-        if(farmSlot.level == 1)
-        {
-            return;
-        }
-        FarmMono.Instance.UpgradeSlot(farmSlot);
+        farmSlot.level = level;
+
+        int spriteIndex = level >= 1 ? 1 : 0;
+        GetComponent<Image>().sprite = spriteByLevel[spriteIndex];
     }
 }

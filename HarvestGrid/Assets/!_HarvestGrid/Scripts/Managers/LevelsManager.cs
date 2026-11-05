@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LevelsManager : BaseSingleton<LevelsManager>
+public class LevelsManager : BaseSingleton<LevelsManager>, IUserDataPersistence
 {
     [SerializeField] private LevelGroup levelGroup;
     [SerializeField] private LevelSO[] levels;
@@ -26,10 +26,20 @@ public class LevelsManager : BaseSingleton<LevelsManager>
         if (SceneManager.GetActiveScene().name == "GameplayScene")
             return;
 
-        levelBtn.onClick.AddListener(LoadNextLevel);
+        if (levelBtn != null)
+            levelBtn.onClick.AddListener(LoadNextLevel);
 
         UpdateLevelButton();
         levelGroup?.UpdateLevels();
+        SyncLoadView();
+    }
+
+    public void SyncLoadView(LoadViewSO view = null)
+    {
+        if (view == null && UIManager.HasInstance)
+            view = UIManager.Instance.loadViewSO;
+
+        view?.SetLevelsData(levels, finishedLevels);
     }
 
     protected override void OnDestroy()
@@ -47,10 +57,13 @@ public class LevelsManager : BaseSingleton<LevelsManager>
 
     private void UpdateLevelButton()
     {
+        if (levelBtn == null) return;
+
         int nextLevel = GetNextLevel();
 
         TextMeshProUGUI text =
             levelBtn.GetComponentInChildren<TextMeshProUGUI>();
+        if (text == null) return;
 
         if (nextLevel < 0)
         {
@@ -83,6 +96,7 @@ public class LevelsManager : BaseSingleton<LevelsManager>
     public void LoadUserData(UserData userData)
     {
         finishedLevels = userData.finishedLevels ?? new List<PlayTime>();
+        SyncLoadView();
     }
 
     public void SaveUserData(ref UserData userData)
@@ -147,7 +161,10 @@ public class LevelsManager : BaseSingleton<LevelsManager>
             }
         }
         UserManager.Instance.SetFinishedLevels(finishedLevels);
+        SyncLoadView();
     }
+
+    public int GetNextLevelIndex() => GetNextLevel();
 
     public bool IsLevelFinished(int level)
     {
@@ -171,6 +188,8 @@ public class LevelsManager : BaseSingleton<LevelsManager>
 
     private int GetNextLevel()
     {
+        if (levels == null) return -1;
+
         for (int i = 0; i < levels.Length; i++)
         {
             if (!IsLevelFinished(i))

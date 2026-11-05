@@ -1,0 +1,119 @@
+/* =========================================================================
+   Slot Upgrade overlay matching Farm Game UI.html (#slot-upgrade)
+   External confirm dialog — not a nav panel.
+   ========================================================================= */
+
+.overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.dlg {
+    width: 860px;
+    background-color: #fff3d1;
+    border-width: 10px;
+    border-color: #7a4a24;
+    border-radius: 50px;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ph {
+    height: 140px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: #c98a4b;
+    border-bottom-width: 8px;
+    border-bottom-color: #7a4a24;
+}
+
+.ph-title {
+    color: #ffffff;
+    font-size: 64px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.pb {
+    padding: 36px;
+}
+
+.su-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.t {
+    font-size: 48px;
+    color: #8a6a40;
+    -unity-font-style: bold;
+}
+
+.v {
+    font-size: 48px;
+    color: #3b2410;
+    -unity-font-style: bold;
+    -unity-text-align: middle-right;
+}
+
+.warn {
+    color: #c0392b;
+    font-size: 40px;
+    -unity-font-style: bold;
+    margin-top: 8px;
+    margin-bottom: 28px;
+}
+
+.warn.hidden {
+    display: none;
+}
+
+.su-btns {
+    flex-direction: row;
+}
+
+.btn {
+    flex-grow: 1;
+    flex-basis: 0;
+    height: 90px;
+    border-radius: 24px;
+    border-width: 6px;
+    border-color: #4d8a20;
+    background-color: #7bc043;
+    color: #ffffff;
+    font-size: 44px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-right: 12px;
+}
+
+.btn.alt {
+    background-color: #c98a4b;
+    border-color: #7a4a24;
+    margin-right: 0;
+    margin-left: 12px;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn:active {
+    translate: 0 6px;
+}
+
+.btn:disabled,
+.unity-disabled {
+    background-color: #bbbbbb;
+    border-color: #888888;
+    color: #ffffff;
+}

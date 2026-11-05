@@ -12,15 +12,11 @@ namespace LgTyLib.Modules.DataPersistence
     {
         public string username;
         public string displayName;
-
+        public int coin;
         public List<int> slotsLevels;
-
         public List<PlayTime> finishedLevels;
 
-        // Settings that should apply across every playthrough
-        public float musicVolume = 1f;
-        public float sfxVolume = 1f;
-        public bool hasSeenTutorial;
+
 
         // Progress that should persist even if a playthrough is deleted
         public List<string> globalUnlockedAchievements = new();

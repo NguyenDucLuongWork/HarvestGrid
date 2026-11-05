@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/!_HarvestGrid/UI/UIGenerating/HomePanel/UIHomePanel.uss?fileID=7433441132597879392&amp;guid=e5f6708192a3b4c5d6e7f8091a2b3c4d&amp;type=3#UIHomePanel"/>
+    <ui:VisualElement name="root" picking-mode="Ignore" class="home-container">
+        <ui:VisualElement name="top-r" class="top-r">
+            <ui:Button name="btn-save" text="Save" class="sm"/>
+            <ui:Button name="btn-loadg" text="Load" class="sm"/>
+        </ui:VisualElement>
+        <ui:Button name="btn-play" text="PLAY" class="btn-play" style="bottom: 350px;">
+            <Bindings>
+                <ui:DataBinding property="text" data-source-path="playButtonText" binding-mode="ToTarget"/>
+            </Bindings>
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

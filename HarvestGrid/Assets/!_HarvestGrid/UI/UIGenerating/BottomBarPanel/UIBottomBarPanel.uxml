@@ -1,0 +1,27 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="UIBottomBarPanel.uss" />
+    <ui:VisualElement name="root" class="nav-bar">
+        <!-- generated:begin -->
+        <ui:Button name="btn-bag" class="nav-btn">
+            <ui:Label text="🎒" class="nav-icon" />
+            <ui:Label text="Bag" class="nav-text" />
+        </ui:Button>
+        <ui:Button name="btn-load" class="nav-btn">
+            <ui:Label text="📅" class="nav-icon" />
+            <ui:Label text="Load" class="nav-text" />
+        </ui:Button>
+        <ui:Button name="btn-home" class="nav-btn on">
+            <ui:Label text="🏠" class="nav-icon" />
+            <ui:Label text="Home" class="nav-text" />
+        </ui:Button>
+        <ui:Button name="btn-shop" class="nav-btn">
+            <ui:Label text="🏪" class="nav-icon" />
+            <ui:Label text="Shop" class="nav-text" />
+        </ui:Button>
+        <ui:Button name="btn-setting" class="nav-btn">
+            <ui:Label text="⚙" class="nav-icon" />
+            <ui:Label text="Setting" class="nav-text" />
+        </ui:Button>
+        <!-- generated:end -->
+    </ui:VisualElement>
+</ui:UXML>

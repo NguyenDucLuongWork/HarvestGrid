@@ -1,0 +1,67 @@
+/* =========================================================================
+   HUD / User Metrics Styles matching Farm Game UI.html (#hud & .chip)
+   ========================================================================= */
+
+.hud {
+    position: absolute;
+    left: 30px;
+    top: 80px;
+    flex-direction: column;
+}
+
+.chip {
+    flex-direction: row;
+    align-items: center;
+    height: 100px;
+    padding-left: 14px;
+    padding-right: 36px;
+    border-radius: 50px;
+    background-color: #fff3d1;
+    border-width: 6px;
+    border-color: #7a4a24;
+    margin-bottom: 18px;
+}
+
+.chip-user {
+    height: 90px;
+}
+
+.ic {
+    width: 72px;
+    height: 72px;
+    border-radius: 36px;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffc61a;
+    border-width: 4px;
+    border-color: #7a4a24;
+    margin-right: 20px;
+}
+
+.ic-user {
+    width: 62px;
+    height: 62px;
+    border-radius: 31px;
+    background-color: #9fd8f0;
+}
+
+.ic-text {
+    font-size: 44px;
+    -unity-text-align: middle-center;
+}
+
+.ic-user-text {
+    font-size: 36px;
+    -unity-text-align: middle-center;
+}
+
+.chip-text {
+    font-size: 56px;
+    color: #3b2410;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+}
+
+.chip-user-text {
+    font-size: 48px;
+}

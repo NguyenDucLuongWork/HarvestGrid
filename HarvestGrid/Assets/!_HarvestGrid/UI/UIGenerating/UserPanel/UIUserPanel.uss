@@ -1,0 +1,167 @@
+/* =========================================================================
+   Styles for User Profile Panel matching Farm Game UI.html
+   ========================================================================= */
+
+.panel {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    top: 230px;
+    bottom: 360px;
+    background-color: #fff3d1;
+    border-width: 10px;
+    border-color: #7a4a24;
+    border-radius: 50px;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ph {
+    height: 150px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: #c98a4b;
+    border-bottom-width: 8px;
+    border-bottom-color: #7a4a24;
+}
+
+.ph-title {
+    color: #ffffff;
+    font-size: 76px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.pb {
+    flex-grow: 1;
+    padding: 36px;
+}
+
+/* User Profile Header Card */
+.user-hero {
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.avatar-disc {
+    width: 160px;
+    height: 160px;
+    border-radius: 80px;
+    background-color: #9fd8f0;
+    border-width: 8px;
+    border-color: #7a4a24;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.avatar-emoji {
+    font-size: 96px;
+    -unity-text-align: middle-center;
+}
+
+/* Stats Container Card */
+.stats-card {
+    background-color: #ffffff;
+    border-width: 6px;
+    border-color: #e0c58a;
+    border-radius: 36px;
+    padding: 24px;
+    margin-bottom: 30px;
+}
+
+.stat-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom-width: 2px;
+    border-bottom-color: #f1dba6;
+}
+
+.stat-item:last-child {
+    border-bottom-width: 0;
+}
+
+.stat-title {
+    font-size: 42px;
+    color: #3b2410;
+    -unity-font-style: bold;
+}
+
+.stat-val {
+    font-size: 44px;
+    color: #7a4a24;
+    -unity-font-style: bold;
+}
+
+/* Rows for Edit Form */
+.row {
+    margin-bottom: 28px;
+}
+
+.row-label {
+    font-size: 44px;
+    color: #3b2410;
+    -unity-font-style: bold;
+    margin-bottom: 10px;
+}
+
+.unity-text-field__input {
+    background-color: #ffffff;
+    border-width: 5px;
+    border-color: #7a4a24;
+    border-radius: 20px;
+    font-size: 46px;
+    color: #3b2410;
+    padding: 14px 20px;
+}
+
+.sep {
+    height: 6px;
+    background-color: #e0c58a;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    border-radius: 3px;
+}
+
+/* Buttons */
+.btn-group {
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.btn {
+    height: 90px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-radius: 24px;
+    border-width: 6px;
+    border-color: #4d8a20;
+    background-color: #7bc043;
+    color: #ffffff;
+    font-size: 44px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-bottom: 16px;
+}
+
+.btn.alt {
+    background-color: #c98a4b;
+    border-color: #7a4a24;
+}
+
+.btn.danger {
+    background-color: #e53935;
+    border-color: #b71c1c;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn:active {
+    translate: 0 4px;
+}

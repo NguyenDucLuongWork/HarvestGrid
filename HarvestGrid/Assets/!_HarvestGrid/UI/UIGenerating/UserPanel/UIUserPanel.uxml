@@ -1,0 +1,71 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="UIUserPanel.uss" />
+    <ui:VisualElement name="root" class="panel">
+        <ui:VisualElement class="ph">
+            <ui:Label text="🧑‍🌾 User Profile" class="ph-title" />
+        </ui:VisualElement>
+        <ui:ScrollView class="pb">
+            <ui:VisualElement class="user-hero">
+                <ui:VisualElement class="avatar-disc">
+                    <ui:Label text="🧑‍🌾" class="avatar-emoji" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- generated:begin -->
+            <!-- Editable Farmer Name -->
+            <ui:VisualElement class="row">
+                <ui:Label text="Farmer Name" class="row-label" />
+                <ui:TextField name="in-username">
+                    <Bindings>
+                        <ui:DataBinding property="value" data-source-path="username" binding-mode="TwoWay" />
+                    </Bindings>
+                </ui:TextField>
+            </ui:VisualElement>
+
+            <!-- Stats Overview Card -->
+            <ui:VisualElement class="stats-card">
+                <ui:VisualElement class="stat-item">
+                    <ui:Label text="Account ID" class="stat-title" />
+                    <ui:Label name="val-userId" text="HG-7492" class="stat-val">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="userId" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement class="stat-item">
+                    <ui:Label text="🪙 Coins" class="stat-title" />
+                    <ui:Label name="val-coin" text="1,250" class="stat-val">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="coin" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement class="stat-item">
+                    <ui:Label text="⭐ Current Level" class="stat-title" />
+                    <ui:Label name="val-level" text="3" class="stat-val">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="level" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement class="stat-item">
+                    <ui:Label text="🏆 Completed Levels" class="stat-title" />
+                    <ui:Label name="val-completedLevels" text="2" class="stat-val">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="completedLevels" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="sep" />
+
+            <!-- Action Buttons -->
+            <ui:VisualElement class="btn-group">
+                <ui:Button name="btn-save" text="Lưu thông tin" class="btn" />
+                <ui:Button name="btn-logout" text="Đăng xuất" class="btn alt" />
+            </ui:VisualElement>
+            <!-- generated:end -->
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>
