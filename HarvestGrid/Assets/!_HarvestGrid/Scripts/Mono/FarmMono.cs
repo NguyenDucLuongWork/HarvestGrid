@@ -3,7 +3,7 @@ using LgTyLib.Modules.DataPersistence;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
+public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence, IUserDataPersistence
 {
     [SerializeField]
     private Farm farm;
@@ -257,12 +257,6 @@ public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
         );
     }
 
-    public void UpgradeSlot(FarmSlot slot)
-    {
-        slot.level += 1;
-        UpdateFarmFullyFromData();
-    }
-
     private List<int> GetSlotsLevelArray()
     {
         List<int> slotsLevels = new List<int>();
@@ -273,5 +267,34 @@ public class FarmMono : BaseSingleton<FarmMono>, IDataPersistence
         }
 
         return slotsLevels;
+    }
+
+    public void LoadUserData(UserData userData)
+    {
+        if (userData == null || userData.slotsLevels == null)
+            return;
+
+        if (farm == null || farm.FarmSlots == null)
+            return;
+
+        int count = Mathf.Min(farm.FarmSlots.Count, userData.slotsLevels.Count);
+
+        for (int i = 0; i < count; i++)
+        {
+            FarmSlot slot = farm.FarmSlots[i];
+
+            if (slot == null)
+                continue;
+
+            slot.GetFarmSlotMono().SetLevel(userData.slotsLevels[i]);
+        }
+    }
+
+    public void SaveUserData(ref UserData userData)
+    {
+        if (userData == null)
+            return;
+
+        userData.slotsLevels = GetSlotsLevelArray();
     }
 }

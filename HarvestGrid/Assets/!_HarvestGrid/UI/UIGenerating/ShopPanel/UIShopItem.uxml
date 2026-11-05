@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="item-root" class="item">
+        <ui:Label name="lbl-icon" text="🥕" class="e" />
+        <ui:Label name="lbl-name" text="Cà rốt" class="item-title" />
+        <ui:Label name="lbl-desc" text="Lớn sau 2 phút" class="item-desc" />
+        <ui:Button name="btn-buy" text="🪙 30" class="btn item-btn" />
+    </ui:VisualElement>
+</ui:UXML>

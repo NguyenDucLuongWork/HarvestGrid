@@ -1,0 +1,46 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="UISettingPanel.uss" />
+    <ui:VisualElement name="root" class="panel">
+        <ui:VisualElement class="ph">
+            <ui:Label text="⚙ Setting" class="ph-title" />
+        </ui:VisualElement>
+        <ui:VisualElement class="pb">
+            <!-- generated:begin -->
+            <ui:VisualElement class="row">
+                <ui:Label text="👆 Độ nhạy" class="row-label" />
+                <ui:Slider name="in-sens" low-value="0" high-value="1">
+                    <Bindings>
+                        <ui:DataBinding property="value" data-source-path="sens" binding-mode="TwoWay" />
+                    </Bindings>
+                </ui:Slider>
+            </ui:VisualElement>
+            <ui:VisualElement class="sep" />
+            <ui:VisualElement class="row">
+                <ui:Label text="🔊 Master" class="row-label" />
+                <ui:Slider name="in-masterAudioScale" low-value="0" high-value="1">
+                    <Bindings>
+                        <ui:DataBinding property="value" data-source-path="masterAudioScale" binding-mode="TwoWay" />
+                    </Bindings>
+                </ui:Slider>
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:Label text="🎵 Music" class="row-label" />
+                <ui:Slider name="in-musicAudioScale" low-value="0" high-value="1">
+                    <Bindings>
+                        <ui:DataBinding property="value" data-source-path="musicAudioScale" binding-mode="TwoWay" />
+                    </Bindings>
+                </ui:Slider>
+            </ui:VisualElement>
+            <ui:VisualElement class="row">
+                <ui:Label text="🔔 SFX" class="row-label" />
+                <ui:Slider name="in-sfxAudioScale" low-value="0" high-value="1">
+                    <Bindings>
+                        <ui:DataBinding property="value" data-source-path="sfxAudioScale" binding-mode="TwoWay" />
+                    </Bindings>
+                </ui:Slider>
+            </ui:VisualElement>
+            <ui:Button name="btn-reset" text="Đặt lại mặc định" class="btn alt" />
+            <!-- generated:end -->
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

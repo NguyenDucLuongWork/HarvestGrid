@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Farm UI</title>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#9fd8f0;--grass:#7bc043;--soil:#8a5a33;--cream:#fff3d1;--wood:#c98a4b;--woodd:#7a4a24;--gold:#ffc61a;--ink:#3b2410;--panel:#fff3d1;--ok:#4caf50;--bg:#1d1d1d}
+@media (prefers-color-scheme:dark){:root{--bg:#111}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{height:100%;background:var(--bg);overflow:hidden;font-family:'Nunito','Trebuchet MS',sans-serif;color:var(--ink)}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+#stage{width:1080px;height:2400px;position:relative;flex:none;transform-origin:center;overflow:hidden;
+ background:linear-gradient(#a8dcf2 0,#d6f0fa 55%,#8fcf5a 55%,#6aaa38 100%)}
+#stage::before{content:"";position:absolute;left:0;right:0;top:1180px;height:40px;background:#5f9a30;opacity:.5}
+.f{font-family:'Lilita One','Trebuchet MS',sans-serif;letter-spacing:1px}
+/* HUD */
+#hud{position:absolute;left:30px;top:80px;display:flex;flex-direction:column;gap:18px;z-index:5}
+.chip{display:flex;align-items:center;gap:20px;height:100px;padding:0 36px 0 14px;border-radius:50px;background:var(--cream);border:6px solid var(--woodd);box-shadow:0 8px 0 rgba(0,0,0,.25);font-size:56px}
+.chip .ic{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:44px;background:var(--gold);border:4px solid var(--woodd)}
+#top-r{position:absolute;right:30px;top:80px;display:flex;gap:18px;z-index:5}
+.sm{height:90px;padding:0 36px;border-radius:24px;border:6px solid var(--woodd);background:var(--wood);color:#fff;font-size:44px;box-shadow:0 8px 0 var(--woodd);cursor:pointer}
+.sm:active,.btn:active{transform:translateY(6px);box-shadow:0 2px 0 var(--woodd)}
+/* Play */
+#play{position:absolute;left:50%;bottom:400px;transform:translateX(-50%);width:560px;height:200px;border-radius:44px;border:8px solid #b86a00;background:linear-gradient(#ffe84d,#ffb800);color:#fff;font-size:100px;text-shadow:0 6px 0 #b86a00,0 0 8px #b86a00;box-shadow:0 14px 0 #b86a00;cursor:pointer;z-index:3}
+#play:active{transform:translate(-50%,10px);box-shadow:0 4px 0 #b86a00}
+#hint{position:absolute;top:1000px;width:100%;text-align:center;font-size:48px;color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.25);opacity:.9}
+/* Nav */
+#nav{position:absolute;left:0;right:0;bottom:0;height:320px;padding-bottom:60px;display:flex;z-index:10;background:linear-gradient(#1aa6e8,#0b6fc4);border-top:10px solid #0a4f94}
+#nav button{flex:1;border:0;background:none;color:#fff;font-size:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;border-right:4px solid rgba(0,40,90,.45);padding-top:10px}
+#nav button:last-child{border:0}
+#nav .i{font-size:100px;line-height:1;filter:drop-shadow(0 6px 0 rgba(0,0,0,.25))}
+#nav button.on{background:rgba(255,255,255,.22);box-shadow:inset 0 -12px 0 var(--gold)}
+/* Panel */
+.panel{position:absolute;left:40px;right:40px;top:230px;bottom:360px;background:var(--panel);border:10px solid var(--woodd);border-radius:50px;box-shadow:0 20px 0 rgba(0,0,0,.25);z-index:8;display:none;flex-direction:column;overflow:hidden}
+.panel.show{display:flex;animation:pop .2s ease-out}
+@keyframes pop{from{transform:translateY(40px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.panel.show{animation:none}}
+.ph{height:150px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--wood);color:#fff;font-size:76px;border-bottom:8px solid var(--woodd);text-shadow:0 5px 0 var(--woodd)}
+.pb{flex:1;overflow:auto;padding:36px}
+.pb::-webkit-scrollbar{display:none}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.slot{aspect-ratio:1;border-radius:30px;background:#f1dba6;border:6px solid #d3b36a;display:grid;place-items:center;font-size:100px;position:relative}
+.slot .n{position:absolute;right:12px;bottom:4px;font-size:40px;font-weight:900;color:var(--ink)}
+.slot.empty{opacity:.5;background:#ead7a3}
+.tabs{display:flex;gap:16px;margin-bottom:28px}
+.tab{flex:1;height:90px;border-radius:24px;border:6px solid var(--woodd);background:#f1dba6;font-size:44px;cursor:pointer;color:var(--ink)}
+.tab.on{background:var(--grass);color:#fff}
+/* Levels */
+.lv{background:#fff;border:6px solid #e0c58a;border-radius:36px;padding:28px;margin-bottom:26px}
+.lv.lock{opacity:.55}
+.lv-h{display:flex;align-items:center;gap:24px}
+.num{width:110px;height:110px;border-radius:50%;background:var(--grass);border:6px solid #4d8a20;color:#fff;font-size:60px;display:grid;place-items:center;flex:none}
+.lv.lock .num{background:#aaa;border-color:#777}
+.lv h3{font-size:54px;flex:1}
+.badge{font-size:36px;font-weight:900;padding:10px 24px;border-radius:30px;background:#ddd}
+.badge.done{background:var(--ok);color:#fff}
+.badge.go{background:var(--gold)}
+.req{margin:20px 0 0;font-size:42px;display:flex;flex-direction:column;gap:10px}
+.req div{display:flex;justify-content:space-between}
+.req .t{color:#8a6a40}
+.meta{display:flex;gap:30px;margin-top:20px;font-size:40px;align-items:center}
+.meta .time{flex:1}
+.btn{height:90px;padding:0 40px;border-radius:24px;border:6px solid #4d8a20;background:var(--grass);color:#fff;font-size:44px;box-shadow:0 8px 0 #4d8a20;cursor:pointer}
+.btn.alt{background:var(--wood);border-color:var(--woodd);box-shadow:0 8px 0 var(--woodd)}
+.btn[disabled]{background:#bbb;border-color:#888;box-shadow:0 8px 0 #888;cursor:default}
+.rank{margin-top:24px;border-top:4px dashed #e0c58a;padding-top:16px;display:none}
+.rank.show{display:block}
+.rk{display:flex;gap:24px;padding:10px 0;font-size:42px;align-items:center}
+.rk .p{width:70px;font-size:48px}.rk .nm{flex:1}.rk.me{background:#fff3b0;border-radius:16px;padding:10px 16px;margin:0 -16px}
+/* Shop */
+.sh{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+.item{background:#fff;border:6px solid #e0c58a;border-radius:36px;padding:28px;text-align:center}
+.item .e{font-size:150px;line-height:1.1}
+.item h4{font-size:48px;margin:6px 0}
+.item p{font-size:34px;color:#8a6a40;margin-bottom:18px}
+.item .btn{width:100%}
+/* Settings */
+.row{margin-bottom:44px}
+.row label{display:flex;justify-content:space-between;font-size:52px;margin-bottom:16px}
+.row label span:last-child{color:var(--woodd)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:36px;border-radius:20px;background:#e0c58a;outline:none;border:5px solid var(--woodd)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:80px;height:80px;border-radius:50%;background:var(--gold);border:7px solid var(--woodd);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:66px;height:66px;border-radius:50%;background:var(--gold);border:7px solid var(--woodd)}
+input[type=range]:focus-visible,.btn:focus-visible,.sm:focus-visible,#nav button:focus-visible,#play:focus-visible,.tab:focus-visible{outline:6px solid #fff;outline-offset:4px}
+.sep{height:6px;background:#e0c58a;margin:10px 0 40px;border-radius:3px}
+/* Slot upgrade overlay (external confirm dialog, not a nav panel) */
+#slot-upgrade{position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45)}
+#slot-upgrade.show{display:flex}
+#slot-upgrade .dlg{width:860px;background:var(--panel);border:10px solid var(--woodd);border-radius:50px;overflow:hidden;box-shadow:0 20px 0 rgba(0,0,0,.25);display:flex;flex-direction:column}
+#slot-upgrade .ph{font-size:64px}
+.su-row{display:flex;justify-content:space-between;align-items:center;font-size:48px;font-weight:900;margin-bottom:22px}
+.su-row .t{color:#8a6a40}
+.su-row .v{color:var(--ink)}
+.warn{display:none;color:#c0392b;font-size:40px;font-weight:900;margin:8px 0 28px}
+.warn.show{display:block}
+.su-btns{display:flex;gap:24px}
+.su-btns .btn{flex:1}
+#toast{position:absolute;left:50%;top:300px;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:48px;padding:24px 50px;border-radius:50px;z-index:30;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+
+  <div id="hud">
+    <div class="chip f"><div class="ic">🪙</div><span id="coin">1,250</span></div>
+    <div class="chip f" style="font-size:48px;height:90px"><div class="ic" style="width:62px;height:62px;font-size:36px;background:#9fd8f0">🧑‍🌾</div><span>Farmer Bo</span></div>
+  </div>
+  <div id="top-r">
+    <button class="sm f" id="save">Save</button>
+    <button class="sm f" id="loadg">Load</button>
+  </div>
+
+  <div id="hint" class="f">Trang trại đang chờ bạn 🌱</div>
+  <button id="play" class="f">PLAY</button>
+
+  <!-- BAG -->
+  <section class="panel" id="p-bag">
+    <div class="ph f">🎒 Bag</div>
+    <div class="pb"><div class="grid" id="bagGrid"></div></div>
+  </section>
+
+  <!-- LEVELS -->
+  <section class="panel" id="p-load">
+    <div class="ph f">📅 Levels</div>
+    <div class="pb" id="levels"></div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="panel" id="p-shop">
+    <div class="ph f">🏪 Shop</div>
+    <div class="pb">
+      <div class="tabs f"><button class="tab on" data-k="seed">Hạt giống</button><button class="tab" data-k="tool">Dụng cụ</button><button class="tab" data-k="deco">Trang trí</button></div>
+      <div class="sh" id="shopGrid"></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="panel" id="p-setting">
+    <div class="ph f">⚙ Setting</div>
+    <div class="pb">
+      <div class="row"><label class="f"><span>👆 Độ nhạy</span><span id="v-sens">0.50</span></label><input type="range" id="sens" min="0" max="1" step="0.01" value="0.5" aria-label="Độ nhạy"></div>
+      <div class="sep"></div>
+      <div class="row"><label class="f"><span>🔊 Master</span><span id="v-master">0.50</span></label><input type="range" id="master" min="0" max="1" step="0.01" value="0.5" aria-label="masterAudioScale"></div>
+      <div class="row"><label class="f"><span>🎵 Music</span><span id="v-music">0.50</span></label><input type="range" id="music" min="0" max="1" step="0.01" value="0.5" aria-label="musicAudioScale"></div>
+      <div class="row"><label class="f"><span>🔔 SFX</span><span id="v-sfx">0.50</span></label><input type="range" id="sfx" min="0" max="1" step="0.01" value="0.5" aria-label="sfxAudioScale"></div>
+      <button class="btn alt f" id="reset" style="width:100%">Đặt lại mặc định</button>
+    </div>
+  </section>
+
+  <!-- SLOT UPGRADE (external overlay) -->
+  <div id="slot-upgrade">
+    <div class="dlg">
+      <div class="ph f" id="su-title">🌱 Mua ô đất</div>
+      <div class="pb">
+        <div class="su-row"><span class="t">Ô đất</span><span class="v f" id="su-slot">3</span></div>
+        <div class="su-row"><span class="t">Cấp hiện tại</span><span class="v f" id="su-level">0</span></div>
+        <div class="su-row"><span class="t">Giá</span><span class="v f" id="su-price">🪙 200</span></div>
+        <div class="su-row"><span class="t">Xu của bạn</span><span class="v f" id="su-money">🪙 1,250</span></div>
+        <div class="warn" id="su-warn">Không đủ xu!</div>
+        <div class="su-btns">
+          <button class="btn f" id="su-yes">Yes</button>
+          <button class="btn alt f" id="su-no">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="f"></div>
+
+  <nav id="nav">
+    <button data-p="bag"><span class="i">🎒</span><span class="f">Bag</span></button>
+    <button data-p="load"><span class="i">📅</span><span class="f">Load</span></button>
+    <button data-p="home" class="on"><span class="i">🏠</span><span class="f">Home</span></button>
+    <button data-p="shop"><span class="i">🏪</span><span class="f">Shop</span></button>
+    <button data-p="setting"><span class="i">⚙</span><span class="f">Setting</span></button>
+  </nav>
+</div></div>
+
+<script>
+/* ---------- scale stage to any screen (design size 1080 x 2400) ---------- */
+const stage=document.getElementById('stage');
+function fit(){const s=Math.min(innerWidth/1080,innerHeight/2400);stage.style.transform='scale('+s+')';stage.style.margin=((2400*s-2400)/2)+'px '+((1080*s-1080)/2)+'px'}
+addEventListener('resize',fit);fit();
+
+/* ---------- state ---------- */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let coins=1250;
+const bag=[{e:'🌾',n:12},{e:'🥕',n:8},{e:'🍅',n:5},{e:'🥚',n:20},{e:'🥛',n:3},{e:'🌽',n:0},{e:'🪓',n:1},{e:'💧',n:1}];
+const levels=[
+ {n:'Vườn rau đầu tiên',done:true,time:'02:14',req:[['Thu hoạch cà rốt',5,5],['Tưới nước',10,10]]},
+ {n:'Chuồng gà nhỏ',done:true,time:'03:48',req:[['Nhặt trứng',10,10],['Cho gà ăn',6,6]]},
+ {n:'Cánh đồng ngô',done:false,time:null,req:[['Thu hoạch ngô',12,7],['Bán nông sản',200,90]],cur:true},
+ {n:'Trại bò sữa',lock:true,req:[['Vắt sữa',8,0],['Xây chuồng bò',1,0]]},
+ {n:'Chợ cuối tuần',lock:true,req:[['Bán 30 món',30,0],['Đạt 1500 xu',1500,0]]},
+ {n:'Vườn cây ăn trái',lock:true,req:[['Trồng 6 cây',6,0],['Thu hoạch táo',15,0]]}
+];
+const names=['Mia','Tommy','Lan','Hùng','Bo'];
+const shop={
+ seed:[['🥕','Cà rốt','Lớn sau 2 phút',30],['🍅','Cà chua','Lớn sau 4 phút',55],['🌽','Ngô','Lớn sau 6 phút',80],['🍓','Dâu tây','Lớn sau 8 phút',120]],
+ tool:[['💧','Bình tưới+','Tưới nhanh gấp đôi',250],['🪓','Rìu sắt','Chặt cây nhanh hơn',300],['🧺','Giỏ lớn','Thêm 10 ô túi',400],['🚜','Máy cày','Cày 3 ô cùng lúc',900]],
+ deco:[['🌻','Hoa hướng dương','Tăng độ đẹp +5',90],['🪵','Hàng rào','Bảo vệ vườn',60],['⛲','Đài phun nước','Tăng độ đẹp +20',700],['🏡','Nhà gỗ','Nhà mới cho chủ trại',1500]]
+};
+
+/* ---------- helpers ---------- */
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1400)}
+const upd=()=>$('#coin').textContent=coins.toLocaleString('en-US');
+
+/* ---------- bag ---------- */
+function renderBag(){
+ let h='';for(let i=0;i<20;i++){const b=bag[i];h+=b&&b.n?`<div class="slot">${b.e}<span class="n">${b.n}</span></div>`:`<div class="slot empty">${b?b.e:''}</div>`}
+ $('#bagGrid').innerHTML=h}
+
+/* ---------- levels ---------- */
+function renderLevels(){
+ $('#levels').innerHTML=levels.map((l,i)=>{
+  const st=l.done?'<span class="badge done">✔ Hoàn thành</span>':l.lock?'<span class="badge">🔒 Khóa</span>':'<span class="badge go">▶ Đang chơi</span>';
+  const req=l.req.map(r=>`<div><span>${r[2]>=r[1]?'✅':'⬜'} ${r[0]}</span><span class="t">${r[2]}/${r[1]}</span></div>`).join('');
+  const board=[...names.slice(0,4)].map((n,k)=>`<div class="rk"><span class="p">${['🥇','🥈','🥉','4'][k]}</span><span class="nm">${n}</span><span>0${2+k}:${10+k*9}</span></div>`).join('')+(l.done?`<div class="rk me"><span class="p">3</span><span class="nm">Farmer Bo (bạn)</span><span>${l.time}</span></div>`:'');
+  return `<div class="lv ${l.lock?'lock':''}"><div class="lv-h"><div class="num f">${i+1}</div><h3 class="f">${l.n}</h3>${st}</div>
+  <div class="req">${req}</div>
+  <div class="meta"><span class="time">⏱ Thời gian: <b>${l.time||'--:--'}</b></span>
+  <button class="btn alt f" data-rank="${i}" ${l.lock?'disabled':''}>🏆 Xếp hạng</button>
+  <button class="btn f" data-go="${i}" ${l.lock?'disabled':''}>${l.done?'Chơi lại':'Chơi'}</button></div>
+  <div class="rank" id="rk${i}">${board}</div></div>`}).join('');
+ $$('[data-rank]').forEach(b=>b.onclick=()=>$('#rk'+b.dataset.rank).classList.toggle('show'));
+ $$('[data-go]').forEach(b=>b.onclick=()=>toast('Vào level '+(+b.dataset.go+1)+'…'));
+}
+
+/* ---------- shop ---------- */
+function renderShop(k){
+ $('#shopGrid').innerHTML=shop[k].map((s,i)=>`<div class="item"><div class="e">${s[0]}</div><h4 class="f">${s[1]}</h4><p>${s[2]}</p><button class="btn f" data-buy="${k}:${i}">🪙 ${s[3]}</button></div>`).join('');
+ $$('[data-buy]').forEach(b=>b.onclick=()=>{const[k,i]=b.dataset.buy.split(':');const it=shop[k][i];
+  if(coins<it[3])return toast('Không đủ xu!');coins-=it[3];upd();
+  const ex=bag.find(x=>x.e===it[0]);ex?ex.n++:bag.push({e:it[0],n:1});renderBag();toast('Đã mua '+it[1])});
+}
+$$('.tab').forEach(t=>t.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');renderShop(t.dataset.k)});
+
+/* ---------- settings (defaults 0.5f) ---------- */
+const cfg={sens:0.5,masterAudioScale:0.5,musicAudioScale:0.5,sfxAudioScale:0.5};
+const map={sens:'sens',master:'masterAudioScale',music:'musicAudioScale',sfx:'sfxAudioScale'};
+Object.entries(map).forEach(([id,key])=>{const el=$('#'+id);el.oninput=()=>{cfg[key]=+el.value;$('#v-'+id).textContent=(+el.value).toFixed(2)}});
+$('#reset').onclick=()=>{Object.entries(map).forEach(([id,key])=>{cfg[key]=.5;$('#'+id).value=.5;$('#v-'+id).textContent='0.50'});toast('Đã đặt lại 0.50')};
+
+/* ---------- save / load (in-memory + guarded localStorage) ---------- */
+$('#save').onclick=()=>{try{localStorage.setItem('farm',JSON.stringify({coins,cfg}))}catch(e){}toast('Đã lưu game')};
+$('#loadg').onclick=()=>{try{const d=JSON.parse(localStorage.getItem('farm')||'null');if(!d)return toast('Chưa có bản lưu');coins=d.coins;Object.assign(cfg,d.cfg);
+ Object.entries(map).forEach(([id,k])=>{$('#'+id).value=cfg[k];$('#v-'+id).textContent=cfg[k].toFixed(2)});upd();toast('Đã tải game')}catch(e){toast('Chưa có bản lưu')}};
+$('#play').onclick=()=>toast('Bắt đầu chơi!');
+
+/* ---------- slot upgrade overlay ---------- */
+function openSlotUpgrade({slot=3,level=0,price=200}={}){
+  $('#su-title').textContent=level<=0?'🌱 Mua ô đất':'⬆ Nâng cấp ô đất';
+  $('#su-slot').textContent=slot;
+  $('#su-level').textContent=level;
+  $('#su-price').textContent='🪙 '+price.toLocaleString('en-US');
+  $('#su-money').textContent='🪙 '+coins.toLocaleString('en-US');
+  const poor=coins<price;
+  $('#su-warn').classList.toggle('show',poor);
+  $('#su-yes').disabled=poor;
+  $('#slot-upgrade').classList.add('show');
+}
+$('#su-no').onclick=()=>$('#slot-upgrade').classList.remove('show');
+$('#su-yes').onclick=()=>{
+  const price=+$('#su-price').textContent.replace(/[^\d]/g,'');
+  if(coins<price)return toast('Không đủ xu!');
+  coins-=price;upd();
+  $('#slot-upgrade').classList.remove('show');
+  toast('Đã mua / nâng cấp ô đất');
+};
+
+/* ---------- navigation ---------- */
+function open(p){
+ $$('.panel').forEach(x=>x.classList.remove('show'));
+ $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+ const home=p==='home';$('#play').style.display=home?'':'none';$('#hint').style.display=home?'':'none';
+ if(!home)$('#p-'+p).classList.add('show');
+}
+$$('#nav button').forEach(b=>b.onclick=()=>open(b.dataset.p));
+
+renderBag();renderLevels();renderShop('seed');upd();open('home');
+</script>
+</body>
+</html>

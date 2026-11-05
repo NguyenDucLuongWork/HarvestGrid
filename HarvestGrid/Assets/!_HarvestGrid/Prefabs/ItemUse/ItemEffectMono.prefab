@@ -133,6 +133,7 @@ MonoBehaviour:
           baseSellPrice: 0
         gameObject: {fileID: 0}
       beingEffected: 0
+      level: 0
       slotGameObject: {fileID: 0}
       plantGameObject: {fileID: 0}
     Actor: {fileID: 0}

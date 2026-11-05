@@ -8,6 +8,7 @@ public class UserManager : BaseSingleton<UserManager>, IUserDataPersistence
 {
     public string UserName = "N138";
     public UserData userData;
+
     public void Load()
     {
         DataPersistenceManager.Instance.LoadUserData(UserName);

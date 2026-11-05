@@ -4128,6 +4128,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900279133}
   m_CullTransparentMesh: 1
+--- !u!1 &909935679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 909935681}
+  - component: {fileID: 909935680}
+  m_Layer: 0
+  m_Name: LLM
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &909935680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909935679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a50e3140c3ecaaf1c848dbf141cc2074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: undream.llmunity.Runtime::LLMUnity.LLM
+  advancedOptions: 0
+  _remote: 0
+  _port: 13333
+  _APIKey: 
+  _SSLCert: 
+  _SSLKey: 
+  _numThreads: -1
+  _numGPULayers: 0
+  _parallelPrompts: 1
+  _contextSize: 8192
+  _batchSize: 512
+  _model: llama-3.2-1b-instruct-q4_k_m.gguf
+  _flashAttention: 0
+  _reasoning: 0
+  _lora: 
+  _loraWeights: 
+  dontDestroyOnLoad: 1
+  _embeddingsOnly: 0
+  _embeddingLength: 2048
+  minContextLength: 0
+  maxContextLength: 131072
+--- !u!4 &909935681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909935679}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &954891408
 GameObject:
   m_ObjectHideFlags: 0
@@ -4340,6 +4405,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 973410561}
   m_CullTransparentMesh: 1
+--- !u!1 &1046613121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1046613123}
+  - component: {fileID: 1046613122}
+  m_Layer: 0
+  m_Name: LLMAgent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1046613122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046613121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4326d5ae3b03ff55847035351559f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: undream.llmunity.Runtime::LLMUnity.LLMAgent
+  advancedOptions: 0
+  _remote: 0
+  _llm: {fileID: 909935680}
+  _APIKey: 
+  _host: localhost
+  _port: 13333
+  numRetries: 5
+  _grammar: 
+  numPredict: -1
+  cachePrompt: 1
+  seed: 0
+  temperature: 0.2
+  topK: 40
+  topP: 0.9
+  minP: 0.05
+  repeatPenalty: 1.1
+  presencePenalty: 0
+  frequencyPenalty: 0
+  typicalP: 1
+  repeatLastN: 64
+  mirostat: 0
+  mirostatTau: 5
+  mirostatEta: 0.1
+  nProbs: 0
+  ignoreEos: 0
+  save: 
+  debugPrompt: 0
+  overflowStrategy: 1
+  overflowTargetRatio: 0.5
+  overflowSummarizePrompt: 
+  _slot: -1
+  _systemPrompt: A conversation between a player and a friendly cat named Snoozy assistant in Harvest Grid, a cozy farming and inventory management game. The cat is cute, helpful, patient, and knowledgeable about farming, crops, watering, harvesting, inventory management, items, and game mechanics. It gives clear, concise, and practical advice to help the player make better decisions and progress in the game. It speaks in a warm, playful cat-like personality while keeping explanations easy to understand. It stays focused on the game and never invents mechanics or features that do not exist. Keep responses short and natural, usually one or two sentences. Prioritize actionable advice over lengthy explanations. Max length answer 20 word
+--- !u!4 &1046613123
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046613121}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1050777100
 GameObject:
   m_ObjectHideFlags: 0
@@ -6081,6 +6222,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UserManager
   UserName: N138
+  userData:
+    userId: 53424c65-286b-4721-aef2-b418c031c9ad
+    schemaVersion: 1
+    username: 
+    displayName: 
+    coin: 0
+    slotsLevels: 
+    finishedLevels: []
+    globalUnlockedAchievements: []
+    globalUnlockedCosmetics: []
 --- !u!4 &1438097078
 Transform:
   m_ObjectHideFlags: 0
@@ -6593,6 +6744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec4aaf2b7c450e9438cf9d1b459bf1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelsManager
+  levelGroup: {fileID: 0}
   levels:
   - {fileID: 11400000, guid: fcfb0454d71ab544ca7e8635e87a786d, type: 2}
   - {fileID: 11400000, guid: ac9a9bcb77ad9094895460eeb9813640, type: 2}
@@ -7862,6 +8014,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1872685067}
   m_CullTransparentMesh: 1
+--- !u!1 &1881058476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1881058477}
+  - component: {fileID: 1881058478}
+  m_Layer: 0
+  m_Name: LLMTester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1881058477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881058476}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1881058478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881058476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c45685907db6c11419e7f4aa9b6ee539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LLMTester
+  llmAgent: {fileID: 1046613122}
+  question: Hello! Tell me about yourself.
 --- !u!1 &1894292767
 GameObject:
   m_ObjectHideFlags: 0
@@ -9564,8 +9762,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: 36}
-  m_SizeDelta: {x: 300, y: 200}
+  m_AnchoredPosition: {x: 7, y: 0}
+  m_SizeDelta: {x: 395.9148, y: 390.9077}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2104774686
 MonoBehaviour:
@@ -9754,8 +9952,14 @@ MonoBehaviour:
   message: {fileID: 1927728130}
   relatedStuffIcon: {fileID: 1639603937}
   messageContainer: {fileID: 2104774685}
+  llm: {fileID: 1881058478}
+  loadingText: Hmm, let me think...
+  rewritePrompt: 'Rewrite the following hint in a fun, friendly and natural tone, like a playful game companion talking to the player. Keep every important detail and the same meaning. Use at most 2 short sentences. Reply with ONLY the rewritten text, no quotes or explanations.
+
+
+    Hint: '
   fadeDuration: 0.3
-  visibleDuration: 3
+  visibleDuration: 20
 --- !u!1 &2134233823
 GameObject:
   m_ObjectHideFlags: 0
@@ -10165,3 +10369,6 @@ SceneRoots:
   - {fileID: 1497246261}
   - {fileID: 1541499717}
   - {fileID: 1438097078}
+  - {fileID: 909935681}
+  - {fileID: 1046613123}
+  - {fileID: 1881058477}

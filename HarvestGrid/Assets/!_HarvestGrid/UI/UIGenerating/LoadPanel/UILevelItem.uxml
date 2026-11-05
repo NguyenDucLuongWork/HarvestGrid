@@ -1,0 +1,46 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="lv-root" class="lv">
+        <!-- Header: Number, Title, Status Badge -->
+        <ui:VisualElement class="lv-h">
+            <ui:Label name="lbl-num" text="1" class="num" />
+            <ui:Label name="lbl-title" text="Level Name" class="lv-title" />
+            <ui:Label name="lbl-badge" text="✔ Hoàn thành" class="badge done" />
+        </ui:VisualElement>
+
+        <!-- Dynamic Requirements List -->
+        <ui:VisualElement name="req-container" class="req">
+            <!-- Populated via script -->
+        </ui:VisualElement>
+
+        <!-- Meta: Time, Rank Button, Play Button -->
+        <ui:VisualElement class="meta">
+            <ui:Label name="lbl-time" text="⏱ Thời gian: --:--" class="time" />
+            <ui:Button name="btn-rank" text="🏆 Xếp hạng" class="btn alt" />
+            <ui:Button name="btn-go" text="Chơi" class="btn" />
+        </ui:VisualElement>
+
+        <!-- Rank Leaderboard -->
+        <ui:VisualElement name="rank-box" class="rank">
+            <ui:VisualElement class="rk">
+                <ui:Label text="🥇" class="p" />
+                <ui:Label text="Mia" class="nm" />
+                <ui:Label text="02:10" />
+            </ui:VisualElement>
+            <ui:VisualElement class="rk">
+                <ui:Label text="🥈" class="p" />
+                <ui:Label text="Tommy" class="nm" />
+                <ui:Label text="02:19" />
+            </ui:VisualElement>
+            <ui:VisualElement class="rk">
+                <ui:Label text="🥉" class="p" />
+                <ui:Label text="Lan" class="nm" />
+                <ui:Label text="02:28" />
+            </ui:VisualElement>
+            <ui:VisualElement class="rk me">
+                <ui:Label text="3" class="p" />
+                <ui:Label name="lbl-me-name" text="Farmer Bo (bạn)" class="nm" />
+                <ui:Label name="lbl-me-time" text="02:14" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
