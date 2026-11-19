@@ -1,0 +1,57 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="UI_SlotUpgradePanel.uss" />
+    <ui:VisualElement name="root" class="overlay">
+        <ui:VisualElement class="dlg">
+            <ui:VisualElement class="ph">
+                <ui:Label name="val-title" text="🌱 Mua ô đất" class="ph-title">
+                    <Bindings>
+                        <ui:DataBinding property="text" data-source-path="title" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Label>
+            </ui:VisualElement>
+            <ui:VisualElement class="pb">
+                <ui:VisualElement class="su-row">
+                    <ui:Label text="Ô đất" class="t" />
+                    <ui:Label name="val-slotIndex" text="3" class="v">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="slotIndex" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement class="su-row">
+                    <ui:Label text="Cấp hiện tại" class="t" />
+                    <ui:Label name="val-slotLevel" text="0" class="v">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="slotLevel" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement class="su-row">
+                    <ui:Label text="Giá" class="t" />
+                    <ui:Label name="val-price" text="200" class="v">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="price" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:VisualElement class="su-row">
+                    <ui:Label text="Xu của bạn" class="t" />
+                    <ui:Label name="val-playerMoney" text="1250" class="v">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="playerMoney" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+                <ui:Label name="val-warning" text="" class="warn hidden">
+                    <Bindings>
+                        <ui:DataBinding property="text" data-source-path="warning" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Label>
+                <ui:VisualElement class="su-btns">
+                    <ui:Button name="btn-yes" text="Yes" class="btn" />
+                    <ui:Button name="btn-no" text="No" class="btn alt" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

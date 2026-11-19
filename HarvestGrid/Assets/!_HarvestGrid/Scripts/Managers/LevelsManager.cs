@@ -1,4 +1,4 @@
-using LgTyLib.Core;
+﻿using LgTyLib.Core;
 using LgTyLib.Modules.DataPersistence;
 using LgTyLib.SceneManagement;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LevelsManager : BaseSingleton<LevelsManager>
+public class LevelsManager : BaseSingleton<LevelsManager>, IUserDataPersistence
 {
     [SerializeField] private LevelGroup levelGroup;
     [SerializeField] private LevelSO[] levels;
@@ -16,6 +16,7 @@ public class LevelsManager : BaseSingleton<LevelsManager>
 
     [SerializeField] private Button levelBtn;
     [SerializeField] private GameplaySceneDataSO gameplaySceneDataSO;
+
 
     private void Start()
     {
@@ -26,17 +27,29 @@ public class LevelsManager : BaseSingleton<LevelsManager>
         if (SceneManager.GetActiveScene().name == "GameplayScene")
             return;
 
-        levelBtn.onClick.AddListener(LoadNextLevel);
+        if (levelBtn != null)
+            levelBtn.onClick.AddListener(LoadNextLevel);
 
         UpdateLevelButton();
         levelGroup?.UpdateLevels();
+        SyncLoadView();
     }
+
+    public void SyncLoadView(LoadViewSO view = null)
+    {
+        if (view == null && UIManager.HasInstance)
+            view = UIManager.Instance.loadViewSO;
+
+        view?.SetLevelsData(levels, finishedLevels);
+    }
+
 
     protected override void OnDestroy()
     {
         if (levelBtn != null)
             levelBtn.onClick.RemoveListener(LoadNextLevel);
         base.OnDestroy();
+
     }
 
     public void LoadLevel(LevelSO levelSO)
@@ -47,10 +60,13 @@ public class LevelsManager : BaseSingleton<LevelsManager>
 
     private void UpdateLevelButton()
     {
+        if (levelBtn == null) return;
+
         int nextLevel = GetNextLevel();
 
         TextMeshProUGUI text =
             levelBtn.GetComponentInChildren<TextMeshProUGUI>();
+        if (text == null) return;
 
         if (nextLevel < 0)
         {
@@ -83,6 +99,7 @@ public class LevelsManager : BaseSingleton<LevelsManager>
     public void LoadUserData(UserData userData)
     {
         finishedLevels = userData.finishedLevels ?? new List<PlayTime>();
+        SyncLoadView();
     }
 
     public void SaveUserData(ref UserData userData)
@@ -90,25 +107,11 @@ public class LevelsManager : BaseSingleton<LevelsManager>
         userData.finishedLevels = finishedLevels;
     }
 
-    public int GetLevelIndex(int levelID)
-    {
-        if (levels != null)
-        {
-            for (int i = 0; i < levels.Length; i++)
-            {
-                if (levels[i] != null && levels[i].levelID == levelID)
-                    return i;
-            }
-        }
-        return levelID;
-    }
-
     public void FinishLevel(int level, PlayTime playTime)
     {
-        int index = GetLevelIndex(level);
-        if (index < 0 || index >= levels.Length)
+        if (level < 0 || level >= levels.Length)
         {
-            Debug.LogError($"Invalid level index: {index} (level ID: {level})");
+            Debug.LogError($"Invalid level index: {level}");
             return;
         }
 
@@ -119,58 +122,61 @@ public class LevelsManager : BaseSingleton<LevelsManager>
         }
 
         // Level already has a recorded completion time.
-        if (index < finishedLevels.Count && finishedLevels[index] != null)
+        if (level < finishedLevels.Count && finishedLevels[level] != null)
         {
-            PlayTime bestTime = finishedLevels[index];
+            PlayTime bestTime = finishedLevels[level];
 
             // Replace only if the new time is better.
             if (playTime.TotalSeconds < bestTime.TotalSeconds)
             {
-                finishedLevels[index] = playTime;
+                finishedLevels[level] = playTime;
             }
         }
         else
         {
             // Fill missing indices if necessary.
-            while (finishedLevels.Count < index)
+            while (finishedLevels.Count < level)
             {
                 finishedLevels.Add(null);
             }
 
-            if (index == finishedLevels.Count)
+            if (level == finishedLevels.Count)
             {
                 finishedLevels.Add(playTime);
             }
             else
             {
-                finishedLevels[index] = playTime;
+                finishedLevels[level] = playTime;
             }
         }
         UserManager.Instance.SetFinishedLevels(finishedLevels);
+        SyncLoadView();
     }
+
+    public int GetNextLevelIndex() => GetNextLevel();
 
     public bool IsLevelFinished(int level)
     {
-        int index = GetLevelIndex(level);
-        return index >= 0
-            && index < finishedLevels.Count
-            && finishedLevels[index] != null;
+        return level >= 0
+            && level < finishedLevels.Count
+            && finishedLevels[level] != null;
     }
 
     public bool TryGetBestTime(int level, out PlayTime playTime)
     {
         playTime = null;
-        int index = GetLevelIndex(level);
 
-        if (index < 0 || index >= finishedLevels.Count || finishedLevels[index] == null)
+        if (!IsLevelFinished(level))
             return false;
 
-        playTime = finishedLevels[index];
+        playTime = finishedLevels[level];
         return true;
     }
 
     private int GetNextLevel()
     {
+        if (levels == null) return -1;
+
         for (int i = 0; i < levels.Length; i++)
         {
             if (!IsLevelFinished(i))

@@ -1,0 +1,64 @@
+/* =========================================================================
+   Bottom Navigation Bar Stylesheet matching Farm Game UI.html (#nav)
+   ========================================================================= */
+
+.nav-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 320px;
+    padding-bottom: 60px;
+    flex-direction: row;
+    background-color: #0b6fc4;
+    border-top-width: 10px;
+    border-top-color: #0a4f94;
+}
+
+.nav-btn {
+    flex-grow: 1;
+    flex-basis: 0;
+    border-width: 0;
+    border-right-width: 4px;
+    border-right-color: rgba(0, 40, 90, 0.45);
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+.nav-btn:last-child {
+    border-right-width: 0;
+}
+
+.nav-btn.on {
+    background-color: rgba(255, 255, 255, 0.22);
+    border-bottom-width: 12px;
+    border-bottom-color: #ffc61a;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.nav-btn:active {
+    translate: 0 4px;
+}
+
+.nav-icon {
+    font-size: 80px;
+    color: #ffffff;
+    -unity-text-align: middle-center;
+    margin-bottom: 6px;
+}
+
+.nav-text {
+    font-size: 38px;
+    color: #ffffff;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}

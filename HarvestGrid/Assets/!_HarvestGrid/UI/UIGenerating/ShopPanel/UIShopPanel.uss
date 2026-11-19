@@ -1,0 +1,147 @@
+/* =========================================================================
+   Styles for Shop Panel matching Farm Game UI.html (#p-shop)
+   ========================================================================= */
+
+.panel {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    top: 230px;
+    bottom: 360px;
+    background-color: #fff3d1;
+    border-width: 10px;
+    border-color: #7a4a24;
+    border-radius: 50px;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ph {
+    height: 150px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: #c98a4b;
+    border-bottom-width: 8px;
+    border-bottom-color: #7a4a24;
+}
+
+.ph-title {
+    color: #ffffff;
+    font-size: 76px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.pb {
+    flex-grow: 1;
+    padding: 36px;
+}
+
+/* Tabs */
+.tabs {
+    flex-direction: row;
+    margin-bottom: 28px;
+}
+
+.tab {
+    flex-grow: 1;
+    flex-basis: 0;
+    height: 90px;
+    border-radius: 24px;
+    border-width: 6px;
+    border-color: #7a4a24;
+    background-color: #f1dba6;
+    font-size: 44px;
+    color: #3b2410;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.tab:first-child {
+    margin-left: 0;
+}
+
+.tab:last-child {
+    margin-right: 0;
+}
+
+.tab.on {
+    background-color: #7bc043;
+    color: #ffffff;
+}
+
+.tab:hover {
+    opacity: 0.9;
+}
+
+.tab:active {
+    translate: 0 4px;
+}
+
+/* Shop Grid (.sh) */
+.sh {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Shop Item Card (.item) */
+.item {
+    width: 48%;
+    background-color: #ffffff;
+    border-width: 6px;
+    border-color: #e0c58a;
+    border-radius: 36px;
+    padding: 28px;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.item .e {
+    font-size: 140px;
+    margin-bottom: 10px;
+    -unity-text-align: middle-center;
+}
+
+.item-title {
+    font-size: 48px;
+    -unity-font-style: bold;
+    color: #3b2410;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    -unity-text-align: middle-center;
+}
+
+.item-desc {
+    font-size: 34px;
+    color: #8a6a40;
+    margin-bottom: 18px;
+    -unity-text-align: middle-center;
+}
+
+.btn {
+    height: 90px;
+    border-radius: 24px;
+    border-width: 6px;
+    border-color: #4d8a20;
+    background-color: #7bc043;
+    color: #ffffff;
+    font-size: 44px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.item-btn {
+    width: 100%;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn:active {
+    translate: 0 4px;
+}

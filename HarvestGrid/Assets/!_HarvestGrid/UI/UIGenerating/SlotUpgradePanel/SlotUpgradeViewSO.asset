@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae06049d5c4b9884f96731bdc5aec101, type: 3}
+  m_Name: SlotUpgradeViewSO
+  m_EditorClassIdentifier: Assembly-CSharp::SlotUpgradeViewSO
+  slotUpgrade:
+    title: "\U0001F331 Mua \xF4 \u0111\u1EA5t"
+    slotIndex: 21
+    slotLevel: 18
+    price: 200
+    playerMoney: 265
+    warning: "Kh\xF4ng \u0111\u1EE7 xu!"

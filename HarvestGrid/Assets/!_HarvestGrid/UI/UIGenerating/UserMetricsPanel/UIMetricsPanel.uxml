@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="UIMetricsPanel.uss" />
+    <ui:VisualElement name="root" class="hud">
+        <!-- Coin / Money Chip -->
+        <ui:VisualElement name="chip-coin" class="chip">
+            <ui:VisualElement class="ic">
+                <ui:Label text="🪙" class="ic-text" />
+            </ui:VisualElement>
+            <ui:Label name="val-coin" text="1,250" class="chip-text">
+                <Bindings>
+                    <ui:DataBinding property="text" data-source-path="coin" binding-mode="ToTarget" />
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+
+        <!-- Player Name Chip -->
+        <ui:VisualElement name="chip-name" class="chip chip-user">
+            <ui:VisualElement class="ic ic-user">
+                <ui:Label text="🧑‍🌾" class="ic-user-text" />
+            </ui:VisualElement>
+            <ui:Label name="val-name" text="Farmer Bo" class="chip-text chip-user-text">
+                <Bindings>
+                    <ui:DataBinding property="text" data-source-path="name" binding-mode="ToTarget" />
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

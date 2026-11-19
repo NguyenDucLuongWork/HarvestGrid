@@ -1,0 +1,25 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="UIShopPanel.uss" />
+    <ui:VisualElement name="root" class="panel">
+        <ui:VisualElement class="ph">
+            <ui:Label text="🏪 Shop" class="ph-title" />
+        </ui:VisualElement>
+        <ui:VisualElement class="pb">
+            <!-- Tabs -->
+            <ui:VisualElement class="tabs">
+                <ui:Button name="btn-tab-seed" text="Hạt giống" class="tab on" />
+                <ui:Button name="btn-tab-tool" text="Dụng cụ" class="tab" />
+                <ui:Button name="btn-tab-deco" text="Trang trí" class="tab" />
+            </ui:VisualElement>
+
+            <!-- Scrollable 2-Column Grid -->
+            <ui:ScrollView name="shop-scroll">
+                <!-- generated:begin -->
+                <ui:VisualElement name="shop-grid" class="sh">
+                    <!-- Shop items instantiated dynamically from UIShopItem.uxml -->
+                </ui:VisualElement>
+                <!-- generated:end -->
+            </ui:ScrollView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

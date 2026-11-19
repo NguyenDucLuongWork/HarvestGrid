@@ -1,0 +1,121 @@
+/* =========================================================================
+   Styles extracted & adapted from Farm Game UI.html for Setting Panel
+   ========================================================================= */
+
+.panel {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    top: 230px;
+    bottom: 360px;
+    background-color: #fff3d1;
+    border-width: 10px;
+    border-color: #7a4a24;
+    border-radius: 50px;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ph {
+    height: 150px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: #c98a4b;
+    border-bottom-width: 8px;
+    border-bottom-color: #7a4a24;
+}
+
+.ph-title {
+    color: #ffffff;
+    font-size: 76px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.pb {
+    flex-grow: 1;
+    padding: 36px;
+}
+
+.row {
+    margin-bottom: 44px;
+}
+
+.row-label {
+    font-size: 52px;
+    color: #3b2410;
+    -unity-font-style: bold;
+    margin-bottom: 16px;
+}
+
+.sep {
+    height: 6px;
+    background-color: #e0c58a;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    border-radius: 3px;
+}
+
+.btn {
+    height: 90px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-radius: 24px;
+    border-width: 6px;
+    border-color: #4d8a20;
+    background-color: #7bc043;
+    color: #ffffff;
+    font-size: 44px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.btn.alt {
+    background-color: #c98a4b;
+    border-color: #7a4a24;
+    width: 100%;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn:active {
+    translate: 0 6px;
+}
+
+/* =========================================================================
+   UI Toolkit Slider Overrides matching HTML range styling
+   ========================================================================= */
+
+.unity-slider {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.unity-slider .unity-slider__input {
+    min-height: 80px;
+    justify-content: center;
+}
+
+.unity-slider .unity-slider__tracker {
+    height: 36px;
+    border-radius: 18px;
+    background-color: #e0c58a;
+    border-width: 5px;
+    border-color: #7a4a24;
+    top: 50%;
+    margin-top: -18px;
+}
+
+.unity-slider .unity-slider__dragger {
+    width: 70px;
+    height: 70px;
+    border-radius: 35px;
+    background-color: #ffc61a;
+    border-width: 7px;
+    border-color: #7a4a24;
+    top: 50%;
+    margin-top: -35px;
+}
