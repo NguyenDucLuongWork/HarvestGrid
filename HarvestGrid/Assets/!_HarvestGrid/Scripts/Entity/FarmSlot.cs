@@ -1,26 +1,33 @@
-﻿using System;
+using GameJson;
+using System;
 using UnityEngine;
 
 [Serializable]
 public class FarmSlot : ICloneable<FarmSlot>
 {
+    [ContextData]
     [SerializeField]
     private string slotID;
 
+    [ContextData]
     [SerializeField]
     private SoilQuality soilQuality;
 
+    [ContextData]
     [SerializeField]
     private SoilMoisture soilMoisture;
 
+    [ContextData]
     [SerializeField]
-    private Plant plant;
+    public Plant plant;
 
     public string SlotID => slotID;
     public SoilQuality SoilQuality => soilQuality;
     public SoilMoisture SoilMoisture => soilMoisture;
 
+    [ContextData]
     public bool beingEffected;
+    [ContextData]
     public int level;
     public Plant Plant
     {

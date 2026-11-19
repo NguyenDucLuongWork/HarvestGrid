@@ -1,3 +1,4 @@
+using GameJson;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,23 +8,32 @@ using UnityEngine;
 public class Plant : ICloneable<Plant>
 {
     // Props
+    [ContextData]
     [SerializeField]
     private string plantID;
+    [ContextData]
     [SerializeField]
     private string plantName;
+    [ContextData]
     [SerializeField]
     private int averageCropCount = 3; // Base yield amount for a fully grown harvest
+    [ContextData]
     [SerializeField]
     private PlantStage currentState;
+    [ContextData]
     [SerializeField]
     private Dictionary<Resource, int> nextStageRequirement;
+    [ContextData]
     [SerializeField]
     private List<PlantStage> stages; // remaining stages, in growth order
+    [ContextData]
     [SerializeField]
     private Crop crop;
 
     // Getters
     public string PlantID => plantID;
+
+    public string Name => plantName;
     public string PlantName => plantName;
     public int AverageCropCount => averageCropCount;
     public PlantStage CurrentState => currentState;

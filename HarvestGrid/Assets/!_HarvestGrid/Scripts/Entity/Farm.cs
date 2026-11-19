@@ -1,4 +1,5 @@
-﻿using LgTyLib.Modules.DataPersistence;
+using GameJson;
+using LgTyLib.Modules.DataPersistence;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 [Serializable]
 public class Farm : ICloneable<Farm>
 {
+    [ContextData]
     [SerializeField]
     private List<FarmSlot> farmSlots;
     public List<FarmSlot> FarmSlots => farmSlots;

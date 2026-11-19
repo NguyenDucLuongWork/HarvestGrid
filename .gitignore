@@ -15,7 +15,7 @@
 **/[Uu]ser[Ss]ettings/
 *.log
 
-# Ignore LLM models & native runtime in StreamingAssets
+# Local LLM models in StreamingAssets
 HarvestGrid/Assets/StreamingAssets/
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.

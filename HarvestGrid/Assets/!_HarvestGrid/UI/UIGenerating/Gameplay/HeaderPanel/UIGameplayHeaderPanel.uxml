@@ -1,0 +1,61 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="UIGameplayHeaderPanel.uss" />
+    <ui:VisualElement name="header-root" class="header-container">
+        <!-- Row 1: Level, XP / Timer Bar, Gem Pill -->
+        <ui:VisualElement class="header-row">
+            <!-- Level Circle -->
+            <ui:VisualElement name="lvl-badge" class="lvl-badge">
+                <ui:Label name="val-level" text="1" class="lvl-text">
+                    <Bindings>
+                        <ui:DataBinding property="text" data-source-path="level" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Label>
+            </ui:VisualElement>
+
+            <!-- XP / Time Countdown Bar -->
+            <ui:VisualElement name="xp-bar" class="xp-bar">
+                <ui:VisualElement name="xp-fill" class="xp-fill" style="width: 50%;" />
+                <ui:Label name="val-time" text="01:00" class="xp-text">
+                    <Bindings>
+                        <ui:DataBinding property="text" data-source-path="timeRemaining" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Label>
+            </ui:VisualElement>
+
+            <!-- Gem Pill -->
+            <ui:VisualElement name="chip-gem" class="pill gem-pill">
+                <ui:Label name="val-gems" text="100" class="pill-text">
+                    <Bindings>
+                        <ui:DataBinding property="text" data-source-path="gems" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Label>
+                <ui:Label text="💎" class="pill-icon" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- Row 2: Shop Button, Coins Pill, Crop Chips -->
+        <ui:VisualElement class="bar2">
+            <!-- Shop Toggle Button -->
+            <ui:Button name="btn-shop-toggle" class="shop-btn">
+                <ui:Label text="🏪" class="shop-btn-icon" />
+            </ui:Button>
+
+            <!-- Cash Pill -->
+            <ui:VisualElement name="chip-cash" class="pill cash-pill">
+                <ui:Label text="🪙" class="cash-icon" />
+                <ui:Label name="val-coins" text="92" class="cash-text">
+                    <Bindings>
+                        <ui:DataBinding property="text" data-source-path="coins" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Label>
+            </ui:VisualElement>
+
+            <!-- Horizontal Crop Chips List -->
+            <ui:ScrollView name="crop-scroll" mode="Horizontal" class="chips-scroll" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden">
+                <ui:VisualElement name="chips-container" class="chips-container">
+                    <!-- Crop chips instantiated dynamically from UICropChip.uxml -->
+                </ui:VisualElement>
+            </ui:ScrollView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

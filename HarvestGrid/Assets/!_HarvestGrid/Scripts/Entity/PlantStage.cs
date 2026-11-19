@@ -1,3 +1,4 @@
+using GameJson;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class PlantStage : ICloneable<PlantStage>
     private Sprite sprite;
 
     // Serialized natively by Unity 6.6+ (opt-in with [SerializeField]).
+    [ContextData]
     [SerializeField]
     private Dictionary<Resource, int> requiredResources = new();
 

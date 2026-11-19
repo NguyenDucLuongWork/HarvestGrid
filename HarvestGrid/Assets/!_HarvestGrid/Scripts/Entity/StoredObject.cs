@@ -1,15 +1,19 @@
-﻿using System;
+using GameJson;
+using System;
 using UnityEngine;
 
 [Serializable]
 public class StoredObject : ICloneable<StoredObject>
 {
+    [ContextData]
     [SerializeField]
     private Item item;
 
+    [ContextData]
     [SerializeField]
     private int rotated;
 
+    [ContextData]
     [SerializeField]
     private Vector2Int pivot;
 

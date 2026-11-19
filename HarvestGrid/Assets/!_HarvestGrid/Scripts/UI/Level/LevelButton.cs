@@ -1,6 +1,7 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using HarvestGrid.Leaderboard;
 
 public class LevelButton : MonoBehaviour
 {
@@ -10,8 +11,25 @@ public class LevelButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelID;
     [SerializeField] private TextMeshProUGUI lastFinishTime;
     [SerializeField] private Image bg;
+    [SerializeField] private Button leaderboardButton;
 
     private LevelSO level;
+
+    private void Awake()
+    {
+        if (leaderboardButton != null)
+        {
+            leaderboardButton.onClick.AddListener(OpenLeaderboard);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (leaderboardButton != null)
+        {
+            leaderboardButton.onClick.RemoveListener(OpenLeaderboard);
+        }
+    }
 
     public void SetData(LevelSO levelSO)
     {
@@ -48,5 +66,21 @@ public class LevelButton : MonoBehaviour
         }
 
         LevelsManager.Instance.LoadLevel(level);
+    }
+
+    public void OpenLeaderboard()
+    {
+        if (level == null)
+            return;
+
+        var lbUI = FindAnyObjectByType<LeaderboardUI>(FindObjectsInactive.Include);
+        if (lbUI != null)
+        {
+            lbUI.Open(level.levelID);
+        }
+        else
+        {
+            Debug.LogWarning("[LevelButton] LeaderboardUI not found in scene!");
+        }
     }
 }

@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class FarmSlotMono : MonoBehaviour
 {
-    [SerializeField]
-    private Sprite[] spriteByLevel;
 
     [SerializeField]
     private FarmSlot farmSlot;
@@ -24,7 +22,7 @@ public class FarmSlotMono : MonoBehaviour
     public void SetFarmSlot(FarmSlot farmSlot)
     {
         this.farmSlot = farmSlot;
-        GetComponent<Image>().sprite = spriteByLevel[farmSlot.level];
+        GetComponent<Image>().sprite = AssetManager.Instance.slotSpriteByLevels[farmSlot.level];
     }
 
 
@@ -33,6 +31,6 @@ public class FarmSlotMono : MonoBehaviour
         farmSlot.level = level;
 
         int spriteIndex = level >= 1 ? 1 : 0;
-        GetComponent<Image>().sprite = spriteByLevel[spriteIndex];
+        GetComponent<Image>().sprite = AssetManager.Instance.slotSpriteByLevels[spriteIndex];
     }
 }

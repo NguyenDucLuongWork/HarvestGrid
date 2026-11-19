@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Farm Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#9fd7f5; --grass:#8fcf5a; --soil:#7a4a2b; --soil-d:#5e381f;
+  --cream:#fff4d6; --wood:#c98a3b; --wood-d:#8a5a22; --slot:#f3e3b8; --slot-on:#e9b11c; --lock:#b9a98a;
+  --green:#5cc13a; --blue:#3aa7e8; --ink:#4a2f17;
+  /* Redmi Note 14: 1080x2400 px ≈ 393x873 dp → sizes derive from both width and height */
+  --c:min(10.4vw,5.3dvh,46px); --g:3px; --fs:min(12vw,6.6dvh,56px);
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sky:#5b86a8;--grass:#5f9a3c;--ink:#3b2410}}
+:root[data-theme="dark"]{--sky:#5b86a8;--grass:#5f9a3c;--ink:#3b2410}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:linear-gradient(var(--sky) 0,var(--grass) 25%);font-family:"Baloo 2",system-ui,sans-serif;color:var(--ink);min-height:100dvh;display:flex;justify-content:center}
+#app{width:100%;max-width:440px;padding:6px 10px 10px;display:flex;flex-direction:column;gap:6px}
+.row{display:flex;gap:8px;align-items:center}
+img{display:block;pointer-events:none;user-select:none}
+.pill{background:var(--cream);border:2px solid var(--wood);border-radius:12px;padding:0 10px;font-weight:700;display:flex;gap:4px;align-items:center;white-space:nowrap}
+.lvl{width:44px;height:44px;border-radius:50%;background:#6aa9ff;border:3px solid #fff;display:grid;place-items:center;color:#fff;font-weight:800;font-size:20px;line-height:1;text-align:center}
+.xp{flex:1;height:20px;position:relative;background:#0003;border-radius:10px;overflow:hidden}
+.xp b{position:absolute;inset:0;display:grid;place-items:center;font:800 12px "Baloo 2";color:#fff;text-shadow:0 1px 2px #000}
+.xp i{display:block;height:100%;background:var(--blue);width:0}
+.btn{border:0;border-radius:10px;padding:2px 12px;font:800 14px "Baloo 2",sans-serif;color:#fff;background:var(--green);box-shadow:0 3px 0 #3a8a22;cursor:pointer}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #3a8a22}
+.btn.blue{background:var(--blue);box-shadow:0 3px 0 #1f78b0}
+.btn:disabled{filter:grayscale(1);opacity:.6}
+/* top bar: shop · cash · crop chips */
+.bar2{display:flex;gap:6px;align-items:stretch;background:#fff8;border-radius:14px;padding:5px}
+.shopbtn{width:48px;border:2px solid var(--wood-d);border-radius:10px;background:#f0a23a;display:grid;place-items:center;padding:0}
+.shopbtn img{width:36px}
+.cash{flex-direction:column;justify-content:center;gap:0;padding:0 6px;min-width:56px;font-size:17px}
+.cash img{width:34px;height:22px}
+.chips{flex:1;min-width:0;display:flex;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;padding:11px 2px 12px 4px;margin:-7px 0 -6px;scrollbar-width:none;touch-action:pan-x}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;min-width:92px;position:relative;background:var(--cream);border:2px solid #eadbb2;border-radius:22px;display:flex;align-items:center;gap:4px;padding:2px 12px 2px 4px}
+.chip .ci{position:relative;width:36px;height:36px;flex:none}
+.chip .ci img{width:100%;height:100%}
+.chip .stock{position:absolute;left:-2px;bottom:-2px;min-width:16px;height:16px;border-radius:8px;background:#fff;color:#12b5a6;font:800 12px/16px "Baloo 2";text-align:center;border:1px solid #12b5a6}
+.chip .tier{position:absolute;top:-9px;right:6px;font:800 14px/1 "Baloo 2";color:#4a2f17;text-shadow:0 0 3px #fff,0 0 3px #fff}
+.chip .tier i{font-style:normal;color:#f2b705;margin-left:1px}
+.chip .cnt{font-weight:800;font-size:16px;flex:1;text-align:center}
+.chip.done{border-color:#5cc13a}
+.chip{cursor:pointer;user-select:none}.chip:active{transform:scale(.96)}.cash{cursor:pointer}.cash:active{transform:scale(.96)}
+.chip .price{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);background:#ffe9a8;border:1.5px solid var(--wood);border-radius:8px;font:800 11px/15px "Baloo 2";padding:0 6px;white-space:nowrap;color:var(--ink)}
+.ri{display:inline-block;width:12px;height:12px;vertical-align:-2px}
+/* farm */
+#farm{display:grid;grid-template-columns:repeat(5,var(--fs));justify-content:center;gap:6px;padding:6px;background:#ffffff22;border-radius:12px}
+.fs{width:var(--fs);height:var(--fs);background:var(--soil);border:3px solid var(--soil-d);border-radius:9px;display:grid;place-items:center;position:relative;transition:transform .2s}
+.fs img{width:74%;height:74%;object-fit:contain}
+.fs .two{display:flex;width:90%}.fs .two img{width:50%}
+.fs small{position:absolute;bottom:0;display:flex;align-items:center;gap:2px;white-space:nowrap;font:800 10px/12px "Baloo 2";color:#fff;text-shadow:0 1px 1px #000,0 0 3px #000;z-index:4}
+.fs small img.ri{width:11px;height:11px;object-fit:contain}
+.fs .pic{display:grid;place-items:center;width:100%;height:100%}
+.fs .use{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;z-index:3;pointer-events:none;filter:drop-shadow(0 2px 3px #0008)}
+/* shop */
+.shop{background:#6c8f3b;border:3px solid var(--wood);border-radius:14px;padding:6px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.offer{background:#d7c8f5;border:2px solid #9a86d6;border-radius:10px;padding:4px;text-align:center;display:flex;flex-direction:column;gap:2px;align-items:center}
+.offer h4{margin:0;font-size:11px;line-height:1.05;height:24px;display:grid;place-items:center}
+.offer{min-width:0;overflow:hidden}
+.offer .pic{height:min(14vw,7dvh);width:100%;overflow:hidden;padding:3px;background:#fff6;border-radius:6px;display:grid;place-items:center}
+.offer .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.offer .pr{font-weight:700;font-size:12px}
+.offer .btn{width:100%;font-size:13px;padding:0}
+.offer.sold{opacity:.5}
+/* footprint shown behind the shop picture */
+.fp{position:relative;display:grid;gap:2px;touch-action:none}
+.fp i{border-radius:3px}.fp i.fc{background:var(--slot-on);border:1px solid #b98400}
+.offer.held{outline:2px dashed #fff;outline-offset:-2px}
+.offer.held .fp{cursor:grab;filter:drop-shadow(0 0 4px #fff)}
+.reroll{align-self:center;margin-top:-14px;z-index:2}
+/* inventory */
+.inv{background:var(--wood);border:4px solid var(--wood-d);border-radius:16px;padding:8px}
+.board{position:relative;background:#c58f8f;border-radius:10px;padding:8px;width:max-content;margin:0 auto;touch-action:none}
+.grid{display:grid;grid-template-columns:repeat(7,var(--c));grid-auto-rows:var(--c);gap:var(--g)}
+.grid.layer{position:absolute;inset:8px;pointer-events:none}
+.cell{background:var(--slot);border-radius:4px}
+.cell.lock{background:var(--lock);background-image:repeating-linear-gradient(45deg,#0001 0 4px,transparent 4px 8px)}
+.item{display:grid;position:relative;gap:var(--g);pointer-events:none}
+.item .p{background:var(--slot-on);border-radius:4px;pointer-events:auto;cursor:grab;touch-action:none}
+.item .e{pointer-events:none}
+.item>img{position:absolute;left:50%;top:50%;z-index:2;transition:transform .12s;object-fit:contain}
+.cdg{position:absolute;inset:0;display:grid;gap:var(--g);pointer-events:none;z-index:3}
+.cdg>div{overflow:hidden;border-radius:4px}
+.cdg .cd{width:100%;height:100%;background:rgba(0,0,0,.38);transform-origin:top}
+.item.drag{z-index:20;filter:drop-shadow(0 6px 6px #0006)}
+.item.drag .p{cursor:grabbing}
+.item.ok .p{background:#8be05a}.item.bad .p{background:#ff7a6b}
+.item.shake{animation:sh .25s}
+@keyframes sh{25%{translate:-4px 0}75%{translate:4px 0}}
+@media (prefers-reduced-motion:reduce){.item.shake{animation:none}.fs,.item>img{transition:none}}
+.foot{margin-top:6px;background:#0002;border-radius:10px;padding:2px 8px;justify-content:space-between;font-weight:800;color:#fff;font-size:14px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#000c;color:#fff;padding:6px 14px;border-radius:20px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}
+#toast.on{opacity:1}
+#sell{position:fixed;inset:0;background:#0008;display:grid;place-items:center;z-index:60}
+#sell[hidden]{display:none}
+.sp{background:var(--cream);border:4px solid var(--wood);border-radius:16px;padding:14px 18px;text-align:center;max-width:290px;font-weight:700}
+.sp img{width:72px;height:72px;object-fit:contain;margin:0 auto}
+.sp p{margin:6px 0 10px}.sp .row{justify-content:center}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="row">
+    <div class="lvl" id="lv"></div>
+    <div class="xp"><i id="xp"></i><b id="xpt"></b></div>
+    <div class="pill" style="height:26px"><span id="gems"></span>💎</div>
+  </div>
+  <div class="bar2">
+    <button class="shopbtn" aria-label="Shop"><img data-art="shop" alt=""></button>
+    <div class="pill cash"><img data-art="cash" alt=""><span id="coins"></span></div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div id="farm"></div>
+  <div class="shop" id="shop"></div>
+  <button class="btn blue reroll" id="reroll">Reroll shop 💎10</button>
+  <div class="inv">
+    <div class="board" id="board">
+      <div class="grid" id="cells"></div>
+      <div class="grid layer" id="items"></div>
+    </div>
+  </div>
+</div>
+<div id="sell" hidden><div class="sp"><img id="sellimg" alt=""><p id="sellq"></p><div class="row"><button class="btn" id="sellyes">Sell</button><button class="btn blue" id="sellno">Keep</button></div></div></div>
+<div id="toast"></div>
+<script>
+const COLS=7, ROWS=5, MAXLV=5, $=id=>document.getElementById(id);
+
+/* ---------- images (inline SVG data URIs; swap for real PNG paths later) ---------- */
+const svg=(w,h,s)=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}">${s}</svg>`);
+const petals=[...Array(8)].map((_,i)=>`<ellipse cx="50" cy="22" rx="10" ry="18" fill="#ffc928" transform="rotate(${i*45} 50 50)"/>`).join('');
+const ART={
+  // items – viewBox is footprint size × 40, so the picture fills exactly the cells it occupies
+  scythe:svg(80,80,`<path d="M20 74 V14" stroke="#7a4a1f" stroke-width="7" stroke-linecap="round"/><path d="M20 10 Q72 2 74 30 Q50 20 20 26Z" fill="#d5dce2" stroke="#68737d" stroke-width="3" stroke-linejoin="round"/>`),
+  seeds:svg(40,80,`<rect x="5" y="6" width="30" height="68" rx="6" fill="#e8d3a2" stroke="#9a7a3a" stroke-width="3"/><path d="M5 18h30" stroke="#9a7a3a" stroke-width="3" stroke-dasharray="3 2"/><rect x="11" y="30" width="18" height="30" rx="9" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>`),
+  gloves:svg(40,40,`<path d="M10 34 V18 a3 3 0 0 1 6 0 V10 a3 3 0 0 1 6 0 V12 a3 3 0 0 1 6 0 V20 L33 16 a3 3 0 0 1 4 4 L30 34Z" fill="#b8733a" stroke="#6b3d17" stroke-width="2" stroke-linejoin="round"/>`),
+  can:svg(80,80,`<path d="M54 36 L74 18" stroke="#5f7f99" stroke-width="7" stroke-linecap="round"/><rect x="14" y="30" width="46" height="40" rx="8" fill="#8fb4cf" stroke="#4d6d86" stroke-width="3"/><path d="M16 38 C0 38 0 62 16 62" fill="none" stroke="#4d6d86" stroke-width="5"/><path d="M26 30 C26 12 48 12 48 30" fill="none" stroke="#4d6d86" stroke-width="4"/>`),
+  hoe:svg(40,120,`<path d="M20 10 V112" stroke="#7a4a1f" stroke-width="7" stroke-linecap="round"/><path d="M6 12 H34 L30 28 H10Z" fill="#c4ccd3" stroke="#68737d" stroke-width="3" stroke-linejoin="round"/>`),
+  tractor:svg(120,80,`<rect x="18" y="24" width="56" height="30" rx="6" fill="#e53935" stroke="#8e1b19" stroke-width="3"/><rect x="62" y="10" width="28" height="32" rx="4" fill="#ef5350" stroke="#8e1b19" stroke-width="3"/><rect x="68" y="16" width="16" height="12" fill="#bfe6ff"/><rect x="88" y="38" width="22" height="14" rx="3" fill="#e53935" stroke="#8e1b19" stroke-width="3"/><circle cx="36" cy="58" r="16" fill="#333" stroke="#111" stroke-width="3"/><circle cx="36" cy="58" r="6" fill="#f2b705"/><circle cx="92" cy="62" r="11" fill="#333" stroke="#111" stroke-width="3"/><circle cx="92" cy="62" r="4" fill="#f2b705"/>`),
+  // icons
+  cuc:svg(100,100,`<rect x="30" y="6" width="40" height="88" rx="20" fill="#4caf50" stroke="#2e7d32" stroke-width="5" transform="rotate(38 50 50)"/><g fill="#a5e08a"><circle cx="42" cy="38" r="3"/><circle cx="58" cy="52" r="3"/><circle cx="46" cy="64" r="3"/></g>`),
+  wheat:svg(100,100,`<path d="M50 96 V30" stroke="#b58a2a" stroke-width="4"/>${[18,34,50,66].map((y,i)=>`<ellipse cx="38" cy="${y+8}" rx="6" ry="11" fill="#f0b83a" stroke="#b58a2a" stroke-width="2" transform="rotate(-30 38 ${y+8})"/><ellipse cx="62" cy="${y+8}" rx="6" ry="11" fill="#f0b83a" stroke="#b58a2a" stroke-width="2" transform="rotate(30 62 ${y+8})"/>`).join('')}<ellipse cx="50" cy="14" rx="6" ry="12" fill="#f0b83a" stroke="#b58a2a" stroke-width="2"/>`),
+  corn:svg(100,100,`<path d="M50 12 C74 30 74 70 50 88 C26 70 26 30 50 12Z" fill="#ffd23f" stroke="#c89b00" stroke-width="3"/><path d="M50 16V84M38 30V74M62 30V74" stroke="#c89b00" stroke-width="2"/><path d="M50 92 C22 82 20 48 30 42 C34 64 44 76 50 80Z" fill="#6cd24a" stroke="#3a8a22" stroke-width="3"/><path d="M50 92 C78 82 80 48 70 42 C66 64 56 76 50 80Z" fill="#8be05a" stroke="#3a8a22" stroke-width="3"/>`),
+  rWater:svg(100,100,`<path d="M50 8 C72 38 82 52 82 66 A32 32 0 0 1 18 66 C18 52 28 38 50 8Z" fill="#3aa7e8" stroke="#1f78b0" stroke-width="5"/>`),
+  rNut:svg(100,100,`<path d="M20 80 C14 38 44 14 84 16 C86 56 64 84 20 80Z" fill="#6cd24a" stroke="#3a8a22" stroke-width="5"/><path d="M22 78 L62 38" stroke="#3a8a22" stroke-width="5"/>`),
+  rSun:svg(100,100,`<circle cx="50" cy="50" r="20" fill="#ffc928" stroke="#e09a00" stroke-width="4"/><g stroke="#e09a00" stroke-width="6" stroke-linecap="round">${[0,45,90,135,180,225,270,315].map(a=>`<path d="M50 8V20" transform="rotate(${a} 50 50)"/>`).join('')}</g>`),
+  sprout:svg(100,100,`<path d="M50 90 V50" stroke="#3a8a22" stroke-width="5"/><path d="M50 56 C20 56 18 28 18 28 C44 26 50 44 50 56Z" fill="#6cd24a" stroke="#3a8a22" stroke-width="3"/><path d="M50 50 C80 50 82 22 82 22 C56 20 50 38 50 50Z" fill="#8be05a" stroke="#3a8a22" stroke-width="3"/>`),
+  sun:svg(100,100,`${petals}<circle cx="50" cy="50" r="16" fill="#6b3d17"/>`),
+  tractorI:svg(120,80,`<rect x="18" y="24" width="56" height="30" rx="6" fill="#e53935"/><rect x="62" y="10" width="28" height="32" rx="4" fill="#ef5350"/><circle cx="36" cy="58" r="16" fill="#333"/><circle cx="92" cy="62" r="11" fill="#333"/>`),
+  cash:svg(60,40,`<rect x="6" y="20" width="48" height="16" rx="3" fill="#6cc24a" stroke="#2f7a1d" stroke-width="2"/><rect x="4" y="12" width="48" height="16" rx="3" fill="#7fd45a" stroke="#2f7a1d" stroke-width="2"/><rect x="8" y="3" width="48" height="16" rx="3" fill="#95e46e" stroke="#2f7a1d" stroke-width="2"/><circle cx="32" cy="11" r="5" fill="#2f7a1d"/>`),
+  shop:svg(80,80,`<rect x="12" y="34" width="56" height="38" fill="#fff0cf" stroke="#8a5a22" stroke-width="3"/><rect x="26" y="46" width="18" height="26" fill="#9bd2ee" stroke="#8a5a22" stroke-width="2"/><path d="M8 18h64l4 18H4Z" fill="#e53935" stroke="#8a5a22" stroke-width="3"/><path d="M24 18l-3 18M40 18v18M56 18l3 18" stroke="#fff" stroke-width="6"/>`)
+};
+document.querySelectorAll('[data-art]').forEach(i=>i.src=ART[i.dataset.art]);
+
+/* ---------- data ---------- */
+const shape=r=>{const h=r.length,w=r[0].length;return Array.from({length:w},(_,x)=>Array.from({length:h},(_,y)=>r[h-1-y][x]==='#'))}; // req[x][y], y up
+const rotate=q=>{const w=q.length,h=q[0].length,o=Array.from({length:h},()=>Array(w));for(let x=0;x<w;x++)for(let y=0;y<h;y++)o[y][w-1-x]=q[x][y];return o}; // clockwise
+const dims=q=>[q.length,q[0].length];
+const CATALOG=[
+  {id:'scythe',name:'Super Scythe',res:'sun',rows:['##','#.'],cur:'coin',price:1200,dur:4},
+  {id:'seeds',name:'Cucumber Seeds',res:'nutrient',rows:['#','#'],cur:'coin',price:180,dur:3},
+  {id:'gloves',name:'Lucky Gloves',res:'water',rows:['#'],cur:'gem',price:100,dur:5},
+  {id:'can',name:'Watering Can',res:'water',rows:['##','##'],cur:'coin',price:300,dur:6},
+  {id:'hoe',name:'Long Hoe',res:'nutrient',rows:['#','#','#'],cur:'coin',price:500,dur:5},
+  {id:'tractor',name:'Mini Tractor',res:'sun',rows:['###','###'],cur:'gem',price:150,dur:7},
+];
+// what each plant stage needs: [resource, amount]. An item only helps slots that currently need the resource it provides.
+const REQ=[
+  [['nutrient',1],['water',2],['sun',1],['water',2],['nutrient',2]], // cucumber
+  [['sun',1],['water',1],['nutrient',2],['sun',2],['water',2]],      // wheat
+  [['water',1],['nutrient',1],['sun',2],['water',2],['nutrient',2]]  // corn
+];
+const RIMG={water:'rWater',nutrient:'rNut',sun:'rSun'};
+const S={coins:92,gems:100,lvl:1,lvlDur:60,lvlLeft:60,uid:1,items:[],offers:[],locked:new Set(['6,0','6,1','0,4']),
+  crops:[{k:'cuc',price:12,have:0,need:5,tier:1},{k:'wheat',price:10,have:0,need:6,tier:1},{k:'corn',price:15,have:0,need:0,tier:1}],
+  farm:Array.from({length:25},(_,i)=>({lvl:0,got:0,type:i%3}))};
+const toast=m=>{const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),1500)};
+
+/* ---------- placement (mirrors StoringSpace) ---------- */
+const cellsOf=(q,px,py)=>{const o=[];q.forEach((c,x)=>c.forEach((v,y)=>v&&o.push([px+x,py+y])));return o};
+function canPlace(q,px,py,ignore){
+  const occ={};S.items.forEach(it=>{if(it!==ignore)cellsOf(it.q,it.x,it.y).forEach(([x,y])=>occ[x+','+y]=1)});
+  return cellsOf(q,px,py).every(([x,y])=>x>=0&&y>=0&&x<COLS&&y<ROWS&&!S.locked.has(x+','+y)&&!occ[x+','+y])}
+function findSpot(q){let r=q;for(let k=0;k<4;k++){const[w,h]=dims(r);
+  for(let y=0;y<=ROWS-h;y++)for(let x=0;x<=COLS-w;x++)if(canPlace(r,x,y))return{q:r,x,y,rot:k};r=rotate(r)}return null}
+
+/* ---------- render ---------- */
+function drawCells(){const g=$('cells');g.innerHTML='';
+  for(let r=0;r<ROWS;r++)for(let x=0;x<COLS;x++){const d=document.createElement('div');d.className='cell'+(S.locked.has(x+','+(ROWS-1-r))?' lock':'');g.appendChild(d)}}
+const span=n=>`calc(${n}*var(--c) + ${n-1}*var(--g))`;
+// countdown: dark veil recedes upward, so the lit area grows from the bottom; computed per occupied cell so L shapes work
+function setCd(it){it.cds.forEach(({k,r})=>{const lit=Math.min(1,Math.max(0,it.prog*it.H-(it.H-1-r)));k.style.transform=`scaleY(${1-lit})`})}
+function drawItems(){const L=$('items');L.innerHTML='';
+  S.items.forEach(it=>{const[w,h]=dims(it.q),[w0,h0]=dims(shape(it.def.rows));
+    const el=document.createElement('div');el.className='item';
+    el.style.cssText=`grid-column:${it.x+1}/span ${w};grid-row:${ROWS-(it.y+h)+1}/span ${h};grid-template:repeat(${h},var(--c))/repeat(${w},var(--c))`;
+    for(let r=0;r<h;r++)for(let c=0;c<w;c++){const d=document.createElement('div');
+      if(it.q[c][h-1-r]){d.className='p';d.addEventListener('pointerdown',e=>startDrag(e,it,el))}else d.className='e';el.appendChild(d)}
+    // picture drawn at its ORIGINAL size (w0×h0 cells) then rotated, so it always covers the footprint exactly
+    const im=document.createElement('img');im.src=ART[it.def.id];im.alt=it.def.name;
+    im.style.cssText=`width:${span(w0)};height:${span(h0)};transform:translate(-50%,-50%) rotate(${it.rot*90}deg)`;el.appendChild(im);
+    const cg=document.createElement('div');cg.className='cdg';cg.style.gridTemplate=`repeat(${h},1fr)/repeat(${w},1fr)`;it.cds=[];
+    for(let r=0;r<h;r++)for(let c=0;c<w;c++){const d=document.createElement('div');if(it.q[c][h-1-r]){const k=document.createElement('div');k.className='cd';d.appendChild(k);it.cds.push({k,r})}cg.appendChild(d)}
+    el.appendChild(cg);it.el=el;it.H=h;setCd(it);
+    L.appendChild(el)});
+}
+function drawFarm(){const f=$('farm');
+  if(!f.children.length)S.farm.forEach(()=>{const d=document.createElement('div');d.className='fs';d.innerHTML='<span class="pic"></span><small></small>';f.appendChild(d)});
+  S.farm.forEach((s,i)=>{const k=S.crops[s.type].k,l=s.lvl;
+    const pic=l===0?'':l===1?`<img src="${ART.sprout}" alt="">`:l===2?`<img src="${ART[k]}" alt="">`:l===3?`<div class="two"><img src="${ART[k]}" alt=""><img src="${ART[k]}" alt=""></div>`:`<img src="${l===4?ART.sun:ART.tractorI}" alt="">`;
+    const e=f.children[i];e.querySelector('.pic').innerHTML=pic;e.querySelector('small').innerHTML=l>=MAXLV?'<b>MAX</b>':`<img class="ri" src="${ART[RIMG[REQ[s.type][l][0]]]}" alt="">${s.got}/${REQ[s.type][l][1]}`})}
+function drawHud(){
+  $('coins').textContent=S.coins.toLocaleString();$('gems').textContent=S.gems;
+  drawLv();
+  // required crops first; crops the player owns but the order doesn't need go last, shown as a plain count
+  const list=S.crops.filter(c=>c.need>0).concat(S.crops.filter(c=>!c.need&&c.have>0));
+  $('chips').innerHTML=list.map(c=>{const grow=S.farm.filter(s=>S.crops[s.type]===c&&s.lvl>0).length,req=c.need>0;
+    return `<div class="chip${req&&c.have>=c.need?' done':''}" data-i="${S.crops.indexOf(c)}"><div class="ci"><img src="${ART[c.k]}" alt=""><span class="stock">${grow}</span></div>${req?`<b class="tier">${c.tier}<i>★</i></b>`:''}<span class="cnt">${req?Math.min(c.have,c.need)+'/'+c.need:c.have}</span><span class="price">🪙${c.price}</span></div>`}).join('')}
+const cellsHtml=q=>{const[w,h]=dims(q);let s='';for(let r=0;r<h;r++)for(let c=0;c<w;c++)s+=q[c][h-1-r]?'<i class="fc"></i>':'<i></i>';return s};
+function ghost(def,q){const[w,h]=dims(q),el=document.createElement('div');el.className='item drag';
+  el.style.cssText=`position:fixed;grid-template:repeat(${h},var(--c))/repeat(${w},var(--c))`;
+  for(let r=0;r<h;r++)for(let c=0;c<w;c++){const d=document.createElement('div');d.className=q[c][h-1-r]?'p':'e';el.appendChild(d)}
+  const im=document.createElement('img');im.src=ART[def.id];im.alt='';im.style.cssText=`width:${span(w)};height:${span(h)};transform:translate(-50%,-50%)`;el.appendChild(im);return el}
+// drag a bought item out of its shop placeholder into the inventory
+function startShopDrag(e,o){e.preventDefault();
+  const def=o.def,q=shape(def.rows),[w,h]=dims(q),g=ghost(def,q);document.body.appendChild(g);
+  const k=$('cells').children,c0=k[0].getBoundingClientRect(),sx=k[1].getBoundingClientRect().left-c0.left,sy=k[COLS].getBoundingClientRect().top-c0.top;
+  const gw=w*sx-(sx-c0.width),gh=h*sy-(sy-c0.height);let nx=0,ny=0,ok=false;
+  const tgt=e.currentTarget;tgt.setPointerCapture(e.pointerId);
+  const place=ev=>{const l=ev.clientX-gw/2,t=ev.clientY-gh/2;g.style.left=l+'px';g.style.top=t+'px';
+    nx=Math.round((l-c0.left)/sx);ny=ROWS-Math.round((t-c0.top)/sy)-h;ok=canPlace(q,nx,ny);g.classList.toggle('ok',ok);g.classList.toggle('bad',!ok)};
+  const up=ev=>{['pointermove','pointerup','pointercancel'].forEach((n,i)=>tgt.removeEventListener(n,[place,up,up][i]));g.remove();
+    if(ok&&ev.type==='pointerup'){S.items.push({uid:S.uid++,def,q,x:nx,y:ny,rot:0,prog:0});o.held=false;o.sold=true;drawItems();drawShop();toast(def.name+' placed & active')}};
+  tgt.addEventListener('pointermove',place);tgt.addEventListener('pointerup',up);tgt.addEventListener('pointercancel',up);place(e)}
+function drawShop(){const s=$('shop');s.innerHTML='';
+  S.offers.forEach((o,i)=>{const d=o.def,[w,h]=dims(shape(d.rows)),el=document.createElement('div');el.className='offer'+(o.sold?' sold':'')+(o.held?' held':'');
+    el.innerHTML=`<h4>${d.name}</h4><div class="pic"><div class="fp" style="--u:${Math.min(26,Math.floor(44/h))}px;grid-template:repeat(${h},var(--u))/repeat(${w},var(--u))">${cellsHtml(shape(d.rows))}<img src="${ART[d.id]}" alt=""></div></div><div class="pr"><img class="ri" src="${ART[RIMG[d.res]]}" alt=""> ${w}×${h} · ${d.cur==='gem'?'💎':'🪙'}${d.price.toLocaleString()}</div>`;
+    const b=document.createElement('button');b.className='btn';b.textContent=o.sold?'SOLD':o.held?'DRAG':'BUY';b.disabled=o.sold||o.held;b.onclick=()=>buy(i);el.appendChild(b);s.appendChild(el);if(o.held)el.querySelector('.fp').addEventListener('pointerdown',e=>startShopDrag(e,o))})}
+
+/* ---------- actions ---------- */
+function addItem(def){const sp=findSpot(shape(def.rows));if(!sp)return false;S.items.push({uid:S.uid++,def,q:sp.q,x:sp.x,y:sp.y,rot:sp.rot,prog:0});return true}
+function buy(i){const o=S.offers[i],d=o.def,k=d.cur==='gem'?'gems':'coins';
+  if(S[k]<d.price)return toast('Not enough '+k);
+  S[k]-=d.price;o.held=true;drawShop();drawHud();toast('Drag '+d.name+' into your inventory')}
+function rollShop(){S.offers=[...CATALOG].sort(()=>Math.random()-.5).slice(0,3).map(def=>({def,sold:false}));drawShop()}
+$('reroll').onclick=()=>{if(S.gems<10)return toast('Need 10 gems');S.gems-=10;
+  let back=0;S.offers.forEach(o=>{if(o.held){S[o.def.cur==='gem'?'gems':'coins']+=o.def.price;back++}}); // unplaced purchases are fully refunded
+  rollShop();drawHud();if(back)toast('Refunded '+back+' unplaced item'+(back>1?'s':''))};
+
+/* ---------- drag / tap-to-rotate ---------- */
+function startDrag(e,it,el){e.preventDefault();
+  const sx=e.clientX,sy=e.clientY,rect=$('cells').getBoundingClientRect(),stepX=rect.width/COLS,stepY=rect.height/ROWS;
+  let moved=false,nx=it.x,ny=it.y,ok=true;const tgt=e.currentTarget;tgt.setPointerCapture(e.pointerId);
+  const mv=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;
+    if(!moved&&Math.hypot(dx,dy)>6){moved=true;el.classList.add('drag')}
+    if(!moved)return;el.style.transform=`translate(${dx}px,${dy}px)`;
+    nx=it.x+Math.round(dx/stepX);ny=it.y-Math.round(dy/stepY);
+    ok=canPlace(it.q,nx,ny,it);el.classList.toggle('ok',ok);el.classList.toggle('bad',!ok)};
+  const up=ev=>{['pointermove','pointerup','pointercancel'].forEach((n,i)=>tgt.removeEventListener(n,[mv,up,up][i]));
+    if(!moved){const r=rotate(it.q);let done=false;
+      for(const[ox,oy]of[[0,0],[-1,0],[0,-1],[-1,-1],[-2,0],[0,-2]]){const x=it.x+ox,y=it.y+oy;
+        if(canPlace(r,x,y,it)){it.q=r;it.x=x;it.y=y;it.rot=(it.rot+1)%4;done=true;break}}
+      drawItems();if(!done){const n=$('items').children[S.items.indexOf(it)];n&&n.classList.add('shake');toast('Not enough room to rotate')}return}
+    if(ok){it.x=nx;it.y=ny}drawItems();
+    // dropped outside the board → offer to sell
+    if(!ok&&ev.type==='pointerup'){const b=$('board').getBoundingClientRect();if(ev.clientX<b.left||ev.clientX>b.right||ev.clientY<b.top||ev.clientY>b.bottom)askSell(it)}};
+  tgt.addEventListener('pointermove',mv);tgt.addEventListener('pointerup',up);tgt.addEventListener('pointercancel',up)}
+
+/* ---------- tick: placed items work the farm ---------- */
+function applyEffect(it){
+  const pool=S.farm.filter(s=>s.lvl<MAXLV&&REQ[s.type][s.lvl][0]===it.def.res);if(!pool.length)return;
+  const s=pool[Math.random()*pool.length|0];s.got++;
+  if(s.got>=REQ[s.type][s.lvl][1]){s.got=0;s.lvl++;if(s.lvl>=2)S.crops[s.type].have++;
+    if(s.lvl>=MAXLV)setTimeout(()=>{s.lvl=0;drawFarm();drawHud()},1200)}
+  
+  const req=S.crops.filter(c=>c.need>0);if(req.every(c=>c.have>=c.need)){req.forEach(c=>{c.have-=c.need;c.need+=2;c.tier++});const corn=S.crops[2];if(!corn.need)corn.need=4;S.coins+=500;S.gems+=5;toast('Order complete! +500🪙 +5💎')}
+  drawFarm();drawHud();
+  // short animation: the item pops up inside the target slot, then fades; the item itself scales (not the slot)
+  const slot=$('farm').children[S.farm.indexOf(s)],im=document.createElement('img');im.className='use';im.src=ART[it.def.id];im.alt='';slot.appendChild(im);
+  im.animate([{opacity:0,transform:'scale(.3) rotate(-35deg)'},{opacity:1,transform:'scale(1.05) rotate(0)',offset:.3},{opacity:1,transform:'scale(1) rotate(14deg)',offset:.65},{opacity:0,transform:'scale(.9) rotate(20deg)'}],{duration:750,easing:'ease-out'}).onfinish=()=>im.remove();
+  if(it.el)it.el.animate([{scale:1},{scale:1.2},{scale:1}],{duration:320,easing:'ease-out'})}
+setInterval(()=>S.items.forEach(it=>{it.prog+=0.1/it.def.dur;if(it.prog>=1){it.prog=0;applyEffect(it)}if(it.cds)setCd(it)}),100);
+
+const fmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+function drawLv(){$('lv').textContent=S.lvl;$('xp').style.width=(100-S.lvlLeft/S.lvlDur*100)+'%';$('xpt').textContent=fmt(S.lvlLeft)}
+// level progress is a countdown: when it hits 0 you level up and the next level takes longer
+setInterval(()=>{S.lvlLeft--;if(S.lvlLeft<=0){S.lvl++;S.lvlDur=Math.round(S.lvlDur*1.25);S.lvlLeft=S.lvlDur;toast('Level up!')}drawLv()},1000);
+let sellIt=null;
+function askSell(it){sellIt=it;const d=it.def;$('sellimg').src=ART[d.id];$('sellq').textContent=`Sell ${d.name} for ${Math.floor(d.price/2).toLocaleString()} ${d.cur==='gem'?'gems':'coins'}? (50% of its price)`;$('sell').hidden=false}
+$('sellno').onclick=()=>{$('sell').hidden=true;sellIt=null};
+$('sellyes').onclick=()=>{const it=sellIt;if(!it)return;S[it.def.cur==='gem'?'gems':'coins']+=Math.floor(it.def.price/2);S.items=S.items.filter(x=>x!==it);$('sell').hidden=true;sellIt=null;drawItems();drawHud();toast('Item sold')};
+$('gems').parentElement.style.cursor='pointer';$('gems').parentElement.onclick=()=>{S.gems+=100;drawHud();toast('+100 gems')};
+// tap a crop pill to sell one; tap the cash pill for +1000 coins
+$('chips').onclick=e=>{const ch=e.target.closest('.chip');if(!ch)return;const c=S.crops[+ch.dataset.i];
+  if(c.have<1)return toast('Nothing to sell');c.have--;S.coins+=c.price;drawHud();toast('Sold 1 for '+c.price)};
+document.querySelector('.cash').onclick=()=>{S.coins+=1000;drawHud();toast('+1000 coins')};
+drawCells();addItem(CATALOG[0]);addItem(CATALOG[1]);addItem(CATALOG[2]);rollShop();drawItems();drawFarm();drawHud();
+</script>
+</body>
+</html>

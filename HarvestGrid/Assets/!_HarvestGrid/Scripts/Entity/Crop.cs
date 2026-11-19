@@ -1,18 +1,26 @@
-﻿using System;
+using GameJson;
+using System;
 using UnityEngine;
 
-
 [Serializable]
-public class Crop : ICloneable<Crop>
+public class Crop : StateEntity, ICloneable<Crop>
 {
+    [ContextData]
     [SerializeField]
     private string cropID;
+
+    [ContextData]
     [SerializeField]
     private string name;
+
     [SerializeField]
     private Sprite icon;
+
+    [ContextData]
     [SerializeField]
     private int stars;
+
+    [ContextData]
     [SerializeField]
     private int baseSellPrice;
 
@@ -26,6 +34,7 @@ public class Crop : ICloneable<Crop>
     {
         if (original != null)
         {
+            this.id = original.id;
             this.cropID = original.cropID;
             this.name = original.name;
             this.icon = original.icon;

@@ -1,4 +1,5 @@
-﻿using System;
+using GameJson;
+using System;
 using UnityEngine;
 
 [Serializable]
@@ -6,6 +7,7 @@ using UnityEngine;
 public class AddPlantUse : ItemUse
 {
     public override ItemUseType UseType => ItemUseType.AddPlant;
+    [ContextData]
     [SerializeField]
     private Plant plantToAdd;
 
@@ -25,15 +27,4 @@ public class AddPlantUse : ItemUse
     {
         FarmMono.Instance.AddPlant(plantToAdd.Clone(), ctx.TargetSlot);
     }
-
-    //public override ItemUse Clone()
-    //{
-    //    var clone = (AddPlantUse)base.Clone();
-
-    //    // Deep clone fields that need independent data
-    //    clone.plantToAdd = plantToAdd.Clone();
-
-    //    return clone;
-    //}
-
 }
