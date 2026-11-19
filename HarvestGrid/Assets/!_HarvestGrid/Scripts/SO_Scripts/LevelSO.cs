@@ -1,105 +1,155 @@
+using GameJson;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ---- Legacy list entries (only used to migrate data saved by the previous version of this tool) ----
+/// <summary>
+/// Crop requirement for a level. Holds only ID string, stars, and amount.
+/// Inherits StateEntity and uses [ContextData] for clean AI JSON serialization.
+/// </summary>
 [Serializable]
-public class CropRequirement
+public class CropRequirement : StateEntity
 {
-    public CropSO cropSO;
-    [Range(1, 5)] public int stars = 1;
-    [Min(1)] public int amount = 1;
+    [ContextData] [Range(1, 5)] public int stars = 1;
+    [ContextData] [Min(1)] public int amount = 1;
+
+    public string CropID => id;
+
+    public CropRequirement() : base()
+    {
+    }
+
+    public CropRequirement(string cropId, int stars = 1, int amount = 1) : base(cropId)
+    {
+        this.stars = Mathf.Clamp(stars, 1, 5);
+        this.amount = Mathf.Max(1, amount);
+    }
 }
 
+/// <summary>
+/// Item chance entry for shop pool. Holds only ID string and chance weight.
+/// Inherits StateEntity and uses [ContextData] for clean AI JSON serialization.
+/// </summary>
 [Serializable]
-public class ItemChanceEntry
+public class ItemChanceEntry : StateEntity
 {
-    public ItemPrototype item;
-    [Min(0f)] public float chance = 1f;
+    [ContextData] [Min(0f)] public float chance = 1f;
+
+    public string ItemID => id;
+
+    public ItemChanceEntry() : base()
+    {
+    }
+
+    public ItemChanceEntry(string itemId, float chance = 1f) : base(itemId)
+    {
+        this.chance = Mathf.Max(0f, chance);
+    }
 }
 
 [CreateAssetMenu(fileName = "LevelSO", menuName = "Scriptable Objects/LevelSO")]
 public class LevelSO : ScriptableObject
 {
-    public int levelID;
-    public float timeBudget;
-    public int money;
+    [ContextData] public int levelID;
+    [ContextData] public float timeBudget = 120f;
+    [ContextData] public int money = 50;
     public FarmMono farmMono;
 
     public StoringSpaceSO storingSpaceSO;
 
-    // Crop have star inside it. Same crop id but different crop's star is still different.
-    // Needs Unity 6.6+ (built-in Dictionary serialization, opt-in with [SerializeField]).
-    // NOTE: Crop must override Equals/GetHashCode (CropID + Stars) so lookups still work after loading.
+    // Clean data for AI & serialization (ID strings only, zero Unity object references)
+    [ContextData] [SerializeField] public List<CropRequirement> requiredCrops = new();
+    [ContextData] [SerializeField] public List<ItemChanceEntry> itemPool = new();
+
+    // Runtime dictionaries kept for compatibility with Shop, GoalItemSuggestionManager, etc.
     [SerializeField] public Dictionary<Crop, int> requiringCrops = new();
     [SerializeField] public Dictionary<ItemPrototype, float> itemAndChancePool = new();
 
-    // ---- Legacy data, kept hidden so old assets can be migrated. Empty after migration. ----
-    [SerializeField, HideInInspector] private List<CropRequirement> requiredCrops = new();
-    [SerializeField, HideInInspector] private List<ItemChanceEntry> itemPool = new();
-
     public IReadOnlyList<CropRequirement> RequiredCrops => requiredCrops;
+    public IReadOnlyList<ItemChanceEntry> ItemPool => itemPool;
 
-    // ------------------------------------------------------------ null safety
+    // ------------------------------------------------------------ null safety & initialization
     public void EnsureInitialized()
     {
-        requiringCrops ??= new Dictionary<Crop, int>();
-        itemAndChancePool ??= new Dictionary<ItemPrototype, float>();
         requiredCrops ??= new List<CropRequirement>();
         itemPool ??= new List<ItemChanceEntry>();
+        requiringCrops ??= new Dictionary<Crop, int>();
+        itemAndChancePool ??= new Dictionary<ItemPrototype, float>();
     }
 
     private void OnEnable() => EnsureInitialized();
 
-    // ------------------------------------------------------------ add helpers (create the dictionaries when null)
-    public void AddRequiredCrop(CropSO cropSO, int stars = 1, int amount = 1)
+    // ------------------------------------------------------------ Add helpers
+    public void AddRequiredCrop(string cropId, int stars = 1, int amount = 1)
     {
-        if (cropSO == null || cropSO.crop == null) return;
+        if (string.IsNullOrEmpty(cropId)) return;
         EnsureInitialized();
 
         stars = Mathf.Clamp(stars, 1, 5);
         amount = Mathf.Max(1, amount);
 
-        // merge by CropID + Stars, independent of Equals/GetHashCode
-        foreach (var key in requiringCrops.Keys)
+        var existing = requiredCrops.Find(r => r.CropID == cropId && r.stars == stars);
+        if (existing != null)
         {
-            if (key != null && key.CropID == cropSO.crop.CropID && key.Stars == stars)
-            {
-                requiringCrops[key] += amount;
-                return;
-            }
+            existing.amount += amount;
+        }
+        else
+        {
+            requiredCrops.Add(new CropRequirement(cropId, stars, amount));
+        }
+    }
+
+    public void AddItemChance(string itemId, float chance = 1f)
+    {
+        if (string.IsNullOrEmpty(itemId)) return;
+        EnsureInitialized();
+
+        var existing = itemPool.Find(e => e.ItemID == itemId);
+        if (existing != null)
+        {
+            existing.chance += Mathf.Max(0f, chance);
+        }
+        else
+        {
+            itemPool.Add(new ItemChanceEntry(itemId, chance));
+        }
+    }
+
+    // ------------------------------------------------------------ Inspector context menu actions
+    [ContextMenu("Debug AI Clean JSON")]
+    public void DebugAICleanJson()
+    {
+        EnsureInitialized();
+        string json = CleanJson.SimplifyObject(this, CleanJson.Options.ForAI());
+        Debug.Log($"[LevelSO AI Clean JSON (Level {levelID})]:\n{json}");
+    }
+
+    [ContextMenu("Sync Clean Data From Runtime Dictionaries")]
+    public void SyncFromRuntimeDictionaries()
+    {
+        EnsureInitialized();
+        requiredCrops.Clear();
+        foreach (var kvp in requiringCrops)
+        {
+            if (kvp.Key == null || string.IsNullOrEmpty(kvp.Key.CropID)) continue;
+            AddRequiredCrop(kvp.Key.CropID, kvp.Key.Stars, kvp.Value);
         }
 
-        Crop crop = cropSO.crop.Clone();
-        crop.SetStars(stars);
-        requiringCrops[crop] = amount;
+        itemPool.Clear();
+        foreach (var kvp in itemAndChancePool)
+        {
+            if (kvp.Key == null || kvp.Key.item == null || string.IsNullOrEmpty(kvp.Key.item.Id)) continue;
+            AddItemChance(kvp.Key.item.Id, kvp.Value);
+        }
     }
 
-    public void AddItem(ItemPrototype item, float chance = 1f)
-    {
-        if (item == null) return;
-        EnsureInitialized();
-
-        itemAndChancePool.TryGetValue(item, out float current);
-        itemAndChancePool[item] = current + Mathf.Max(0f, chance);
-    }
-
-    // ------------------------------------------------------------ legacy migration
+    /// <summary>Moves legacy data from dictionaries into clean lists if clean lists are empty.</summary>
     public bool HasLegacyData =>
-        (requiredCrops != null && requiredCrops.Count > 0) || (itemPool != null && itemPool.Count > 0);
+        (requiredCrops == null || requiredCrops.Count == 0) &&
+        ((requiringCrops != null && requiringCrops.Count > 0) || (itemAndChancePool != null && itemAndChancePool.Count > 0));
 
-    /// <summary>Moves data saved by the old list-based version into the dictionaries.</summary>
     public void MigrateLegacy()
     {
-        EnsureInitialized();
-
-        foreach (var req in requiredCrops)
-            if (req != null) AddRequiredCrop(req.cropSO, req.stars, req.amount);
-
-        foreach (var entry in itemPool)
-            if (entry != null) AddItem(entry.item, entry.chance);
-
-        requiredCrops.Clear();
-        itemPool.Clear();
+        SyncFromRuntimeDictionaries();
     }
 }

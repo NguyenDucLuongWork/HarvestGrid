@@ -1,0 +1,27 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="offer-card" class="offer-card">
+        <!-- Item Name -->
+        <ui:Label name="lbl-name" text="Super Scythe" class="offer-title" />
+
+        <!-- Footprint Preview with Icon -->
+        <ui:VisualElement name="offer-preview" class="offer-preview">
+            <ui:VisualElement name="fp-preview-grid" class="fp-preview-grid">
+                <!-- Dynamically populated cells -->
+            </ui:VisualElement>
+            <ui:VisualElement class="offer-icon-wrap">
+                <ui:Label name="lbl-icon" text="🌾" class="offer-icon-text" />
+                <ui:Image name="img-icon" class="offer-icon-image" scale-mode="ScaleToFit">
+                    <Bindings>
+                        <ui:DataBinding property="sprite" data-source-path="iconSprite" binding-mode="ToTarget" />
+                    </Bindings>
+                </ui:Image>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- Price & Size Info -->
+        <ui:Label name="lbl-info" text="☀️ 2×2 · 🪙1,200" class="offer-info" />
+
+        <!-- Buy Action Button -->
+        <ui:Button name="btn-buy" text="BUY" class="offer-buy-btn" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,4 +1,5 @@
-﻿using System;
+using GameJson;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,9 +14,9 @@ public class StoringSpace : ICloneable<StoringSpace>, ISerializationCallbackRece
     // We serialize a flat 1D array + width/height instead, and
     // rebuild the 2D array at runtime via ISerializationCallbackReceiver.
 
-    [SerializeField] private int width;
-    [SerializeField] private int height;
-    [SerializeField] private StoringCellType[] cellsFlat;
+    [ContextData] [SerializeField] private int width;
+    [ContextData] [SerializeField] private int height;
+    [ContextData] [SerializeField] private StoringCellType[] cellsFlat;
 
     // Runtime-only 2D view, rebuilt from cellsFlat after deserialization.
     private StoringCellType[,] cells;

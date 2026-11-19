@@ -1,4 +1,5 @@
-﻿using System;
+using GameJson;
+using System;
 using UnityEngine;
 
 [Serializable]
@@ -9,18 +10,22 @@ public class ProgressTimer : ICloneable<ProgressTimer>
     public event Action<float> OnProgressChanged; //Percent
 
     //Config
+    [ContextData]
     [SerializeField]
     private float duration;
     [SerializeField]
     private float finishedHoldDuration;
     [SerializeField]
     private bool playOnStart;
+    [ContextData]
     [SerializeField]
     private bool loop;
 
     //Status (serialized -> safe to persist for save/load)
+    [ContextData]
     [SerializeField]
     private float progress;
+    [ContextData]
     [SerializeField]
     private bool isPlaying;
     [SerializeField]

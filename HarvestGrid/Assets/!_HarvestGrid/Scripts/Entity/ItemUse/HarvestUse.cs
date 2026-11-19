@@ -1,3 +1,4 @@
+using GameJson;
 using System;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ using UnityEngine;
 public class HarvestUse : ItemUse
 {
     public override ItemUseType UseType => ItemUseType.Harvest;
+    [ContextData]
     [SerializeField]
     private float effective;
 
@@ -20,12 +22,8 @@ public class HarvestUse : ItemUse
         this.effective = original.Effective;
     }
 
-    public override void Apply(ItemUseContext ctx) {
+    public override void Apply(ItemUseContext ctx)
+    {
         FarmMono.Instance.HarvestRandom(ctx.TargetSlot, effective);
     }
-
-    //public override ItemUse Clone()
-    //{
-    //    return new HarvestUse(this);
-    //}
 }

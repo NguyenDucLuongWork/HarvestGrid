@@ -1,16 +1,20 @@
-﻿using System;
+using GameJson;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
 public class Inventory : ICloneable<Inventory>
 {
+    [ContextData]
     [SerializeField]
     private int money;
 
+    [ContextData]
     [SerializeField]
     private Dictionary<Crop, int> crops = new();
 
+    [ContextData]
     [SerializeField]
     private List<StoredObject> storedItems = new();
 

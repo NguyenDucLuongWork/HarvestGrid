@@ -1,3 +1,4 @@
+using GameJson;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -6,18 +7,24 @@ using System.Collections.Generic;
 public class Item : ICloneable<Item>
 {
     // Attibute
+    [ContextData]
     [SerializeField]
     private string id;
+    [ContextData]
     [SerializeField]
     private string name;
     [SerializeField]
     private Sprite icon;
+    [ContextData]
     [SerializeField]
     private ItemRarity rarity;
+    [ContextData]
     [SerializeReference] 
     private List<ItemUse> uses;
+    [ContextData]
     [SerializeField]
     private int price;
+    [ContextData]
     [SerializeField]
     private Footprint footprint;
 
@@ -31,6 +38,7 @@ public class Item : ICloneable<Item>
     public Footprint Footprint => footprint;
 
     //References
+    [ContextData]
     [SerializeField]
     private ProgressTimer progressTimer;
     public ProgressTimer ProgressTimer => progressTimer;

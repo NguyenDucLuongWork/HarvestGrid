@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="UIGameplayRootPanel.uss" />
+    <ui:VisualElement name="gameplay-app-root" class="gameplay-app">
+        <!-- Scrollable / Flex Column matching Farm Inventory.html -->
+        <ui:ScrollView name="gameplay-scroll" class="gameplay-scroll" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden">
+            <ui:VisualElement name="header-slot" class="panel-slot">
+                <ui:Instance template="HeaderPanel/UIGameplayHeaderPanel" name="inst-header" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="farm-slot" class="panel-slot">
+                <ui:Instance template="FarmPanel/UIFarmPanel" name="inst-farm" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="shop-slot" class="panel-slot">
+                <ui:Instance template="ShopPanel/UIGameplayShopPanel" name="inst-shop" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="storing-slot" class="panel-slot">
+                <ui:Instance template="StoringSpacePanel/UIStoringSpacePanel" name="inst-storing" />
+            </ui:VisualElement>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

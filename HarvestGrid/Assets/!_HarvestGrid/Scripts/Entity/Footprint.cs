@@ -1,4 +1,5 @@
-﻿using System;
+using GameJson;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,9 +14,9 @@ public class Footprint : ICloneable<Footprint>, ISerializationCallbackReceiver
     // We serialize a flat 1D array + width/height instead, and
     // rebuild the 2D array at runtime via ISerializationCallbackReceiver.
 
-    [SerializeField] private int width;
-    [SerializeField] private int height;
-    [SerializeField] private bool[] requiringFlat;
+    [ContextData] [SerializeField] private int width;
+    [ContextData] [SerializeField] private int height;
+    [ContextData] [SerializeField] private bool[] requiringFlat;
 
     // Runtime-only 2D view, rebuilt from requiringFlat after deserialization.
     private bool[,] requiring;

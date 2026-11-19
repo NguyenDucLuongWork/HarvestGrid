@@ -126,6 +126,7 @@ MonoBehaviour:
         nextStageRequirement: []
         stages: []
         crop:
+          id: 
           cropID: 
           name: 
           icon: {fileID: 0}

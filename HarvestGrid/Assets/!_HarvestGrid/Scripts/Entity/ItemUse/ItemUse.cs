@@ -1,4 +1,5 @@
-﻿using System;
+using GameJson;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -20,18 +21,23 @@ public abstract class ItemUse : ICloneable<ItemUse>
 [Serializable]
 public class ItemUseContext
 {
+    [ContextData]
     public Item Item;
+    [ContextData]
     [SerializeReference]
     public ItemUse Use;          // the single use this effect applies
+    [ContextData]
     public FarmSlot TargetSlot;
     public GameObject Actor;
-    
 }
 
 [Serializable]
 public class ItemEffect
 {
+    [ContextData]
     public ItemUseContext useContext;
+    [ContextData]
     public float remainingTime;
+    [ContextData]
     public string farmSlotID;
 }
