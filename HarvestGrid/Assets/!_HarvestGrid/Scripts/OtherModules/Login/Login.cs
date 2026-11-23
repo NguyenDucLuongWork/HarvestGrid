@@ -1,10 +1,11 @@
 using System;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using HarvestGrid.Managers;
-using HarvestGrid.Managers.Auth; // Dùng IAuthService và AuthResult mới
+using HarvestGrid.Managers.Auth;
 
 namespace HarvestGrid.UI
 {
@@ -13,41 +14,165 @@ namespace HarvestGrid.UI
         [Header("Navigation")]
         [SerializeField] private string nextSceneName = "HomeScene";
 
-        [Header("UI References")]
+        [Header("Panels")]
+        [Tooltip("Panel chứa form đăng nhập (mặc định hiển thị)")]
+        [SerializeField] private GameObject loginPanel;
+        [Tooltip("Panel chứa form đăng ký (mặc định ẩn)")]
+        [SerializeField] private GameObject registerPanel;
+
+        [Header("Login UI References")]
         [SerializeField] private TMP_InputField emailInput;
         [SerializeField] private TMP_InputField passwordInput;
         [SerializeField] private Button loginButton;
+        [Tooltip("Nút chuyển sang giao diện đăng ký")]
+        [SerializeField] private Button openRegisterButton;
         [SerializeField] private TextMeshProUGUI messageText;
         [SerializeField] private GameObject loadingIndicator;
 
+        [Header("Register UI References")]
+        [SerializeField] private TMP_InputField regUsernameInput;
+        [SerializeField] private TMP_InputField regPasswordInput;
+        [SerializeField] private TMP_InputField regConfirmPasswordInput;
+        [SerializeField] private Button submitRegisterButton;
+        [SerializeField] private Button backToLoginButton;
+        [SerializeField] private TextMeshProUGUI regMessageText;
+        [SerializeField] private GameObject regLoadingIndicator;
+
+        private readonly Color successColor = new Color(0.2f, 0.8f, 0.2f);
+        private readonly Color errorColor = new Color(0.95f, 0.3f, 0.3f);
+
         private bool isSubmitting;
         private bool hasRuntimeLoginListener;
+        private bool hasRuntimeOpenRegisterListener;
+        private bool hasRuntimeSubmitRegisterListener;
+        private bool hasRuntimeBackToLoginListener;
         private bool isDestroyed;
 
         private void Awake()
         {
-            if (messageText == null) CreateMessageText();
+            // Thiết lập Password ContentType bảo mật
+            if (passwordInput != null)
+                passwordInput.contentType = TMP_InputField.ContentType.Password;
 
-            if (loginButton.onClick.GetPersistentEventCount() == 0)
+            if (regPasswordInput != null)
+                regPasswordInput.contentType = TMP_InputField.ContentType.Password;
+
+            if (regConfirmPasswordInput != null)
+                regConfirmPasswordInput.contentType = TMP_InputField.ContentType.Password;
+
+            // Đăng ký sự kiện Login
+            if (loginButton != null && loginButton.onClick.GetPersistentEventCount() == 0)
             {
                 loginButton.onClick.AddListener(Login);
                 hasRuntimeLoginListener = true;
             }
 
-            passwordInput.onSubmit.AddListener(OnPasswordSubmitted);
-            SetSubmitting(false);
-            ShowMessage(string.Empty, Color.white);
+            if (passwordInput != null)
+                passwordInput.onSubmit.AddListener(OnPasswordSubmitted);
+
+            // Đăng ký sự kiện Register Panel
+            if (openRegisterButton != null && openRegisterButton.onClick.GetPersistentEventCount() == 0)
+            {
+                openRegisterButton.onClick.AddListener(OpenRegisterPanel);
+                hasRuntimeOpenRegisterListener = true;
+            }
+
+            if (backToLoginButton != null && backToLoginButton.onClick.GetPersistentEventCount() == 0)
+            {
+                backToLoginButton.onClick.AddListener(OpenLoginPanel);
+                hasRuntimeBackToLoginListener = true;
+            }
+
+            if (submitRegisterButton != null && submitRegisterButton.onClick.GetPersistentEventCount() == 0)
+            {
+                submitRegisterButton.onClick.AddListener(Register);
+                hasRuntimeSubmitRegisterListener = true;
+            }
+
+            if (regConfirmPasswordInput != null)
+                regConfirmPasswordInput.onSubmit.AddListener(OnRegConfirmPasswordSubmitted);
+
+            // Trạng thái ban đầu
+            SetLoginSubmitting(false);
+            SetRegisterSubmitting(false);
+            OpenLoginPanel();
+            ShowLoginMessage(string.Empty, Color.white);
+            ShowRegisterMessage(string.Empty, Color.white);
         }
 
         private void OnDestroy()
         {
             isDestroyed = true;
 
-            if (hasRuntimeLoginListener)
+            if (hasRuntimeLoginListener && loginButton != null)
                 loginButton.onClick.RemoveListener(Login);
 
-            passwordInput.onSubmit.RemoveListener(OnPasswordSubmitted);
+            if (passwordInput != null)
+                passwordInput.onSubmit.RemoveListener(OnPasswordSubmitted);
+
+            if (hasRuntimeOpenRegisterListener && openRegisterButton != null)
+                openRegisterButton.onClick.RemoveListener(OpenRegisterPanel);
+
+            if (hasRuntimeBackToLoginListener && backToLoginButton != null)
+                backToLoginButton.onClick.RemoveListener(OpenLoginPanel);
+
+            if (hasRuntimeSubmitRegisterListener && submitRegisterButton != null)
+                submitRegisterButton.onClick.RemoveListener(Register);
+
+            if (regConfirmPasswordInput != null)
+                regConfirmPasswordInput.onSubmit.RemoveListener(OnRegConfirmPasswordSubmitted);
         }
+
+        #region Navigation & Panel Switching
+
+        public void OpenRegisterPanel()
+        {
+            if (isSubmitting) return;
+
+            if (loginPanel != null)
+                loginPanel.SetActive(false);
+
+            if (openRegisterButton != null)
+                openRegisterButton.gameObject.SetActive(false);
+
+            if (registerPanel != null)
+                registerPanel.SetActive(true);
+
+            // Reset dữ liệu nhập của Register
+            if (regUsernameInput != null) regUsernameInput.text = string.Empty;
+            if (regPasswordInput != null) regPasswordInput.text = string.Empty;
+            if (regConfirmPasswordInput != null) regConfirmPasswordInput.text = string.Empty;
+
+            ShowRegisterMessage(string.Empty, Color.white);
+            SetRegisterSubmitting(false);
+
+            if (regUsernameInput != null)
+                regUsernameInput.Select();
+        }
+
+        public void OpenLoginPanel()
+        {
+            if (isSubmitting) return;
+
+            if (registerPanel != null)
+                registerPanel.SetActive(false);
+
+            if (loginPanel != null)
+                loginPanel.SetActive(true);
+
+            if (openRegisterButton != null)
+                openRegisterButton.gameObject.SetActive(true);
+
+            // Xóa trường mật khẩu để đảm bảo an toàn
+            if (regPasswordInput != null) regPasswordInput.text = string.Empty;
+            if (regConfirmPasswordInput != null) regConfirmPasswordInput.text = string.Empty;
+
+            SetLoginSubmitting(false);
+        }
+
+        #endregion
+
+        #region Login Logic
 
         private void OnPasswordSubmitted(string _)
         {
@@ -58,32 +183,31 @@ namespace HarvestGrid.UI
         {
             if (isSubmitting) return;
 
-            string username = emailInput.text.Trim();
-            string password = passwordInput.text;
+            string username = emailInput != null ? emailInput.text.Trim() : string.Empty;
+            string password = passwordInput != null ? passwordInput.text : string.Empty;
 
             if (string.IsNullOrWhiteSpace(username))
             {
-                ShowMessage("Vui lòng nhập Username hợp lệ.", new Color(0.9f, 0.3f, 0.3f));
+                ShowLoginMessage("Vui lòng nhập tên đăng nhập.", errorColor);
                 return;
             }
 
             if (string.IsNullOrEmpty(password))
             {
-                ShowMessage("Vui lòng nhập Mật khẩu.", new Color(0.9f, 0.3f, 0.3f));
+                ShowLoginMessage("Vui lòng nhập mật khẩu.", errorColor);
                 return;
             }
 
-            SetSubmitting(true);
-            ShowMessage(string.Empty, Color.white);
+            SetLoginSubmitting(true);
+            ShowLoginMessage("Đang đăng nhập, vui lòng chờ...", Color.white);
 
             if (AuthManager.Instance == null || AuthManager.Instance.AuthService == null)
             {
-                ShowMessage("Lỗi hệ thống: Không tìm thấy AuthManager.", new Color(0.9f, 0.3f, 0.3f));
-                SetSubmitting(false);
+                ShowLoginMessage("Lỗi hệ thống: Không tìm thấy AuthManager.", errorColor);
+                SetLoginSubmitting(false);
                 return;
             }
 
-            // Gọi logic Đăng nhập thông qua lớp Interface trung gian
             AuthManager.Instance.AuthService.Login(username, password, OnLoginSuccess, OnLoginError);
         }
 
@@ -91,7 +215,7 @@ namespace HarvestGrid.UI
         {
             if (isDestroyed) return;
 
-            ShowMessage($"Đăng nhập thành công! Chào {result.Username}...", new Color(0.3f, 0.7f, 0.3f));
+            ShowLoginMessage($"Đăng nhập thành công! Chào {result.Username}...", successColor);
 
             if (!string.IsNullOrWhiteSpace(nextSceneName))
                 SceneManager.LoadScene(nextSceneName);
@@ -102,41 +226,171 @@ namespace HarvestGrid.UI
             if (isDestroyed) return;
 
             Debug.LogError($"[Auth] Error: {errorMessage}");
-            ShowMessage(errorMessage, new Color(0.9f, 0.3f, 0.3f));
-            SetSubmitting(false);
+            ShowLoginMessage(errorMessage, errorColor);
+            SetLoginSubmitting(false);
         }
 
-        private void SetSubmitting(bool value)
+        #endregion
+
+        #region Register Logic
+
+        private void OnRegConfirmPasswordSubmitted(string _)
+        {
+            Register();
+        }
+
+        public void Register()
+        {
+            if (isSubmitting) return;
+
+            string rawUsername = regUsernameInput != null ? regUsernameInput.text : string.Empty;
+            string username = rawUsername.Trim();
+            string password = regPasswordInput != null ? regPasswordInput.text : string.Empty;
+            string confirmPassword = regConfirmPasswordInput != null ? regConfirmPasswordInput.text : string.Empty;
+
+            // 1. Validate Username
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                ShowRegisterMessage("Vui lòng nhập tên đăng nhập.", errorColor);
+                return;
+            }
+
+            if (username.Length < 3 || username.Length > 20)
+            {
+                ShowRegisterMessage("Tên đăng nhập phải có độ dài từ 3 đến 20 ký tự.", errorColor);
+                return;
+            }
+
+            if (!Regex.IsMatch(username, "^[a-zA-Z0-9_]+$"))
+            {
+                ShowRegisterMessage("Tên đăng nhập chỉ được chứa chữ cái, chữ số và dấu gạch dưới (_).", errorColor);
+                return;
+            }
+
+            // 2. Validate Password
+            if (string.IsNullOrEmpty(password))
+            {
+                ShowRegisterMessage("Vui lòng nhập mật khẩu.", errorColor);
+                return;
+            }
+
+            if (password.Length < 6)
+            {
+                ShowRegisterMessage("Mật khẩu phải có ít nhất 6 ký tự.", errorColor);
+                return;
+            }
+
+            if (password.Length > 100)
+            {
+                ShowRegisterMessage("Mật khẩu không được dài quá 100 ký tự.", errorColor);
+                return;
+            }
+
+            // 3. Validate Confirm Password
+            if (string.IsNullOrEmpty(confirmPassword))
+            {
+                ShowRegisterMessage("Vui lòng nhập lại mật khẩu xác nhận.", errorColor);
+                return;
+            }
+
+            if (password != confirmPassword)
+            {
+                ShowRegisterMessage("Mật khẩu xác nhận không trùng khớp.", errorColor);
+                return;
+            }
+
+            // Bắt đầu gửi request đăng ký
+            SetRegisterSubmitting(true);
+            ShowRegisterMessage("Đang tạo tài khoản, vui lòng chờ...", Color.white);
+
+            if (AuthManager.Instance == null || AuthManager.Instance.AuthService == null)
+            {
+                ShowRegisterMessage("Lỗi hệ thống: Không tìm thấy AuthManager.", errorColor);
+                SetRegisterSubmitting(false);
+                return;
+            }
+
+            AuthManager.Instance.AuthService.Register(username, password, OnRegisterSuccess, OnRegisterError);
+        }
+
+        private void OnRegisterSuccess(AuthResult result)
+        {
+            if (isDestroyed) return;
+
+            Debug.Log($"[RegisterUI] Đăng ký thành công cho người dùng: {result.Username}");
+            SetRegisterSubmitting(false);
+
+            // Chuyển về LoginPanel và điền sẵn username
+            OpenLoginPanel();
+
+            if (emailInput != null)
+                emailInput.text = result.Username;
+
+            if (passwordInput != null)
+            {
+                passwordInput.text = string.Empty;
+                passwordInput.Select();
+            }
+
+            ShowLoginMessage("Đăng ký tài khoản thành công! Vui lòng nhập mật khẩu để đăng nhập.", successColor);
+        }
+
+        private void OnRegisterError(string errorMessage)
+        {
+            if (isDestroyed) return;
+
+            Debug.LogError($"[RegisterUI] Lỗi đăng ký: {errorMessage}");
+            ShowRegisterMessage(errorMessage, errorColor);
+            SetRegisterSubmitting(false);
+
+            // Xóa trắng mật khẩu đã nhập để bảo mật
+            if (regPasswordInput != null) regPasswordInput.text = string.Empty;
+            if (regConfirmPasswordInput != null) regConfirmPasswordInput.text = string.Empty;
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private void SetLoginSubmitting(bool value)
         {
             isSubmitting = value;
+
             if (loginButton != null) loginButton.interactable = !value;
+            if (openRegisterButton != null) openRegisterButton.interactable = !value;
             if (emailInput != null) emailInput.interactable = !value;
             if (passwordInput != null) passwordInput.interactable = !value;
-            
+
             if (loadingIndicator != null) loadingIndicator.SetActive(value);
         }
 
-        private void ShowMessage(string message, Color color)
+        private void SetRegisterSubmitting(bool value)
         {
+            isSubmitting = value;
+
+            if (submitRegisterButton != null) submitRegisterButton.interactable = !value;
+            if (backToLoginButton != null) backToLoginButton.interactable = !value;
+            if (regUsernameInput != null) regUsernameInput.interactable = !value;
+            if (regPasswordInput != null) regPasswordInput.interactable = !value;
+            if (regConfirmPasswordInput != null) regConfirmPasswordInput.interactable = !value;
+
+            if (regLoadingIndicator != null) regLoadingIndicator.SetActive(value);
+        }
+
+        private void ShowLoginMessage(string message, Color color)
+        {
+            if (messageText == null) return;
             messageText.text = message;
             messageText.color = color;
         }
 
-        private void CreateMessageText()
+        private void ShowRegisterMessage(string message, Color color)
         {
-            var messageObject = new GameObject("LoginMessage", typeof(RectTransform));
-            messageObject.transform.SetParent(transform, false);
-
-            var rect = messageObject.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = new Vector2(0f, -185f);
-            rect.sizeDelta = new Vector2(500f, 50f);
-
-            messageText = messageObject.AddComponent<TextMeshProUGUI>();
-            messageText.alignment = TextAlignmentOptions.Center;
-            messageText.fontSize = 22f;
-            messageText.textWrappingMode = TextWrappingModes.Normal;
+            if (regMessageText == null) return;
+            regMessageText.text = message;
+            regMessageText.color = color;
         }
+
+        #endregion
     }
 }

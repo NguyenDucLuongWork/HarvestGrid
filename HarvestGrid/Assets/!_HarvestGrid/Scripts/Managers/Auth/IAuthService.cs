@@ -12,6 +12,7 @@ namespace HarvestGrid.Managers.Auth
     public interface IAuthService
     {
         void Login(string username, string password, Action<AuthResult> onSuccess, Action<string> onError);
+        void Register(string username, string password, Action<AuthResult> onSuccess, Action<string> onError);
         void Logout();
     }
 }
