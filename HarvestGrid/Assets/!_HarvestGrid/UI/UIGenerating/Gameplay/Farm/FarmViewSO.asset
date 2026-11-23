@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7119bca874bd3984ca2d7925bc330364, type: 3}
+  m_Name: FarmViewSO
+  m_EditorClassIdentifier: Assembly-CSharp::FarmViewSO
+  data:
+    farmSlots:
+    - slotID: 1
+      soilQuality: 0
+      soilMoisture: 0
+      plant:
+        plantID: d
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 21300000, guid: 60c4dbe9e87500a4480a6214bdc5cc87, type: 3}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          id: crop_09696fe8ae3c
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+          baseSellPrice: 0
+        gameObject: {fileID: 0}
+      beingEffected: 0
+      level: 0
+      slotGameObject: {fileID: 0}
+      plantGameObject: {fileID: 0}
+    - slotID: 2
+      soilQuality: 0
+      soilMoisture: 0
+      plant:
+        plantID: d
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          id: crop_0991468cda97
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+          baseSellPrice: 0
+        gameObject: {fileID: 0}
+      beingEffected: 0
+      level: 0
+      slotGameObject: {fileID: 0}
+      plantGameObject: {fileID: 0}
+    - slotID: 4
+      soilQuality: 0
+      soilMoisture: 0
+      plant:
+        plantID: 4
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 21300000, guid: 9219d759e23f30946b14697c5ab8ea39, type: 3}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          id: crop_d690ff7afbe4
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+          baseSellPrice: 0
+        gameObject: {fileID: 0}
+      beingEffected: 0
+      level: 0
+      slotGameObject: {fileID: 0}
+      plantGameObject: {fileID: 0}
+    - slotID: 4
+      soilQuality: 0
+      soilMoisture: 0
+      plant:
+        plantID: 4
+        plantName: 
+        averageCropCount: 0
+        currentState:
+          sprite: {fileID: 0}
+          requiredResources: []
+        nextStageRequirement: []
+        stages: []
+        crop:
+          id: crop_d690ff7afbe4
+          cropID: 
+          name: 
+          icon: {fileID: 0}
+          stars: 0
+          baseSellPrice: 0
+        gameObject: {fileID: 0}
+      beingEffected: 0
+      level: 0
+      slotGameObject: {fileID: 0}
+      plantGameObject: {fileID: 0}
+    gameObject: {fileID: 0}
+  totalSlots: 4
+  harvestable: 4
+  growing: 0
+  slots:
+  - slotSprite: {fileID: 8378842431149776928, guid: 98b7c57ce1e9c4548a48447ff28e4924, type: 3}
+    plantSprite: {fileID: 21300000, guid: 60c4dbe9e87500a4480a6214bdc5cc87, type: 3}
+    status: harvestable
+  - slotSprite: {fileID: 8378842431149776928, guid: 98b7c57ce1e9c4548a48447ff28e4924, type: 3}
+    plantSprite: {fileID: 0}
+    status: harvestable
+  - slotSprite: {fileID: 8378842431149776928, guid: 98b7c57ce1e9c4548a48447ff28e4924, type: 3}
+    plantSprite: {fileID: 21300000, guid: 9219d759e23f30946b14697c5ab8ea39, type: 3}
+    status: harvestable
+  - slotSprite: {fileID: 8378842431149776928, guid: 98b7c57ce1e9c4548a48447ff28e4924, type: 3}
+    plantSprite: {fileID: 0}
+    status: harvestable
+  slotsTemplate: {fileID: 9197481963319205126, guid: d8cf1f41d032b614d9ff39b3713fff28, type: 3}

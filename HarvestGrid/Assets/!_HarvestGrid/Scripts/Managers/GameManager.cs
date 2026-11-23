@@ -11,6 +11,14 @@ public class GameManager : BaseSingleton<GameManager>
 
     public GameplaySceneDataSO gameplaySceneDataSO;
 
+    [SerializeField]
+    private GamePage currentPage = GamePage.Unknown;
+
+    public GamePage GetCurrentPage()
+    {
+        return currentPage;
+    }
+
     private void Start()
     {
         StartCoroutine(SetupNextFrame());
@@ -20,14 +28,14 @@ public class GameManager : BaseSingleton<GameManager>
     {
         yield return null;
         Setup();
-        
     }
 
     public void Setup()
     {
         UserManager.Instance.Load();
-
         LevelsManager.Instance.SyncLoadView();
+
+        LoadHomePage();
     }
 
     public void Save()
@@ -40,30 +48,45 @@ public class GameManager : BaseSingleton<GameManager>
         DataPersistenceManager.Instance.LoadGame(saveSlotId);
     }
 
-    public CurrentScene GetCurrentScene()
+    [ContextMenu("LoadGameplayPage")]
+    public void LoadGameplayPage()
     {
-        string sceneName = SceneManager.GetActiveScene().name;
-
-        switch (sceneName)
-        {
-            case "HomeScene":
-                return CurrentScene.Home;
-
-            case "GameplayScene":
-                return CurrentScene.Gameplay;
-
-            case "LoginScene":
-                return CurrentScene.Login;
-
-            default:
-                Debug.LogWarning($"Unknown scene: {sceneName}");
-                return CurrentScene.Unknown;
-        }
+        LoadPage(GamePage.Gameplay);
     }
 
+    [ContextMenu("LoadHomePage")]
+    public void LoadHomePage()
+    {
+        LoadPage(GamePage.Home);
+    }
+
+    public void LoadPage(GamePage page)
+    {
+        if (currentPage == page)
+            return;
+
+        switch (page)
+        {
+            case GamePage.Home:
+                GameplayScene.Instance.ToggleGameplay(false);
+                UIManager.Instance.mainMenuPage.SetActive(true);
+                break;
+
+            case GamePage.Gameplay:
+                GameplayScene.Instance.ToggleGameplay(true);
+                UIManager.Instance.mainMenuPage.SetActive(false);
+                break;
+
+            default:
+                Debug.LogWarning($"Cannot load page: {page}");
+                return;
+        }
+
+        currentPage = page;
+    }
 }
 
-public enum CurrentScene
+public enum GamePage
 {
     Unknown,
     Login,

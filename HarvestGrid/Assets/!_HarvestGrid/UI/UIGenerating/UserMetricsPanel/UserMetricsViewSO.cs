@@ -1,6 +1,5 @@
 using LgTyLib.Modules.DataPersistence;
 using System;
-using UIGen;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "UserMetricsViewSO", 
@@ -25,9 +24,7 @@ public class UserMetricsViewSO : ScriptableObject
 [Serializable]
 public class UserMetrics
 {
-    [UIField(ControlType.Label, Label = "Player Name")]
     public string name = "Farmer Bo";
 
-    [UIField(ControlType.Label, Label = "Coins")]
     public int coin = 1250;
 }

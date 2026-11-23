@@ -1,4 +1,4 @@
-using UIGen;
+using LgTyLib.Modules.AutoBindedPanel;
 using UnityEngine;
 
 public class UIMetricsPanel : BindedPanel

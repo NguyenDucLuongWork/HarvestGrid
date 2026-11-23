@@ -3,7 +3,9 @@ using DG.Tweening;
 using LgTyLib.Core;
 using LgTyLib.Modules.Audio;
 using LgTyLib.Modules.DataPersistence;
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -84,6 +86,8 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
 
     public LevelSO LevelSO => levelSO;
 
+    public List<GameObject> gameplayRelated;
+
     public void LoadGame(GameData gameData)
     {
         //
@@ -105,12 +109,12 @@ public partial class GameplayScene : BaseSingleton<GameplayScene>, IDataPersiste
         timeBudget = levelSO.timeBudget;
         remainingTime = timeBudget;
 
-        var farm = Instantiate(
-            levelSO.farmMono,
-            farmPlaceHolder.transform
-        );
+        //var farm = Instantiate(
+        //    levelSO.farmMono,
+        //    farmPlaceHolder.transform
+        //);
 
-        farm.transform.SetSiblingIndex(0);
+        //farm.transform.SetSiblingIndex(0);
 
         inventoryBarRect = inventoryBar.GetComponent<RectTransform>();
         storingSpaceRect = storingSpace.GetComponent<RectTransform>();
@@ -290,6 +294,13 @@ private float inventoryBarShopOffset =>
     public void AddMoney(int amount)
     {
         InventoryMono.Instance.AddMoney(amount);
+    }
+
+    public void ToggleGameplay(bool toggle) { 
+        foreach(GameObject gameplayObject in gameplayRelated)
+        {
+            gameplayObject.SetActive(toggle);
+        }
     }
 
 }

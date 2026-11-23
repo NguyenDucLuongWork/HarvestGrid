@@ -1,5 +1,4 @@
 using System;
-using UIGen;
 using UnityEngine;
 using LgTyLib.Modules.Audio;
 
@@ -42,15 +41,11 @@ public class SettingViewSO : ScriptableObject
 [Serializable]
 public class SettingView
 {
-    [UIField(ControlType.Slider, Min = 0f, Max = 1f, Label = "👆 Độ nhạy")]
     public float sens = 0.5f;
 
-    [UIField(ControlType.Slider, Min = 0f, Max = 1f, Label = "🔊 Master")]
     public float masterAudioScale = 0.5f;
 
-    [UIField(ControlType.Slider, Min = 0f, Max = 1f, Label = "🎵 Music")]
     public float musicAudioScale = 0.5f;
 
-    [UIField(ControlType.Slider, Min = 0f, Max = 1f, Label = "🔔 SFX")]
     public float sfxAudioScale = 0.5f;
 }

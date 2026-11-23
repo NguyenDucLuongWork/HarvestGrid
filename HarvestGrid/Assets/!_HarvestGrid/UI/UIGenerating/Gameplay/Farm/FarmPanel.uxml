@@ -1,0 +1,61 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="FarmPanel.uss" />
+    <ui:VisualElement name="root" class="panel">
+
+        <!-- ── Header ───────────────────────────────────────────── -->
+        <ui:VisualElement class="ph">
+            <ui:Label text="🌾 Trang Trại" class="ph-title" />
+        </ui:VisualElement>
+
+        <!-- ── Body ─────────────────────────────────────────────── -->
+        <ui:VisualElement class="pb">
+
+            <!-- Stats chips (always visible, outside scroll) -->
+            <ui:VisualElement class="stats-row">
+
+                <ui:VisualElement class="stat-chip">
+                    <ui:Label text="🟫 Ô đất" class="stat-label" />
+                    <ui:Label name="val-totalSlots" text="0" class="stat-value">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="totalSlots" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="stat-chip">
+                    <ui:Label text="🌱 Đang lớn" class="stat-label" />
+                    <ui:Label name="val-growing" text="0" class="stat-value">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="growing" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="stat-chip">
+                    <ui:Label text="🌾 Thu được" class="stat-label" />
+                    <ui:Label name="val-harvestable" text="0" class="stat-value">
+                        <Bindings>
+                            <ui:DataBinding property="text" data-source-path="harvestable" binding-mode="ToTarget" />
+                        </Bindings>
+                    </ui:Label>
+                </ui:VisualElement>
+
+            </ui:VisualElement>
+
+            <!-- 5×5 grid in a ScrollView so it scrolls if taller than the panel -->
+            <ui:ScrollView name="farm-scroll" class="farm-scroll"
+                           horizontal-scrollbar-visibility="Hidden"
+                           vertical-scrollbar-visibility="Hidden"
+                           mouse-wheel-scroll-size="120">
+                <!-- farm-grid is built entirely in FarmPanel.cs -->
+                <ui:VisualElement name="farm-grid" class="farm-grid" />
+            </ui:ScrollView>
+
+            <!-- Harvest button (always visible, below grid) -->
+            <ui:Button name="btn-harvest-all"
+                       text="🌾 Thu hoạch tất cả"
+                       class="btn btn-harvest" />
+
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

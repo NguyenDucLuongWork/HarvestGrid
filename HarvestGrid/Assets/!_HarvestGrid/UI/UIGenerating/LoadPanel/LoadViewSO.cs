@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UIGen;
 using UnityEngine;
 
 public enum LevelStatus
@@ -34,7 +33,6 @@ public class LevelItemData
 [Serializable]
 public class LoadView
 {
-    [UIField(ControlType.Label, Label = "Total Levels")]
     public int totalLevels = 6;
     public List<LevelItemData> levels = new();
 }

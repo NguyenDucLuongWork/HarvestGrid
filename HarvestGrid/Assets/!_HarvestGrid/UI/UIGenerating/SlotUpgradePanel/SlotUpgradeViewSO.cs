@@ -1,5 +1,4 @@
 using System;
-using UIGen;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SlotUpgradeViewSO", menuName = "Scriptable Objects/View/SlotUpgradeViewSO")]
@@ -28,22 +27,16 @@ public class SlotUpgradeViewSO : ScriptableObject
 [Serializable]
 public class SlotUpgradeView
 {
-    [UIField(ControlType.Label, Label = "Title")]
     public string title = "🌱 Mua ô đất";
 
-    [UIField(ControlType.Label, Label = "Ô đất")]
     public int slotIndex = 3;
 
-    [UIField(ControlType.Label, Label = "Cấp hiện tại")]
     public int slotLevel = 0;
 
-    [UIField(ControlType.Label, Label = "Giá")]
     public int price = 200;
 
-    [UIField(ControlType.Label, Label = "Xu của bạn")]
     public int playerMoney = 1250;
 
-    [UIField(ControlType.Label, Label = "Warning")]
     public string warning = "";
 
     public bool CanAfford => playerMoney >= price;

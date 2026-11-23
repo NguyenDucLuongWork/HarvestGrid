@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UIGen;
 using UnityEngine;
 
 public enum ShopCategory
@@ -23,7 +22,6 @@ public class ShopItemData
 [Serializable]
 public class ShopView
 {
-    [UIField(ControlType.Label, Label = "Selected Category")]
     public string activeCategory = "Seed";
     public List<ShopItemData> items = new();
 }

@@ -17,6 +17,8 @@ public class UserManager : BaseSingleton<UserManager>, IUserDataPersistence
     public void LoadUserData(UserData userData)
     {
         this.userData = userData; 
+
+        UIManager.Instance.homeViewSO.Data.userData = userData;
     }
 
     public void Save()
@@ -39,5 +41,10 @@ public class UserManager : BaseSingleton<UserManager>, IUserDataPersistence
     {
         userData.finishedLevels = finishedLevels;
         Save();
+    }
+
+    public void AddMoney(int amount)
+    {
+        userData.coin += amount;
     }
 }

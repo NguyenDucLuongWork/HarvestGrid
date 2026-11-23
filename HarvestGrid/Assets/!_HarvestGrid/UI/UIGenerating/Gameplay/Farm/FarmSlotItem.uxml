@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <!--
+        FarmSlotItem.uxml  –  per-slot template
+        dataSource = FarmSlotView (set by FarmPanel.cs at instantiation time)
+        DataBindings use EveryUpdate via ApplyUpdateTrigger() in BindedPanel.
+    -->
+    <ui:VisualElement name="slot-root" class="slot-cell">
+
+        <!-- Soil / ground background — keyed by slot upgrade level -->
+        <ui:Image name="slot-img" class="slot-img">
+            <Bindings>
+                <ui:DataBinding property="sprite"
+                                data-source-path="slotSprite"
+                                binding-mode="ToTarget" />
+            </Bindings>
+        </ui:Image>
+
+        <!-- Plant current-stage overlay (hidden when no plant) -->
+        <ui:Image name="plant-img" class="plant-img">
+            <Bindings>
+                <ui:DataBinding property="sprite"
+                                data-source-path="plantSprite"
+                                binding-mode="ToTarget" />
+            </Bindings>
+        </ui:Image>
+
+    </ui:VisualElement>
+</ui:UXML>

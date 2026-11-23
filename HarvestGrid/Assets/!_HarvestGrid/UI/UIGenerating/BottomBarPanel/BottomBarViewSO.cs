@@ -1,5 +1,4 @@
 using System;
-using UIGen;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BottomBarViewSO", 
@@ -18,6 +17,5 @@ public class BottomBarViewSO : ScriptableObject
 [Serializable]
 public class BottomBarView
 {
-    [UIField(ControlType.Label, Label = "Active Tab")]
     public string currentTab = "Home";
 }

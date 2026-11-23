@@ -1,5 +1,5 @@
+using LgTyLib.Modules.AutoBindedPanel;
 using System.Collections.Generic;
-using UIGen;
 using UnityEngine;
 using UnityEngine.UIElements;
 

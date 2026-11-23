@@ -1,5 +1,4 @@
 using System;
-using UIGen;
 using UnityEngine;
 using LgTyLib.Modules.DataPersistence;
 
@@ -42,18 +41,13 @@ public class UserViewSO : ScriptableObject
 [Serializable]
 public class UserView
 {
-    [UIField(ControlType.TextField, Label = "Farmer Name")]
     public string username = "Farmer Bo";
 
-    [UIField(ControlType.Label, Label = "Account ID")]
     public string userId = "HG-7492";
 
-    [UIField(ControlType.Label, Label = "Current Level")]
     public int level = 3;
 
-    [UIField(ControlType.Label, Label = "Coins")]
     public int coin = 1250;
 
-    [UIField(ControlType.Label, Label = "Completed Levels")]
     public int completedLevels = 2;
 }

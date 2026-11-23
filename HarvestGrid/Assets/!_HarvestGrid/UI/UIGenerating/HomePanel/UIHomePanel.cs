@@ -1,13 +1,12 @@
-using UIGen;
+using LgTyLib.Modules.AutoBindedPanel;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class UIHomePanel : BindedPanel
 {
     [SerializeField]
     public HomeViewSO so;
 
-    protected override object DataSource => so != null ? so.homeView : null;
+    protected override object DataSource => so;
 
     [UIAction("play")]
     public void OnPlayClicked()

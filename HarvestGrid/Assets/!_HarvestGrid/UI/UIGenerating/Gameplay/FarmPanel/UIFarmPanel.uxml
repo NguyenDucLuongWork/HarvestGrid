@@ -1,9 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
-    <ui:Style src="UIFarmPanel.uss" />
-    <ui:VisualElement name="farm-panel-root" class="farm-panel-container">
-        <!-- Farm Grid Container with subtle rounded background -->
-        <ui:VisualElement name="farm-grid" class="farm-grid">
-            <!-- 5 rows of 5 slots populated dynamically -->
-        </ui:VisualElement>
-    </ui:VisualElement>
-</ui:UXML>

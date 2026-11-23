@@ -88,7 +88,7 @@ public class LevelsManager : BaseSingleton<LevelsManager>, IUserDataPersistence
 
         gameplaySceneDataSO.level = levels[nextLevel];
 
-        SceneLoader.Instance.LoadScene("GameplayScene");
+        GameManager.Instance.LoadGameplayPage();
     }
 
     public IReadOnlyList<PlayTime> FinishedLevels => finishedLevels;
