@@ -61,6 +61,24 @@ namespace HarvestGrid.Managers.Auth
             });
         }
 
+        public void Register(string username, string password, Action<AuthResult> onSuccess, Action<string> onError)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                onError?.Invoke("Tên đăng nhập không được để trống.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(password))
+            {
+                onError?.Invoke("Mật khẩu không được để trống.");
+                return;
+            }
+
+            // Với LocalAuth, đăng ký tạo dữ liệu mới và thực hiện đăng nhập
+            Login(username, password, onSuccess, onError);
+        }
+
         public void Logout()
         {
             // Handled by AuthManager
